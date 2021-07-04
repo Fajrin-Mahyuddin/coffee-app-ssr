@@ -1,0 +1,123 @@
+.standart {
+	.title {
+		font-size: 1.5rem;
+	}
+	.service {
+		position: relative;
+		margin: 10px 8%;
+		display: grid;
+		gap: 20px;
+		grid-template-columns: repeat(1, 1fr);
+		.service-item {
+			border-radius: 10px;
+			background-color: $white;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+			.image-cover {
+				img {
+					width: 100%;
+					border-top-left-radius: 10px;
+					border-top-right-radius: 10px;
+				}
+			}
+			.desc {
+				padding: 10px;
+				display: flex;
+				flex-direction: column;
+				height: inherit;
+				flex: 1;
+				justify-content: space-between;
+				.desc-text {
+					h5 {
+						font-size: 1.2rem;
+					}
+					p {
+						display: -webkit-box;
+						-webkit-line-clamp: 3;
+						-webkit-box-orient: vertical;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						font-size: 14px;
+						font-weight: 400;
+						color: $dark-grey;
+						text-align: justify;
+					}
+				}
+				.footer-desc {
+					min-height: 110px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					ul {
+						position: relative;
+						list-style: none;
+						padding-left: 0;
+						display: flex;
+						flex-direction: row;
+						flex-wrap: wrap;
+						li {
+							margin: 1px;
+							text-transform: lowercase;
+						}
+					}
+					.select-price {
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+						align-items: center;
+						span {
+							font-size: 10px;
+							strong {
+								font-size: 1rem;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+@media screen and (min-width: 500px) {
+	.standart {
+		.service {
+			margin: 0;
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.title {
+			font-size: 1rem;
+		}
+	}	
+}
+@media screen and (min-width: 1024px) {
+	.standart {
+		.service {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.title {
+			font-size: 1rem;
+		}
+	}
+}
+@media screen and (min-width: 1240px) {
+	.standart {
+		.service {
+			grid-template-columns: repeat(4, 1fr);
+		}
+		.title {
+			font-size: 2rem;
+		}
+	}
+}
+
+@media screen and (min-width: 1440px) {
+	.standart {
+		.service {
+			grid-template-columns: repeat(5, 1fr);
+		}
+		.title {
+			font-size: 2rem;
+		}
+	}
+}

@@ -1,0 +1,41 @@
+.row {
+	display: flex;
+	flex-direction: column;
+	.column {
+		display: flex;
+		width: 100%;
+		flex-direction: column;
+		.column-item {
+			// margin: 1% 0;	
+			width: inherit;
+			min-width: 0;
+		}
+	}
+	.flex-start {
+		width: inherit;
+		justify-content: flex-start;
+	}
+}
+
+.display-column {
+	display: flex;
+	flex-direction: column;
+}
+
+.display-horizontal {
+	display: flex;
+	flex-direction: row;
+}
+
+
+
+@media screen and (min-width: 500px) {
+	.row {
+		.column {
+			flex-direction: row;
+			.column-item {
+			}
+		}
+	}	
+
+}

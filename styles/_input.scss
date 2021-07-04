@@ -1,0 +1,62 @@
+.input-group {
+	padding-bottom: 5px;
+	input {
+		width: 20%;
+		border: none;
+		padding: 5px 10px;
+		outline: none;
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+		border-top: 1px solid $dark-grey;
+		border-left: 1px solid $dark-grey;
+		border-bottom: 1px solid $dark-grey;
+	}
+	button {
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border-top: 1px solid $dark-grey;
+		border-right: 1px solid $dark-grey;
+		border-bottom: 1px solid $dark-grey;
+		border-left: none;
+		padding: 5px 10px;
+	}
+}
+
+input[type="radio"]:checked ~ .radio-label .checkmark::after {
+	display: block;
+}
+
+.checkmark {
+	position: absolute;
+	border: 1px solid $primary-color;
+	height: 25px;
+	width: 25px;
+	border-radius: 50%;
+	top: 0;
+	left: 0;
+}
+
+.checkmark::after {
+	content: " ";
+	position: absolute;
+	height: 11px;
+	border: none;
+	width: 11px;
+	background-color: $primary-color;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	display: none;
+}
+
+@media screen and (min-width: 500px)  {
+	.checkmark {
+		position: absolute;
+		height: 25px;
+		width: 25px;
+		border-radius: 50%;
+		top: -5px;
+		left: 0;
+	}	
+}

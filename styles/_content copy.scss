@@ -1,0 +1,318 @@
+.main {
+  position: relative;
+  .content-wrapper {
+    width: 100vw;
+    background-color: $smooth-white;
+    transition: .3s;
+    position: relative;
+    .title {
+      margin-top: 15%;
+      padding: 10px;
+      h1 {
+        font-weight: 400;
+        font-size: 1.4rem;
+        text-transform: capitalize;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      span {
+        font-size: 14px;
+        color: $text-color;
+        font-weight: 300;
+        letter-spacing: .5px;
+        text-transform: capitalize;
+      }
+    }
+    .content {
+      padding: 10px;
+    } 
+  }
+  
+  .dark {
+    overflow: hidden;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    &::after {
+      background-color: rgba(0, 0, 0, 0.355);
+      content: "";
+      width: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+    }
+  }
+}
+.standart {
+  .content-wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    .content {
+      flex: 1;
+      margin: 9vh 15px 2vh;
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      .content-login {
+        border-radius: 10px;
+        padding: 10px;
+        background-color: $white;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        .login-image {
+          display: none;
+        } 
+      }
+    } 
+  }
+  .dark {
+    overflow: hidden;
+    position: fixed;
+    &::after {
+      background-color: rgba(0, 0, 0, 0.355);
+      content: "";
+      width: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+    }
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .main {
+    .content-wrapper {
+     width: 90vw;
+     min-height: 100vh;
+     margin-left: 10vw;
+     padding: 10px;
+     display: flex;
+     flex-direction: column;
+     background-color: $smooth-white;
+     overflow: hidden;
+     .title {
+       margin-top: 0;
+       margin-bottom: 15px;
+       span {
+         font-size: 12px;
+       }
+     }
+     .content {
+       flex: 1;
+       padding: 15px 15px 20px 15px;
+       border-radius: 10px;
+       background-color: $white;
+     } 
+   } 
+ } 
+ .standart {
+  .content-wrapper {
+    .content {
+      margin: 12vh 8% 0;
+      display: flex;
+      .content-login {
+        .text-wrapper {
+          p {
+            font-size: 14px;
+          }
+        }
+        .login-image {
+          display: none;
+        }
+      } 
+    } 
+  } 
+ }
+}
+
+@media screen and (min-width: 1024px) {
+  .standart {
+    .content-wrapper {
+      background-color: rgba($color: #fff, $alpha: 0.7);
+      .content {
+        position: relative;
+        .content-login {
+          box-shadow: none;
+          display: flex;
+          padding: 0;
+          flex-direction: row;
+          align-items: center;
+          position: absolute;
+          right: 0;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          justify-content:space-between;
+          .text-wrapper {
+            max-width: 60%;
+            width: 45%;
+            h2 {
+              font-size: 2.5rem;
+              span {
+                color: $primary-color;
+              }
+            }
+          }
+          .login-image {
+            width: 45%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            #svg-motor {
+              position: absolute;
+              z-index: 3;
+            #Saly-3_2 {
+                width: 100%;
+                height: 100%;   
+              }
+              #image0 {
+                animation: runMoto .6s linear infinite;
+              }
+            }
+            #svg-tornado {
+              position: absolute;
+              z-index: 4;
+              width: 20%;
+              left: -10%;
+              margin-top: 15%;
+              #Tornado_2 {
+                width: 100%;
+                height: 100%;
+                transform: rotate(-20deg);
+                transform-origin: center;
+              }
+            }
+            #svg-snowWindy {
+              position: absolute;
+              z-index: 5;
+              width: 20%;
+              max-width: 30%;
+              top: 0;
+              transform: translate(-350%, -250%);
+              #Mid-snow-fast-winds {
+                transform-origin: center;
+                transform: rotate(150deg);
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 1240px) {
+  .main {
+    .content-wrapper {
+      width: 82%;
+      min-height: 100vh;
+      margin-left: 18%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      .title {
+        margin-bottom: 2%;
+        h1 {
+          font-weight: 400;
+          font-size: 1.5rem;
+          text-transform: capitalize;
+          padding-bottom: 0;
+          margin-bottom: 0;
+        }
+        span {
+          font-size: 12px;
+          color: $text-color;
+          font-weight: 300;
+          letter-spacing: .5px;
+          text-transform: capitalize;
+        }
+      }
+      .content {
+        border-radius: 10px;
+        flex: 1;
+        position: relative;
+        padding: 15px 15px 20px 15px;
+        background-color: $white;
+      } 
+    } 
+  }
+  .standart {
+    .content-wrapper {
+      width: 100%;
+      min-height: 100vh;
+      // background-color: rgba($color: #fff, $alpha: 0.7);
+      display: flex;
+      flex-direction: column;
+      .content {
+        flex: 1;
+        position: relative;
+        .content-login {
+          display: flex;
+          // padding: 0 8%;
+          flex-direction: row;
+          align-items: center;
+          position: absolute;
+          right: 0;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          justify-content:space-between;
+          .text-wrapper {
+            max-width: 55%;
+            width: 35%;
+            h2 {
+              font-size: 2.5rem;
+              span {
+                color: $primary-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .standart {
+    .content-wrapper {
+      .content {
+        margin: 13vh 8% 0;
+        .text-wrapper {
+          max-width: 45%;
+          width: 30%;
+          h2 {
+            font-size: 3rem;
+          }
+        }
+      }
+    }
+  } 
+}
+
+@keyframes runMoto {
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateX(1px);
+  }
+  50% {
+    transform: translateY(-1%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
