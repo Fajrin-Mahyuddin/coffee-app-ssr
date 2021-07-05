@@ -1,87 +1,168 @@
-import { createRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { motor, windy } from 'images';
+import Image from 'next/image';
 import { StandartLayout } from 'layout';
-import { Form, InputAlert, InputText, SubmitBtn } from 'components';
-import { KeyOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
+import { SubmitBtn } from 'components';
+import { ClockCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import { cupboard, Saly11 } from 'images';
+import coffee_one from '../public/assets/images/coffee_one.jpeg';
 
-const Login = () => {
-	const inputRef = createRef();
-
-	const onSubmit = (e) => {
-		e.preventDefault();
-	}
+const ArticleList = () => {
 	return (
 		<StandartLayout>
-			<StandartLayout.Content>
-				<div className="content-login">
-					<div className="text-wrapper">
-						<h2>
-							Coffee App Login
-						</h2>
-						<p>Feel bad stay at home ? Don't worry, a cup of coffee can help.</p>
-						<Form
-							onSubmit={onSubmit}
-							className="form-vertical mtb-20"
-						>
-							<Form.Row>
-								<Form.Column className="mb-10">
-									<InputAlert alert={null} />
-								</Form.Column>
-							</Form.Row>
-							<Form.Row>
-								<Form.Column className="mb-10">
-									<InputText
-										error={false}
-										ref={inputRef}
-										name="username"
-										label="Username"
-										id="username-input"
-										icon={UserOutlined}
-										placeholder="username"
-										classWrapper="display-column column-item"
-										onChange={(e) => console.log(e)}
-									/>
-								</Form.Column>
-							</Form.Row>
-							<Form.Row>
-								<Form.Column className="mb-10">
-									<InputText
-										error={false}
-										ref={inputRef}
-										name="password"
-										label="Password"
-										id="password-input"
-										icon={KeyOutlined}
-										placeholder="password"
-										classWrapper="display-column column-item"
-										onChange={(e) => console.log(e)}
-									/>
-								</Form.Column>
-							</Form.Row>
-							<div className="display-horizontal">
-								<input type="checkbox" className="remember_me" id="remember_me" /><label htmlFor="remember_me">remember me</label>
-							</div>
-							<div className="display-horizontal mtb-20">
-								<SubmitBtn
-									type="submit"
-									label="Login"
-									loading="false"
-									disabled={false}
-									icon={SendOutlined}
-									className="btn primary-btn sm-btn mr-5"
-								/>
-							</div>
-						</Form>
+			<div className="container">
+				<div className="article-cover">
+					<div className="article-cover__paragraph">
+						<h1>Good day starts with <strong> coffee</strong></h1>
+						<p>All about coffee that you should know - <i>coffee lovers</i>.</p>
+						<SubmitBtn label="Read more" className="btn sm-btn primary-btn mr-5" />
+						<SubmitBtn label="Need a cup of coffee ?" className="btn sm-btn default-btn" />
 					</div>
-					<div className="login-image">
-						<img src={windy} alt="windy" />
-						<img src={motor} alt="motor" />
+					<div className="article-cover__img">
+						<Image className="article-cover__second-img" src={cupboard} alt="article-cover" bottom="10px" />
+						<Image className="article-cover__main-img" src={Saly11} alt="article-cover" />
 					</div>
 				</div>
-			</StandartLayout.Content>
+				<div className="article-wrapper">
+
+					<div className="article-item">
+						<div className="article-img">
+							<Image src={coffee_one} alt="article-one" />
+						</div>
+						<div className="article-content">
+							<div className="article-category">
+								<span>Productivity</span>
+								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
+							</div>
+							<div className="article-head">
+								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
+							</div>
+							<div className="article-body">
+								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
+
+								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
+							</div>
+							<div className="article-footer">
+								<div className="author">
+									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
+									<span>Roroa Zoro</span>
+								</div>
+								<Link href="/articles/detail/123">Read more</Link>
+							</div>
+						</div>
+					</div>
+					<div className="article-item">
+						<div className="article-img">
+							<Image src="https://images.unsplash.com/photo-1555118367-93f01e18660f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="article-one" height="100%" width="100%" />
+						</div>
+						<div className="article-content">
+							<div className="article-category">
+								<span>Productivity</span>
+								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
+							</div>
+							<div className="article-head">
+								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
+							</div>
+							<div className="article-body">
+								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
+
+								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
+							</div>
+							<div className="article-footer">
+								<div className="author">
+									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
+									<span>Roroa Zoro</span>
+								</div>
+								<Link href="/articles/detail/123">Read more</Link>
+							</div>
+						</div>
+					</div>
+					<div className="article-item">
+						<div className="article-img">
+							<Image src={coffee_one} alt="article-one" />
+						</div>
+						<div className="article-content">
+							<div className="article-category">
+								<span>Productivity</span>
+								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
+							</div>
+							<div className="article-head">
+								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
+							</div>
+							<div className="article-body">
+								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
+
+								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
+							</div>
+							<div className="article-footer">
+								<div className="author">
+									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
+									<span>Roroa Zoro</span>
+								</div>
+								<Link href="/articles/detail/123">Read more</Link>
+							</div>
+						</div>
+					</div>
+					<div className="article-item">
+						<div className="article-img">
+							<Image src={coffee_one} alt="article-one" />
+						</div>
+						<div className="article-content">
+							<div className="article-category">
+								<span>Productivity</span>
+								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
+							</div>
+							<div className="article-head">
+								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
+							</div>
+							<div className="article-body">
+								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
+
+								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
+							</div>
+							<div className="article-footer">
+								<div className="author">
+									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
+									<span>Roroa Zoro</span>
+								</div>
+								<Link href="/articles/detail/123">Read more</Link>
+							</div>
+						</div>
+					</div>
+					<div className="article-item">
+						<div className="article-img">
+							<Image src={coffee_one} alt="article-one" />
+						</div>
+						<div className="article-content">
+							<div className="article-category">
+								<span>Productivity</span>
+								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
+							</div>
+							<div className="article-head">
+								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
+							</div>
+							<div className="article-body">
+								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
+
+								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
+							</div>
+							<div className="article-footer">
+								<div className="author">
+									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
+									<span>Roroa Zoro</span>
+								</div>
+								<Link href="/articles/detail/123">Read more</Link>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div className="article-more">
+					<Link href="# ">Load more</Link>
+				</div>
+			</div>
 		</StandartLayout>
 	)
 }
 
-export default Login
+export default ArticleList;

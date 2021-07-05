@@ -4,12 +4,6 @@ import { InfoCircleOutlined, LoginOutlined, LogoutOutlined, ReadOutlined, Shoppi
 const StandartMenu = () => (
   <ul>
     <li className="mrl-20">
-      <a href="/" className="nav-menu-item">
-        <LoginOutlined />
-        Login
-      </a>
-    </li>
-    <li className="mrl-20">
       <a href="/articles"
         className="nav-menu-item"
       >
@@ -32,7 +26,7 @@ const StandartMenu = () => (
     <li>
       <a className="nav-menu-item btn primary-btn sm-btn" href="/login">
         <LogoutOutlined />
-        Sign up
+        Login
       </a>
     </li>
   </ul>

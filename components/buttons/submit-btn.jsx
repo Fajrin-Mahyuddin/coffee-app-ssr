@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 
-const SubmitBtn = ({ label, ...props }, ref) => {
+const SubmitBtn = ({ label, icon: Icon = null, ...props }, ref) => {
 	return (
-		<button ref={ref} {...props}>{label}</button>
+		<button ref={ref} {...props}>{Icon && <Icon />} {label}</button>
 	)
 };
 
