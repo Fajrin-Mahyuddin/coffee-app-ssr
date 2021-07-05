@@ -1,27 +1,27 @@
 import React from 'react';
-import { InfoCircleOutlined, LoginOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import Link from 'next/link';
+import { ActiveLink } from 'components'
+import { InfoCircleOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 const StandartMenu = () => (
   <ul>
     <li className="mrl-20">
-      <a href="/articles"
-        className="nav-menu-item"
-      >
+      <ActiveLink href="/" className="nav-menu-item">
         <ReadOutlined />
         Articles
-      </a>
+      </ActiveLink>
     </li>
     <li className="mrl-20">
-      <a href="/sale" className="nav-menu-item">
+      <ActiveLink href="/sale" className="nav-menu-item">
         <ShoppingCartOutlined />
         Sale
-      </a>
+      </ActiveLink>
     </li>
     <li className="mrl-20">
-      <a href="# " className="nav-menu-item">
+      <ActiveLink href="about" className="nav-menu-item">
         <InfoCircleOutlined />
         About us
-      </a>
+      </ActiveLink>
     </li>
     <li>
       <a className="nav-menu-item btn primary-btn sm-btn" href="/login">

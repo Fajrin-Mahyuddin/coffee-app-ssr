@@ -1,6 +1,6 @@
 import { StandartLayout } from "layout";
 
-const ArticlePage = () => {
+export default () => {
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -9,5 +9,3 @@ const ArticlePage = () => {
 		</StandartLayout>
 	)
 }
-
-export default ArticlePage;

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
 import { SubmitBtn } from 'components';
-import { ClockCircleOutlined, EyeOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, HeartFilled, StarFilled, EyeOutlined } from '@ant-design/icons';
 import { cupboard, Saly11 } from 'images';
 import coffee_one from '../public/assets/images/coffee_one.jpeg';
 
@@ -47,7 +47,7 @@ const ArticleList = () => {
 									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
 									<span>Roroa Zoro</span>
 								</div>
-								<Link href="/articles/detail/123">Read more</Link>
+								<Link href="/detail/123">Read more</Link>
 							</div>
 						</div>
 					</div>
@@ -160,6 +160,105 @@ const ArticleList = () => {
 				<div className="article-more">
 					<Link href="# ">Load more</Link>
 				</div>
+				<div className="sale-wrapper">
+					<h3>List Sale</h3>
+					<hr />
+					<div className="sale-list">
+
+						<div className="sale-item">
+							<div className="sale-item__img">
+								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
+								<HeartFilled />
+							</div>
+							<div className="sale-item__body">
+								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+									Moka Pod Coffee
+								</a>
+								<div className="sale-item__body-review display-horizontal">
+									<div className="start">
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "grey" }} />
+										<StarFilled style={{ color: "grey" }} />
+									</div>
+									<span className="label label-sm label-primary">Best</span>
+								</div>
+								<div className="sale-item__body-desc text-overflow-3">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
+								</div>
+								<div className="sale-item__body-footer display-horizontal">
+									<div className="content-price">
+										<span className="label label-sm label-warning label-transparent">0%</span>
+										<span>Rp 120.0000</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="sale-item">
+							<div className="sale-item__img">
+								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
+								<HeartFilled />
+							</div>
+							<div className="sale-item__body">
+								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+									Moka Pod Coffee
+								</a>
+								<div className="sale-item__body-review display-horizontal">
+									<div className="start">
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "grey" }} />
+										<StarFilled style={{ color: "grey" }} />
+									</div>
+									<span className="label label-sm label-primary">Best</span>
+								</div>
+								<div className="sale-item__body-desc text-overflow-3">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
+								</div>
+								<div className="sale-item__body-footer display-horizontal">
+									<div className="content-price">
+										<span className="label label-sm label-warning label-transparent">0%</span>
+										<span>Rp 120.0000</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="sale-item">
+							<div className="sale-item__img">
+								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
+								<HeartFilled />
+							</div>
+							<div className="sale-item__body">
+								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+									Moka Pod Coffee
+								</a>
+								<div className="sale-item__body-review display-horizontal">
+									<div className="start">
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "orange" }} />
+										<StarFilled style={{ color: "grey" }} />
+										<StarFilled style={{ color: "grey" }} />
+									</div>
+									<span className="label label-sm label-primary">Best</span>
+								</div>
+								<div className="sale-item__body-desc text-overflow-3">
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
+								</div>
+								<div className="sale-item__body-footer display-horizontal">
+									<div className="content-price">
+										<span className="label label-sm label-warning label-transparent">0%</span>
+										<span>Rp 120.0000</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
 			</div>
 		</StandartLayout>
 	)

@@ -4,7 +4,7 @@ const ArticlePage = () => {
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
-				ini article
+				ini detail
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
