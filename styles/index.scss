@@ -170,6 +170,15 @@ hr {
   background-color: $info-color;
 }
 
+.text-grey {
+  color: $dark-grey;
+}
+
+.text-light {
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
 .text-overflow-1 {
   width: 100%;
   overflow: hidden;

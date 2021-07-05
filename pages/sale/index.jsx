@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link'
 import { SubmitBtn } from 'components';
 import { StandartLayout } from 'layout';
 import { DoubleRightOutlined, HeartFilled, RightOutlined, StarFilled } from '@ant-design/icons';
@@ -58,9 +57,9 @@ const SalePage = () => {
 								<HeartFilled />
 							</div>
 							<div className="sale-item__body">
-								<Link href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
 									Moka Pod Coffee
-								</Link>
+								</a>
 								<div className="sale-item__body-review display-horizontal">
 									<div className="start">
 										<StarFilled style={{ color: "orange" }} />
@@ -118,9 +117,9 @@ const SalePage = () => {
 								<HeartFilled />
 							</div>
 							<div className="sale-item__body">
-								<Link href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
 									Moka Pod Coffee
-								</Link>
+								</a>
 								<div className="sale-item__body-review display-horizontal">
 									<div className="start">
 										<StarFilled style={{ color: "orange" }} />

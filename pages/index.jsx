@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
 import { SubmitBtn } from 'components';
-import { ClockCircleOutlined, HeartFilled, StarFilled, EyeOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, HeartFilled, StarFilled, EyeOutlined, BookFilled, ShopFilled } from '@ant-design/icons';
 import { cupboard, Saly11 } from 'images';
 import coffee_one from '../public/assets/images/coffee_one.jpeg';
 
@@ -23,6 +23,8 @@ const ArticleList = () => {
 						<Image className="article-cover__main-img" src={Saly11} alt="article-cover" />
 					</div>
 				</div>
+				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
+				<hr />
 				<div className="article-wrapper">
 
 					<div className="article-item">
@@ -161,7 +163,7 @@ const ArticleList = () => {
 					<Link href="# ">Load more</Link>
 				</div>
 				<div className="sale-wrapper">
-					<h3>List Sale</h3>
+					<h4 className="text-grey text-light"><ShopFilled /> List Sale</h4>
 					<hr />
 					<div className="sale-list">
 
