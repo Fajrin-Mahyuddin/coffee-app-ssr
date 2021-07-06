@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 
 const ActiveList = ({ href, className, children, nestedNumber = 1 }) => {
 	const router = useRouter();
+	console.log("router", router);
 	// nested number untuk mengaktifkan child link
 	const separateLink = (url) => url.split("/")[nestedNumber];
 	const splitHref = separateLink(href)

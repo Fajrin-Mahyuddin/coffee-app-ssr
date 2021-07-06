@@ -6,8 +6,8 @@ const ifHeaderScrolled = (ref) => {
 };
 
 const ifFooterPriceScrolled = (ref, refChild) => {
-  const heightToTop = ref.current.getBoundingClientRect().top;
-  const heightElement = refChild.current.getBoundingClientRect().height;
+  const heightToTop = ref.current?.getBoundingClientRect().top;
+  const heightElement = refChild.current?.getBoundingClientRect().height;
   const stickyPoint = heightToTop + heightElement;
   console.log("heightToTop", heightToTop);
   console.log("heightElement", heightElement);

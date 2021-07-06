@@ -1,3 +1,10 @@
+.action-counter {
+	display: flex;
+	align-items: center;
+	&-value {
+		margin: 0 10px;
+	}
+}
 .primary-btn {
   background-color: $primary-color;
   color: $white;
@@ -14,6 +21,22 @@
 .success-btn {
 	background-color: $success-color;
 	color: $white;
+}
+
+.success-less-btn {
+	background-color: transparent;
+	color: $success-color;
+	font-size: 1.1rem;
+}
+
+.danger-less-btn {
+	background-color: transparent;
+	color: $danger-color;
+	font-size: 1.1rem;
+}
+
+.sm-less-btn {
+	padding: 0;
 }
 
 .md-btn {
@@ -66,8 +89,5 @@
 @media screen and (min-width: 500px) {
 	.md-btn {
 		padding: 10px 23px;
-	}
-	.btn {
-		// font-size: 14px;
 	}
 }

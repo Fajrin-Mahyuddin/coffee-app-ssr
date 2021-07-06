@@ -3,26 +3,20 @@ import { SubmitBtn } from 'components';
 import { ifFooterPriceScrolled } from 'utils/scrolled'
 import { StandartLayout } from 'layout';
 import { DoubleRightOutlined, RightOutlined, StarFilled, TagsFilled, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/router';
 
 const SaleDetail = () => {
 	const refFooterPrice = useRef();
 	const refFooterChild = useRef();
-	const router = useRouter()
-	useEffect(() => {
-		const updateState = () => {
-			console.log("oke udpate")
-		}
-		const removeState = () => {
-			console.log("oke remove")
-		}
-		// ifFooterPriceScrolled(refFooterPrice, refFooterChild);
 
-		window.addEventListener("scroll", () => updateState())
-		return () => {
-			window.removeEventListener("scroll", () => removeState())
+	useEffect(() => {
+		const scrollEvent = () => {
+			ifFooterPriceScrolled(refFooterPrice, refFooterChild);
 		}
-	}, [router])
+		window.addEventListener("scroll", scrollEvent)
+		return () => {
+			window.removeEventListener("scroll", scrollEvent)
+		}
+	}, [])
 
 	return (
 		<StandartLayout>
