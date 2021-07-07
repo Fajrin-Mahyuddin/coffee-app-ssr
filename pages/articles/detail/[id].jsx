@@ -1,7 +1,7 @@
 import { StandartLayout } from "layout";
 import { EyeOutlined, FacebookOutlined, FieldTimeOutlined, ReadOutlined, RightOutlined, SignalFilled, TwitterOutlined, WhatsAppOutlined } from '@ant-design/icons';
 
-export default () => {
+const DetailArticle = () => {
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -40,6 +40,9 @@ export default () => {
 							</p>
 							<div>
 								editor : Anonim
+							</div>
+							<div className="text-14">
+								Sumber : https://blabla.com
 							</div>
 						</div>
 						<div className="article-detail__content-footer">
@@ -109,10 +112,11 @@ export default () => {
 								</a>
 							</li>
 						</ul>
-
 					</div>
 				</div>
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
 }
+
+export default DetailArticle;

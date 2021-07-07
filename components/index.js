@@ -6,6 +6,8 @@ import ContentWrapper from './templates/contentWrapper';
 import Form from './inputs/form';
 import InputText from './inputs/InputText';
 import InputAlert from './alerts/inputAlert';
+import InputDate from './inputs/inputDate';
+import InputRadio from './inputs/inputRadio';
 
 export {
 	SubmitBtn,
@@ -15,5 +17,7 @@ export {
 	Form,
 	InputAlert,
 	InputText,
-	ActiveLink
+	ActiveLink,
+	InputDate,
+	InputRadio
 }
