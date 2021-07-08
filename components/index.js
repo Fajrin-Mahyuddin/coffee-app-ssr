@@ -4,6 +4,7 @@ import ToggleBtn from './buttons/toggleBtn';
 import ActiveLink from './buttons/activeLink';
 import ContentWrapper from './templates/contentWrapper';
 import Form from './inputs/form';
+import Footer from './footer';
 import InputText from './inputs/InputText';
 import InputAlert from './alerts/inputAlert';
 import InputDate from './inputs/inputDate';
@@ -19,5 +20,6 @@ export {
 	InputText,
 	ActiveLink,
 	InputDate,
-	InputRadio
+	InputRadio,
+	Footer
 }

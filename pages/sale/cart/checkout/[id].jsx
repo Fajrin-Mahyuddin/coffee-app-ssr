@@ -13,7 +13,7 @@ const CheckoutPage = () => {
 							<hr />
 						</div>
 						<div className="create-order">
-							<Form className="form-horizontal w-100" onSubmit={() => console.log("submit")}>
+							<Form className="form-horizontal" onSubmit={() => console.log("submit")}>
 								<Form.Row>
 									<Form.Column>
 										<InputAlert alert={null} />

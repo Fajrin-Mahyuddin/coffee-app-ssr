@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SubmitBtn } from 'components';
 import { StandartLayout } from "layout";
-import { cupboard, Saly11, coffee_one } from 'images';
+import { cupboard, Saly11, coffee_one, saly12 } from 'images';
 import { BookFilled, EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 
@@ -21,11 +21,9 @@ const ArticlePage = () => {
 						<SubmitBtn label="Need a cup of coffee ?" className="btn sm-btn default-btn" />
 					</div>
 					<div className="article-cover__img">
-						<Image className="article-cover__second-img" src={cupboard} alt="article-cover" bottom="10px" />
-						<Image className="article-cover__main-img" src={Saly11} alt="article-cover" />
+						<Image className="article-cover__main-img" src={saly12} alt="article-cover" />
 					</div>
 				</div>
-				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
 				<hr />
 				<div className="article-wrapper">
 

@@ -13,10 +13,9 @@ const ArticleList = () => {
 			<div className="container">
 				<div className="article-cover">
 					<div className="article-cover__paragraph">
-						<h1>Good day starts with <strong> coffee</strong></h1>
-						<p>All about coffee that you should know - <i>coffee lovers</i>.</p>
-						<SubmitBtn label="Read more" className="btn sm-btn primary-btn mr-5" />
-						<SubmitBtn label="Need a cup of coffee ?" className="btn sm-btn default-btn" />
+						<h1>Hi, need a cup of <strong> coffee</strong> ?</h1>
+						<p>More expresso, Less Depresso</p>
+						<SubmitBtn label="Get Started" className="btn md-btn primary-btn mr-5" />
 					</div>
 					<div className="article-cover__img">
 						<Image className="article-cover__second-img" src={cupboard} alt="article-cover" bottom="10px" />

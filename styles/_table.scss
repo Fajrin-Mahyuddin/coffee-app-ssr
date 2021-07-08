@@ -1,36 +1,36 @@
-  .label-sm {
-    padding: 2px 5px;
-    border-radius: 3px;
-    color: $black;
-    font-size: 12px;
-    text-transform: capitalize;
-    background-color: $light-grey;
-  }
-  .label-danger-transparent {
-    color: $white;
-    background-color: $danger-transparent;
-    text-decoration: line-through;
-  }
-  .label-primary {
-    color: $white;
-    background-color: $primary-color;
-  }
-  .label-danger {
-    color: $white;
-    background-color: $danger-color;
-  }
-  .label-info {
-    color: $white;
-    background-color: $info-color;
-  }
-  .label-success {
-    color: $white;
-    background-color: $success-color;
-  }
-  .label-warning {
-    color: $white;
-    background-color: $warning-color;
-  }
+.label-sm {
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: $black;
+  font-size: 12px;
+  text-transform: capitalize;
+  background-color: $light-grey;
+}
+.label-danger-transparent {
+  color: $white;
+  background-color: $danger-transparent;
+  text-decoration: line-through;
+}
+.label-primary {
+  color: $white;
+  background-color: $primary-color;
+}
+.label-danger {
+  color: $white;
+  background-color: $danger-color;
+}
+.label-info {
+  color: $white;
+  background-color: $info-color;
+}
+.label-success {
+  color: $white;
+  background-color: $success-color;
+}
+.label-warning {
+  color: $white;
+  background-color: $warning-color;
+}
 table.tables {
   width: 100%;
   border-collapse: collapse;

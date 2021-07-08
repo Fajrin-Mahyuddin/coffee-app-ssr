@@ -103,7 +103,7 @@
 
 @media screen and (min-width: 1024px) {
 	.cart {
-		grid-template-columns: repeat(3, auto);
+		grid-template-columns: auto;
 		gap: 30px;
 		&-list {
 			grid-column-start: 1;
@@ -130,7 +130,8 @@
 			}
 		}
 		.cart-summary-wrapper {
-			width: 24vw;
+			grid-column-start: 3;
+			grid-column-end: 4;
 			.cart-summary {
 				position: sticky;
 				position: -webkit-sticky;

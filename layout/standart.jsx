@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { createRef, useRef } from 'react';
-import { ContentWrapper, Navbar } from 'components';
+import { ContentWrapper, Navbar, Footer } from 'components';
 import { toggleAction } from 'utils/drawer-helper';
 
 const Content = ({ className, children, ...props }) => {
@@ -22,9 +22,7 @@ const StandartLayout = ({ footer = true, children }) => {
       <ContentWrapper ref={contentRef}>
         {children}
         {footer &&
-          <footer className="center-text p-10">
-            &copy; 2021 | Fajrin Mahyuddin
-          </footer>
+          <Footer />
         }
       </ContentWrapper>
     </div>
