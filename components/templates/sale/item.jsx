@@ -1,7 +1,6 @@
 import { StarFilled, HeartFilled } from '@ant-design/icons'
 
 const ItemSale = ({ item: { id, title, description, image, price, category } }) => {
-	console.log("item")
 	return (
 		<div className="sale-item">
 			<div className="sale-item__img">

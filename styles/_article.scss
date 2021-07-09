@@ -174,22 +174,7 @@
 		}
 	}
 }
-.article-more {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	width: 100%;
-	margin: 20px auto;
-	a {
-		background-color: $white;
-		border-radius: 10px;
-		text-decoration: none;
-		padding: 10px 15px;
-		font-size: 14px;
-		color: $black;
-		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-	}
-}
+
 
 // detail article 
 .article-detail {

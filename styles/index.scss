@@ -204,6 +204,7 @@ ul {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  height: fit-content;
 }
 .text-overflow-2 {
   width: 100%;
@@ -212,9 +213,11 @@ ul {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  height: fit-content;
 }
 .text-overflow-3 {
   width: 100%;
+  height: fit-content;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

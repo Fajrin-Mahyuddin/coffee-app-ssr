@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { SubmitBtn, ItemSale } from 'components';
 import { StandartLayout } from 'layout';
-import { DoubleRightOutlined, RightOutlined } from '@ant-design/icons';
+import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
 const getProducts = async (id = 10) => {
@@ -11,11 +11,27 @@ const getProducts = async (id = 10) => {
 }
 
 const SalePage = ({ products }) => {
+	const [loading, setLoading] = useState(false);
+
 	const router = useRouter()
+
+	const viewMore = () => {
+		let limit = Number(router.query.limit || 10)
+		router.push({
+			path: router.pathname,
+			query: { limit: limit + 5 }
+		})
+	}
 	useEffect(() => {
-		router.push({ query: { limit: 10 } })
+		router.events.on("routeChangeStart", () => setLoading(true))
+		router.events.on("routeChangeComplete", () => setLoading(false))
+		return () => {
+			router.events.off("routeChangeStart", () => setLoading(true))
+			router.events.off("routeChangeComplete", () => setLoading(false))
+		}
 	}, [])
 	console.log("router", router)
+
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -68,8 +84,11 @@ const SalePage = ({ products }) => {
 
 
 					</div>
-					<div className="article-more">
-						<button onClick={() => router.push({ path: router.pathname, query: { limit: Number(router.query.limit) + 5 } })}>Load more</button>
+					<div className="view-more">
+						{loading ?
+							<LoadingOutlined /> :
+							<button onClick={viewMore}>Load more</button>
+						}
 					</div>
 				</div>
 			</StandartLayout.Content>
@@ -87,6 +106,14 @@ const SalePage = ({ products }) => {
 
 export async function getServerSideProps({ query }) {
 	const products = await getProducts(query.limit);
+
+	if (!products) {
+		return {
+			props: {
+				loading: true
+			}
+		}
+	}
 
 	return {
 		props: {
