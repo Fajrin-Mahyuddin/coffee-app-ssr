@@ -51,7 +51,7 @@
   .content-wrapper {
     width: 100vw;
     min-height: 100vh;
-    background-color: $white;
+    // background-color: $white;
     display: flex;
     flex-direction: column;
     .content {
@@ -136,8 +136,11 @@
 
 @media screen and (min-width: 1024px) {
   .standart {
+    // background: url('../public/assets/images/background.svg');
+    // background-position: top right;
+    // background-repeat: no-repeat;
     .content-wrapper {
-      background-color: rgba($color: #fff, $alpha: 0.7);
+      // background-color: rgba($color: #fff, $alpha: 0.7);
       .content {
         position: relative;
         .content-login {

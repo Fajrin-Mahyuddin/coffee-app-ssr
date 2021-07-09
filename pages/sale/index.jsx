@@ -1,9 +1,21 @@
-import React from 'react';
-import { SubmitBtn } from 'components';
+import React, { useEffect } from 'react';
+import Link from 'next/link';
+import { SubmitBtn, ItemSale } from 'components';
 import { StandartLayout } from 'layout';
-import { DoubleRightOutlined, HeartFilled, RightOutlined, StarFilled } from '@ant-design/icons';
+import { DoubleRightOutlined, RightOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 
-const SalePage = () => {
+const getProducts = async (id = 10) => {
+	const res = await fetch(`https://fakestoreapi.com/products?limit=${id}`);
+	return await res.json()
+}
+
+const SalePage = ({ products }) => {
+	const router = useRouter()
+	useEffect(() => {
+		router.push({ query: { limit: 10 } })
+	}, [])
+	console.log("router", router)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -50,103 +62,37 @@ const SalePage = () => {
 					<h2>Pilihan :</h2>
 					<hr />
 					<div className="sale-list">
+						{products.map((item, i) => {
+							return <ItemSale key={i} item={item} />
+						})}
 
-						<div className="sale-item">
-							<div className="sale-item__img">
-								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
-								<HeartFilled />
-							</div>
-							<div className="sale-item__body">
-								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
-									Moka Pod Coffee
-								</a>
-								<div className="sale-item__body-review display-horizontal">
-									<div className="start">
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "grey" }} />
-										<StarFilled style={{ color: "grey" }} />
-									</div>
-									<span className="label label-sm label-primary">Best</span>
-								</div>
-								<div className="sale-item__body-desc text-overflow-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
-								</div>
-								<div className="sale-item__body-footer display-horizontal">
-									<div className="content-price">
-										<span className="label label-sm label-warning label-transparent">0%</span>
-										<span>Rp 120.0000</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="sale-item">
-							<div className="sale-item__img">
-								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
-								<HeartFilled />
-							</div>
-							<div className="sale-item__body">
-								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
-									Moka Pod Coffee
-								</a>
-								<div className="sale-item__body-review display-horizontal">
-									<div className="start">
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "grey" }} />
-										<StarFilled style={{ color: "grey" }} />
-									</div>
-									<span className="label label-sm label-primary">Best</span>
-								</div>
-								<div className="sale-item__body-desc text-overflow-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
-								</div>
-								<div className="sale-item__body-footer display-horizontal">
-									<div className="content-price">
-										<span className="label label-sm label-warning label-transparent">0%</span>
-										<span>Rp 120.0000</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="sale-item">
-							<div className="sale-item__img">
-								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
-								<HeartFilled />
-							</div>
-							<div className="sale-item__body">
-								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
-									Moka Pod Coffee
-								</a>
-								<div className="sale-item__body-review display-horizontal">
-									<div className="start">
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "grey" }} />
-										<StarFilled style={{ color: "grey" }} />
-									</div>
-									<span className="label label-sm label-primary">Best</span>
-								</div>
-								<div className="sale-item__body-desc text-overflow-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
-								</div>
-								<div className="sale-item__body-footer display-horizontal">
-									<div className="content-price">
-										<span className="label label-sm label-warning label-transparent">0%</span>
-										<span>Rp 120.0000</span>
-									</div>
-								</div>
-							</div>
-						</div>
 
+					</div>
+					<div className="article-more">
+						<button onClick={() => router.push({ path: router.pathname, query: { limit: Number(router.query.limit) + 5 } })}>Load more</button>
 					</div>
 				</div>
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
+}
+
+// export async function getStaticPaths() {
+// 	return {
+// 		paths: {
+// 			params: 
+// 		}
+// 	}
+// }
+
+export async function getServerSideProps({ query }) {
+	const products = await getProducts(query.limit);
+
+	return {
+		props: {
+			products,
+		}
+	}
 }
 
 export default SalePage

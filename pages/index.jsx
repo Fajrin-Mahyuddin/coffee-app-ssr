@@ -11,15 +11,15 @@ const ArticleList = () => {
 	return (
 		<StandartLayout>
 			<div className="container">
-				<div className="article-cover">
-					<div className="article-cover__paragraph">
+				<div className="dashboard-cover">
+					<div className="dashboard-cover__paragraph">
 						<h1>Hi, need a cup of <strong> coffee</strong> ?</h1>
 						<p>More expresso, Less Depresso</p>
 						<SubmitBtn label="Get Started" className="btn md-btn primary-btn mr-5" />
 					</div>
-					<div className="article-cover__img">
-						<Image className="article-cover__second-img" src={cupboard} alt="article-cover" bottom="10px" />
-						<Image className="article-cover__main-img" src={Saly11} alt="article-cover" />
+					<div className="dashboard-cover__img">
+						<Image className="dashboard-cover__second-img" src={cupboard} alt="dashboard-cover" bottom="10px" />
+						<Image className="dashboard-cover__main-img" src={Saly11} alt="dashboard-cover" />
 					</div>
 				</div>
 				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
