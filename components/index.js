@@ -3,6 +3,7 @@ import Navbar from './headers/navbar';
 import ToggleBtn from './buttons/toggleBtn';
 import ActiveLink from './buttons/activeLink';
 import ContentWrapper from './templates/contentWrapper';
+import Loading from './templates/loading';
 import ItemSale from './templates/sale/item';
 import Form from './inputs/form';
 import Footer from './footer';
@@ -23,5 +24,6 @@ export {
 	InputDate,
 	InputRadio,
 	Footer,
-	ItemSale
+	ItemSale,
+	Loading
 }

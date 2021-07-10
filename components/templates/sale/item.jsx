@@ -24,7 +24,7 @@ const ItemSale = ({ item: { id, title, description, image, price, category } }) 
 				<div className="sale-item__body-desc text-overflow-3">
 					{description}
 				</div>
-				<div className="sale-item__body-footer display-horizontal">
+				<div className="sale-item__body-footer ">
 					<div className="content-price">
 						<span className="label label-sm label-warning label-transparent">0%</span>
 						<span>$ {price}</span>

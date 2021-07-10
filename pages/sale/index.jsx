@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { SubmitBtn, ItemSale } from 'components';
-import { StandartLayout } from 'layout';
-import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { StandartLayout } from 'layout';
+import { SubmitBtn, ItemSale, Loading } from 'components';
+import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons';
 
 const getProducts = async (id = 10) => {
 	const res = await fetch(`https://fakestoreapi.com/products?limit=${id}`);
-	return await res.json()
+	const json = await res.json()
+	return json;
 }
 
 const SalePage = ({ products }) => {
 	const [loading, setLoading] = useState(false);
-
+	// const [products, setData] = useState(null);
 	const router = useRouter()
 
 	const viewMore = () => {
@@ -20,9 +20,16 @@ const SalePage = ({ products }) => {
 		router.push({
 			path: router.pathname,
 			query: { limit: limit + 5 }
-		})
+		}, undefined, { scroll: false })
 	}
+
+	// const handleGet = async () => {
+	// 	const req = await getProducts();
+	// 	setData(req)
+	// }
+
 	useEffect(() => {
+		// handleGet()
 		router.events.on("routeChangeStart", () => setLoading(true))
 		router.events.on("routeChangeComplete", () => setLoading(false))
 		return () => {
@@ -30,8 +37,7 @@ const SalePage = ({ products }) => {
 			router.events.off("routeChangeComplete", () => setLoading(false))
 		}
 	}, [])
-	console.log("router", router)
-
+	console.log("router", products)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -77,44 +83,45 @@ const SalePage = ({ products }) => {
 					</div>
 					<h2>Pilihan :</h2>
 					<hr />
+
 					<div className="sale-list">
-						{products.map((item, i) => {
+						{products?.map((item, i) => {
 							return <ItemSale key={i} item={item} />
 						})}
 
 
+						{loading &&
+							<>
+								<Loading />
+								<Loading />
+								<Loading />
+								<Loading />
+								<Loading />
+							</>
+						}
 					</div>
 					<div className="view-more">
-						{loading ?
-							<LoadingOutlined /> :
-							<button onClick={viewMore}>Load more</button>
-						}
+						<button onClick={viewMore}>Load more</button>
 					</div>
 				</div>
 			</StandartLayout.Content>
-		</StandartLayout>
+		</StandartLayout >
 	)
 }
 
-// export async function getStaticPaths() {
+// export async function getStaticProps(context) {
+// 	const products = await getProducts();
+// 	console.log("context", context)
 // 	return {
-// 		paths: {
-// 			params: 
+// 		props: {
+// 			products,
 // 		}
 // 	}
 // }
 
+
 export async function getServerSideProps({ query }) {
 	const products = await getProducts(query.limit);
-
-	if (!products) {
-		return {
-			props: {
-				loading: true
-			}
-		}
-	}
-
 	return {
 		props: {
 			products,
