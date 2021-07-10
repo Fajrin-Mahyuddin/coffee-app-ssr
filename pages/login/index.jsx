@@ -4,7 +4,6 @@ import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
 import { KeyOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import moto from '../public/assets/images/motor.svg';
 
 const Login = () => {
 	const inputRef = createRef();

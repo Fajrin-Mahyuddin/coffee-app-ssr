@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import { CoverSale, iphone2, Saly19 } from 'images'
 import { StandartLayout } from 'layout';
 import { SubmitBtn, ItemSale, Loading } from 'components';
 import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons';
@@ -10,9 +12,8 @@ const getProducts = async (id = 10) => {
 	return json;
 }
 
-const SalePage = ({ products }) => {
+const SalePage = ({ products = [] }) => {
 	const [loading, setLoading] = useState(false);
-	// const [products, setData] = useState(null);
 	const router = useRouter()
 
 	const viewMore = () => {
@@ -23,13 +24,7 @@ const SalePage = ({ products }) => {
 		}, undefined, { scroll: false })
 	}
 
-	// const handleGet = async () => {
-	// 	const req = await getProducts();
-	// 	setData(req)
-	// }
-
 	useEffect(() => {
-		// handleGet()
 		router.events.on("routeChangeStart", () => setLoading(true))
 		router.events.on("routeChangeComplete", () => setLoading(false))
 		return () => {
@@ -37,7 +32,8 @@ const SalePage = ({ products }) => {
 			router.events.off("routeChangeComplete", () => setLoading(false))
 		}
 	}, [])
-	console.log("router", products)
+
+	console.log("object", products)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -57,7 +53,7 @@ const SalePage = ({ products }) => {
 							<SubmitBtn className="btn md-btn info-btn" label="Get Started" />
 						</div>
 						<div className="sale-banner__img">
-							{/* <img src={Iphone2} alt="sale-img" /> */}
+							<Image src={iphone2} className="img" alt="main-img" />
 						</div>
 					</div>
 					<div className="sale-cover">
@@ -68,7 +64,7 @@ const SalePage = ({ products }) => {
 								<SubmitBtn className="btn md-btn info-btn" label="Get Started" />
 							</div>
 							<div className="sale-cover__main-img">
-								{/* <img src={CoverSale} alt="cover img" /> */}
+								<Image src={CoverSale} className="img" alt="main-img" />
 							</div>
 						</div>
 						<div className="sale-cover__second">
@@ -77,7 +73,7 @@ const SalePage = ({ products }) => {
 								<SubmitBtn className="btn md-btn info-btn" label="Join" />
 							</div>
 							<div className="sale-cover__second-img">
-								{/* <img src={Saly19} alt="cover img" /> */}
+								<Image src={Saly19} className="img" alt="cover-img" />
 							</div>
 						</div>
 					</div>
@@ -100,9 +96,11 @@ const SalePage = ({ products }) => {
 							</>
 						}
 					</div>
-					<div className="view-more">
-						<button onClick={viewMore}>Load more</button>
-					</div>
+					{products.length < 20 &&
+						<div className="view-more">
+							<button onClick={viewMore}>Load more</button>
+						</div>
+					}
 				</div>
 			</StandartLayout.Content>
 		</StandartLayout >

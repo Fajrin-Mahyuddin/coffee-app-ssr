@@ -24,7 +24,7 @@ const ArticleList = () => {
 				</div>
 				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
 				<hr />
-				<div className="article-wrapper">
+				<div className="article-wrapper mb-20">
 
 					<div className="article-item">
 						<div className="article-img">
@@ -157,9 +157,6 @@ const ArticleList = () => {
 						</div>
 					</div>
 
-				</div>
-				<div className="article-more">
-					<Link href="# ">Load more</Link>
 				</div>
 				<div className="sale-wrapper">
 					<h4 className="text-grey text-light"><ShopFilled /> List Sale</h4>
