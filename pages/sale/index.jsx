@@ -12,8 +12,8 @@ const getProducts = async (id = 10) => {
 	return json;
 }
 
-const SalePage = ({ products = [] }) => {
-	const [loading, setLoading] = useState(false);
+const SalePage = ({ products = [], loading }) => {
+	// const [loading, setLoading] = useState(loading);
 	const router = useRouter()
 
 	const viewMore = () => {
@@ -24,14 +24,14 @@ const SalePage = ({ products = [] }) => {
 		}, undefined, { scroll: false })
 	}
 
-	useEffect(() => {
-		router.events.on("routeChangeStart", () => setLoading(true))
-		router.events.on("routeChangeComplete", () => setLoading(false))
-		return () => {
-			router.events.off("routeChangeStart", () => setLoading(true))
-			router.events.off("routeChangeComplete", () => setLoading(false))
-		}
-	}, [])
+	// useEffect(() => {
+	// 	router.events.on("routeChangeStart", () => setLoading(true))
+	// 	router.events.on("routeChangeComplete", () => setLoading(false))
+	// 	return () => {
+	// 		router.events.off("routeChangeStart", () => setLoading(true))
+	// 		router.events.off("routeChangeComplete", () => setLoading(false))
+	// 	}
+	// }, [])
 
 	return (
 		<StandartLayout>

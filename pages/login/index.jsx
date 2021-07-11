@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
-import { KeyOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { loginPost } from 'utils/firebase-auth';
+import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
+import { checkFirebase, loginPost } from 'utils/firebase-auth';
 import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 
@@ -24,18 +24,22 @@ const Login = () => {
 		})
 	}
 
-
-
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		const { data, status, isLoading } = useQuery("getUserLogin", () => loginPost(input))
-		console.log("response useQuery", data, status, isLoading);
-		!status && setAlert({ type: "danger", body: data?.message })
-		setLoading(isLoading);
-		data && router.push('/');
+		setLoading(true)
+		const { data, error } = await loginPost(input)
+		console.log("response ", data, error, loading);
+		setLoading(false);
+		return error ?
+			setAlert({ type: "danger", body: data?.message })
+			: router.push('/');
 	}
 
-	if (loading) return <div>Loading</div>
+	useEffect(() => {
+		const isLogin = checkFirebase.auth().currentUser
+		isLogin !== null && router.push('/')
+	}, [router.pathname])
+
 	return (
 		<StandartLayout footer={false}>
 			<StandartLayout.Content>
@@ -94,8 +98,8 @@ const Login = () => {
 									type="submit"
 									label="Login"
 									loading="false"
-									disabled={false}
-									icon={SendOutlined}
+									disabled={loading}
+									icon={loading ? LoadingOutlined : SendOutlined}
 									className="btn primary-btn sm-btn mr-5"
 								/>
 							</div>

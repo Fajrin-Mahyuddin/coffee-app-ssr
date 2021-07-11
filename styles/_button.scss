@@ -35,6 +35,16 @@
 	font-size: 1.1rem;
 }
 
+.default-less-btn {
+	background-color: transparent;
+	color: $dark-grey;
+	font-size: 1.1rem;
+}
+
+.less-btn {
+	border: none;
+}
+
 .sm-less-btn {
 	padding: 0;
 }

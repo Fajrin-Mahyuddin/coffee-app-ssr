@@ -7,7 +7,8 @@ import { ClockCircleOutlined, HeartFilled, StarFilled, EyeOutlined, BookFilled, 
 import { cupboard, Saly11 } from 'images';
 import coffee_one from '../public/assets/images/coffee_one.jpeg';
 
-const ArticleList = () => {
+const Dashboard = ({ loading }) => {
+	if (loading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -262,4 +263,4 @@ const ArticleList = () => {
 	)
 }
 
-export default ArticleList;
+export default Dashboard;

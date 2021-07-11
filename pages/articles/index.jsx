@@ -6,10 +6,11 @@ import { cupboard, Saly11, coffee_one, saly12 } from 'images';
 import { BookFilled, EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 
-const ArticlePage = () => {
+const ArticlePage = ({ loading }) => {
 	useEffect(() => {
 		console.log("welcome to article page")
 	}, [])
+	if (loading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<div className="container">
