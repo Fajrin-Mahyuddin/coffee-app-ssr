@@ -1,19 +1,43 @@
-import { createRef } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
 import { KeyOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
+import { loginPost } from 'utils/firebase-auth';
+import { useQuery } from 'react-query';
+import { useRouter } from 'next/router';
 
 const Login = () => {
-	const inputRef = createRef();
+	const router = useRouter()
+	const [input, setInput] = useState({});
+	const [alert, setAlert] = useState(null)
+	const [loading, setLoading] = useState(false)
+	const inputRef = useRef();
 
-	const onSubmit = (e) => {
+	const handleChange = (e) => {
 		e.preventDefault();
-		console.log(e)
+		console.log("object", e)
+		setInput({
+			...input,
+			[e.target.name]: e.target.value.toString()
+		})
 	}
+
+
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		const { data, status, isLoading } = useQuery("getUserLogin", () => loginPost(input))
+		console.log("response useQuery", data, status, isLoading);
+		!status && setAlert({ type: "danger", body: data?.message })
+		setLoading(isLoading);
+		data && router.push('/');
+	}
+
+	if (loading) return <div>Loading</div>
 	return (
-		<StandartLayout>
+		<StandartLayout footer={false}>
 			<StandartLayout.Content>
 				<div className="content-login">
 					<div className="text-wrapper">
@@ -27,27 +51,29 @@ const Login = () => {
 						>
 							<Form.Row>
 								<Form.Column className="mb-10">
-									<InputAlert alert={null} />
+									<InputAlert alert={alert} />
 								</Form.Column>
 							</Form.Row>
 							<Form.Row>
 								<Form.Column className="mb-10">
 									<InputText
+										type="email"
 										error={false}
 										ref={inputRef}
-										name="username"
-										label="Username"
-										id="username-input"
+										name="email"
+										label="Email"
+										id="email-input"
 										icon={UserOutlined}
-										placeholder="username"
+										placeholder="email"
+										onChange={handleChange}
 										classWrapper="display-column column-item"
-										onChange={(e) => console.log(e)}
 									/>
 								</Form.Column>
 							</Form.Row>
 							<Form.Row>
 								<Form.Column className="mb-10">
 									<InputText
+										type="password"
 										error={false}
 										ref={inputRef}
 										name="password"
@@ -55,8 +81,8 @@ const Login = () => {
 										id="password-input"
 										icon={KeyOutlined}
 										placeholder="password"
+										onChange={handleChange}
 										classWrapper="display-column column-item"
-										onChange={(e) => console.log(e)}
 									/>
 								</Form.Column>
 							</Form.Row>

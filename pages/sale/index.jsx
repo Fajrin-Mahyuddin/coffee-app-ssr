@@ -33,7 +33,6 @@ const SalePage = ({ products = [] }) => {
 		}
 	}, [])
 
-	console.log("object", products)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
