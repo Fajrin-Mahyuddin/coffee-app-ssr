@@ -4,20 +4,23 @@ import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
 import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { checkFirebase, loginPost } from 'utils/firebase-auth';
-import { useQuery } from 'react-query';
+import { parseCookies, getUser, loginPost, checkFirebase } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
+import { Cookies, useCookies } from 'react-cookie';
 
-const Login = () => {
+const Login = (props) => {
 	const router = useRouter()
+	const inputRef = useRef();
+
+	const [cookie, setCookie] = useCookies(['user'])
+
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const inputRef = useRef();
+
 
 	const handleChange = (e) => {
 		e.preventDefault();
-		console.log("object", e)
 		setInput({
 			...input,
 			[e.target.name]: e.target.value.toString()
@@ -27,17 +30,25 @@ const Login = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true)
-		const { data, error } = await loginPost(input)
-		console.log("response ", data, error, loading);
-		setLoading(false);
-		return error ?
-			setAlert({ type: "danger", body: data?.message })
-			: router.push('/');
+		try {
+			const { data, error } = await loginPost(input)
+			setCookie("user", JSON.stringify({ data, }), {
+				path: "/",
+				maxAge: 4200,
+				sameSite: true
+			})
+			console.log("data", data, error)
+			router.back()
+		} catch (error) {
+			console.log("error ", error);
+			setAlert({ type: "danger", body: error?.message })
+		} finally {
+			setLoading(false)
+		}
 	}
 
-	useEffect(() => {
-		const isLogin = checkFirebase.auth().currentUser
-		isLogin !== null && router.push('/')
+	useEffect(async () => {
+		console.log(router)
 	}, [router.pathname])
 
 	return (
@@ -114,5 +125,6 @@ const Login = () => {
 		</StandartLayout>
 	)
 }
+
 
 export default Login

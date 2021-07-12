@@ -6,8 +6,9 @@ import { getUser } from 'utils/firebase-auth';
 import { useQuery } from 'react-query';
 
 const StandartMenu = () => {
-  const { data } = useQuery("getCurrentUser", getUser)
-  console.log("data dari usequery", data?.user)
+  let data = false
+  // const { data } = useQuery("getCurrentUser", getUser)
+  // console.log("data dari usequery", data?.user)
   return (
     <ul>
       <li className="mrl-20">

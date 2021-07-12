@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import firebaseConfig from 'config/firebaseConfig';
+import cookie from "cookie"
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 export const loginPost = async ({ email, password }) => {
@@ -9,27 +10,31 @@ export const loginPost = async ({ email, password }) => {
 		const req = await firebase.auth().signInWithEmailAndPassword(email, password)
 		return { data: req, error: false, };
 	} catch (error) {
-		return { data: error, error: true, }
+		throw new Error(error)
 	}
 }
 
-export const getUser = () => {
-	const user = firebase.auth().currentUser
+export async function getUser() {
+	const user = firebase.auth().currentUser;
 	if (user) {
 		return {
 			user,
 			error: false
-		}
+		};
 	} else {
 		return {
 			user,
 			error: true
-		}
+		};
 	}
 }
 
 export const logout = () => {
 	firebase.auth().signOut()
+}
+
+export function parseCookies(req) {
+	return cookie.parse(req ? req.headers.cookie || "" : document.cookie)
 }
 
 export const checkFirebase = firebase;
