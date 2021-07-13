@@ -1,14 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { ActiveLink } from 'components'
-import { DashboardOutlined, InfoCircleOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
-import { getUser } from 'utils/firebase-auth';
-import { useQuery } from 'react-query';
+import { DashboardOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
+import { getCookieDes } from 'utils/cookie-helper';
+
 
 const StandartMenu = () => {
-  let data = false
-  // const { data } = useQuery("getCurrentUser", getUser)
-  // console.log("data dari usequery", data?.user)
+  const { user } = getCookieDes("user")
   return (
     <ul>
       <li className="mrl-20">
@@ -29,22 +27,20 @@ const StandartMenu = () => {
           Sale
         </ActiveLink>
       </li>
-
-      {data ?
-        <>
-          <li className="mrl-20">
-            <ActiveLink href="/profile" className="nav-menu-item">
-              <UserOutlined />
-              {data?.user?.email}
-            </ActiveLink>
-          </li>
-          <li className="mrl-20">
-            <button className="nav-menu-item btn default-less-btn sm-less-btn less-btn">
-              <ShoppingOutlined />
-            </button>
-          </li>
-        </>
-        :
+      {user &&
+        <li className="mrl-20">
+          <ActiveLink href="/profile" className="nav-menu-item">
+            <UserOutlined />
+            {user.displayName || 'name not set'}
+          </ActiveLink>
+        </li>
+      }
+      <li className="mrl-20">
+        <button className="nav-menu-item btn default-less-btn sm-less-btn less-btn">
+          <ShoppingOutlined />
+        </button>
+      </li>
+      {!user &&
         <li>
           <a className="nav-menu-item btn primary-btn sm-btn" href="/login">
             <LogoutOutlined />
@@ -52,6 +48,7 @@ const StandartMenu = () => {
           </a>
         </li>
       }
+
     </ul>
   )
 }
@@ -60,7 +57,7 @@ const MenuLogin = () => {
 
   return (
     <ul>
-      <li className="mrl-20">
+      {/* <li className="mrl-20">
         <ActiveLink href="/" className="nav-menu-item">
           <DashboardOutlined />
           Dashboard
@@ -83,7 +80,7 @@ const MenuLogin = () => {
           <LogoutOutlined />
           Login
         </a>
-      </li>
+      </li> */}
     </ul>
   )
 }

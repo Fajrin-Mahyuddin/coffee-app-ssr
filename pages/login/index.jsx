@@ -4,11 +4,12 @@ import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
 import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { parseCookies, getUser, loginPost, checkFirebase } from 'utils/firebase-auth';
+import { loginPost } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
-import { Cookies, useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
+import { getCookieDes } from 'utils/cookie-helper';
 
-const Login = (props) => {
+const Login = () => {
 	const router = useRouter()
 	const inputRef = useRef();
 
@@ -17,6 +18,8 @@ const Login = (props) => {
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
 	const [loading, setLoading] = useState(false)
+
+	const { user } = getCookieDes("user")
 
 
 	const handleChange = (e) => {
@@ -31,25 +34,27 @@ const Login = (props) => {
 		e.preventDefault();
 		setLoading(true)
 		try {
-			const { data, error } = await loginPost(input)
+			const { data } = await loginPost(input)
 			setCookie("user", JSON.stringify({ data, }), {
 				path: "/",
 				maxAge: 4200,
 				sameSite: true
 			})
-			console.log("data", data, error)
-			router.back()
+			router.push("/")
 		} catch (error) {
-			console.log("error ", error);
 			setAlert({ type: "danger", body: error?.message })
 		} finally {
 			setLoading(false)
 		}
 	}
 
-	useEffect(async () => {
-		console.log(router)
-	}, [router.pathname])
+
+	useEffect(() => {
+		router.prefetch("/")
+		if (user) {
+			router.back()
+		}
+	}, [user, cookie])
 
 	return (
 		<StandartLayout footer={false}>

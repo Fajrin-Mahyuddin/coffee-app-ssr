@@ -5,6 +5,7 @@ import firebaseConfig from 'config/firebaseConfig';
 import cookie from "cookie"
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+
 export const loginPost = async ({ email, password }) => {
 	try {
 		const req = await firebase.auth().signInWithEmailAndPassword(email, password)
@@ -30,11 +31,8 @@ export async function getUser() {
 }
 
 export const logout = () => {
-	firebase.auth().signOut()
+	return firebase.auth().signOut()
 }
 
-export function parseCookies(req) {
-	return cookie.parse(req ? req.headers.cookie || "" : document.cookie)
-}
 
 export const checkFirebase = firebase;

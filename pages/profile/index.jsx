@@ -1,5 +1,5 @@
 import { StandartLayout } from "layout";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { logout } from "utils/firebase-auth";
@@ -13,14 +13,12 @@ const ProfilePage = () => {
 			removeCookie("user", { path: "/" })
 			router.push('/')
 		} catch (error) {
-
 			throw new Error("error logout")
 		}
 	}
 	useEffect(() => {
 		if (!cookie.user) {
-			router.prefetch("/")
-			router.push("/")
+			router.push('/')
 		}
 	}, [cookie]);
 
@@ -34,5 +32,9 @@ const ProfilePage = () => {
 		</StandartLayout>
 	)
 }
+
+// export async function getStaticProps() {
+// 	Router.
+// }
 
 export default ProfilePage;
