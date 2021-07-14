@@ -4,7 +4,12 @@ import 'firebase/auth';
 import firebaseConfig from 'config/firebaseConfig';
 import cookie from "cookie"
 
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+if (!firebase.apps.length) {
+	firebase.initializeApp(firebaseConfig)
+	// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+} else {
+	firebase.app()
+}
 
 export const loginPost = async ({ email, password }) => {
 	try {
@@ -15,23 +20,44 @@ export const loginPost = async ({ email, password }) => {
 	}
 }
 
+
 export async function getUser() {
-	const user = firebase.auth().currentUser;
-	if (user) {
-		return {
-			user,
-			error: false
-		};
-	} else {
-		return {
-			user,
-			error: true
-		};
-	}
+
+	return users
 }
 
 export const logout = () => {
 	return firebase.auth().signOut()
+}
+
+// login with gmail
+export const googleLogin = async () => {
+	let provider = new firebase.auth.GoogleAuthProvider();
+
+	try {
+		const req = await firebase.auth().signInWithPopup(provider);
+		console.log("google sign", req)
+		return { data: req, error: false, };
+	} catch (error) {
+		console.log("google sign", error)
+		throw new Error(error)
+	}
+}
+
+export const loginWithPersistSession = async () => {
+	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+		.then(() => {
+			let provider = new firebase.auth.GoogleAuthProvider();
+			return firebase.auth().signInWithPopup(provider);
+		}).catch((error) => {
+			console.log("error login with persist session", error)
+			return error
+		})
+	try {
+
+	} catch (error) {
+
+	}
 }
 
 

@@ -1,3 +1,4 @@
+// apiKey: "AIzaSyDTRzYhogPJjY45AVuBxYPPt6TmI0zmHyg",
 const firebaseConfig = {
 	apiKey: "AIzaSyDTRzYhogPJjY45AVuBxYPPt6TmI0zmHyg",
 	authDomain: "coffee-app-fbf9f.firebaseapp.com",

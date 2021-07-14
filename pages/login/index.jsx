@@ -3,24 +3,25 @@ import Image from 'next/image';
 import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
+import firebase from 'firebase/app';
 import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { loginPost } from 'utils/firebase-auth';
+import { checkFirebase, getUser, googleLogin, loginPost, loginWithPersistSession } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import { getCookieDes } from 'utils/cookie-helper';
 
-const Login = () => {
+const Login = (props) => {
 	const router = useRouter()
 	const inputRef = useRef();
 
 	const [cookie, setCookie] = useCookies(['user'])
 
+	const [currentUser, setCurrentUser] = useState(null);
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
 	const [loading, setLoading] = useState(false)
 
-	const { user } = getCookieDes("user")
-
+	// const { user } = getCookieDes("user")
 
 	const handleChange = (e) => {
 		e.preventDefault();
@@ -30,16 +31,21 @@ const Login = () => {
 		})
 	}
 
+	const handleCookie = (param) => {
+		setCookie("user", JSON.stringify({ param }), {
+			path: "/",
+			maxAge: 4200,
+			// sameSite: true
+		})
+	}
+
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true)
 		try {
 			const { data } = await loginPost(input)
-			setCookie("user", JSON.stringify({ data, }), {
-				path: "/",
-				maxAge: 4200,
-				sameSite: true
-			})
+			console.log("sign in wiht email register", data)
+			// handleCookie(data)
 			router.push("/")
 		} catch (error) {
 			setAlert({ type: "danger", body: error?.message })
@@ -48,14 +54,27 @@ const Login = () => {
 		}
 	}
 
+	const handleGoogleSign = async () => {
 
-	useEffect(() => {
-		router.prefetch("/")
-		if (user) {
-			router.back()
-		}
-	}, [user, cookie])
+		const res = await loginWithPersistSession();
+		console.log("data google set cookie", res)
+		// handleCookie(data)
+		router.push("/")
 
+	}
+
+	// useEffect(() => {
+	// 	checkFirebase.auth().onAuthStateChanged(setCurrentUser)
+	// 	currentUser && router.back()
+	// }, [currentUser])
+
+	console.log("currentUser", props)
+	// useEffect( () => {
+	// router.prefetch("/")
+	// if (user) {
+	// 	router.back()
+	// }
+	// }, [user, cookie])
 	return (
 		<StandartLayout footer={false}>
 			<StandartLayout.Content>
@@ -118,6 +137,15 @@ const Login = () => {
 									icon={loading ? LoadingOutlined : SendOutlined}
 									className="btn primary-btn sm-btn mr-5"
 								/>
+								<SubmitBtn
+									type="button"
+									label="Login with gmail"
+									loading="false"
+									// disabled={loading}
+									// icon={loading ? LoadingOutlined : SendOutlined}
+									className="btn primary-btn sm-btn mr-5"
+									onClick={handleGoogleSign}
+								/>
 							</div>
 						</Form>
 					</div>
@@ -131,5 +159,26 @@ const Login = () => {
 	)
 }
 
+// export async function getStaticProps(ctx) {
+// 	console.log("ctx on getStaticProps", ctx)
+// 	return {
+// 		props: { name: "fajrin" }
+// 	}
+// }
+
+export async function getServerSideProps(ctx) {
+	let users = null
+	firebase.auth().onIdTokenChanged((param) => {
+		users = param
+	});
+	console.log("user on firebase auth", users)
+	// ctx.res.writeHead(302, { Location: '/' });
+	// ctx.res.end();
+	return {
+		props: {
+			...users
+		}
+	}
+}
 
 export default Login

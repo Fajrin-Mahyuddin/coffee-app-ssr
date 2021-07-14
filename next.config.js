@@ -5,6 +5,7 @@ module.exports = {
 	sassOptions: {
 		includePaths: [path.join(__dirname, 'styles')],
 	},
+	devtool: "source-map",
 	images: {
 		domains: ['images.unsplash.com'],
 	},
