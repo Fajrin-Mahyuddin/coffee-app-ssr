@@ -18,6 +18,7 @@ const StandartMenu = () => {
 
     checkFirebase.auth().onIdTokenChanged(setCurrentUser);
     setLoading(false)
+    return () => setCurrentUser(null)
   }, []);
   console.log("current ", currentUser)
   return (

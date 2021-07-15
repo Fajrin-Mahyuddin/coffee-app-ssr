@@ -1,17 +1,23 @@
 import '../styles/index.scss';
 import Head from 'next/head';
-import { CookiesProvider } from "react-cookie"
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { checkFirebase } from 'utils/firebase-auth';
 
 const queryClient = new QueryClient()
 
+export const AppContext = createContext();
+
+export const useAppContext = () => useContext(AppContext);
+
 const MyApp = ({ Component, pageProps }) => {
 	const [loading, setLoading] = useState(false)
+	const [currentUser, setUser] = useState(null)
 	const router = useRouter();
 
 	useEffect(() => {
+		checkFirebase.auth().onIdTokenChanged(setUser)
 		router.events.on("routeChangeStart", () => setLoading(true))
 		router.events.on("routeChangeComplete", () => setLoading(false))
 		return () => {
@@ -26,14 +32,16 @@ const MyApp = ({ Component, pageProps }) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<link rel="icon" href="/favicon.svg" />
 			</Head>
-			<CookiesProvider>
+			<AppContext.Provider value={{ currentUser }}>
 				<QueryClientProvider client={queryClient}>
 					<Component {...pageProps} loading={loading} />
 				</QueryClientProvider>
-			</CookiesProvider>
+			</AppContext.Provider>
 		</>
 	)
 }
+
+
 
 // MyApp.getInitialProps = async (context) => {
 // 	const { Component, ctx } = context

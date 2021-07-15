@@ -17,9 +17,9 @@ const ProfilePage = () => {
 		}
 	}
 	useEffect(() => {
-		if (!cookie.user) {
-			router.push('/')
-		}
+		// if (!cookie.user) {
+		// 	router.push('/')
+		// }
 	}, [cookie]);
 
 	return (

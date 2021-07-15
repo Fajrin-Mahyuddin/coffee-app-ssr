@@ -3,25 +3,21 @@ import Image from 'next/image';
 import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
-import firebase from 'firebase/app';
 import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { checkFirebase, getUser, googleLogin, loginPost, loginWithPersistSession } from 'utils/firebase-auth';
+import { googleLogin, loginPost } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
-import { useCookies } from 'react-cookie';
-import { getCookieDes } from 'utils/cookie-helper';
+import { useAppContext } from 'pages/_app';
 
-const Login = (props) => {
+const Login = () => {
 	const router = useRouter()
 	const inputRef = useRef();
 
-	const [cookie, setCookie] = useCookies(['user'])
+	const { currentUser } = useAppContext()
 
-	const [currentUser, setCurrentUser] = useState(null);
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
 	const [loading, setLoading] = useState(false)
 
-	// const { user } = getCookieDes("user")
 
 	const handleChange = (e) => {
 		e.preventDefault();
@@ -31,21 +27,11 @@ const Login = (props) => {
 		})
 	}
 
-	const handleCookie = (param) => {
-		setCookie("user", JSON.stringify({ param }), {
-			path: "/",
-			maxAge: 4200,
-			// sameSite: true
-		})
-	}
-
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true)
 		try {
-			const { data } = await loginPost(input)
-			console.log("sign in wiht email register", data)
-			// handleCookie(data)
+			await loginPost(input)
 			router.push("/")
 		} catch (error) {
 			setAlert({ type: "danger", body: error?.message })
@@ -55,26 +41,20 @@ const Login = (props) => {
 	}
 
 	const handleGoogleSign = async () => {
-
-		const res = await loginWithPersistSession();
-		console.log("data google set cookie", res)
-		// handleCookie(data)
-		router.push("/")
-
+		try {
+			const res = await googleLogin();
+			console.log("data google set cookie", res)
+			res && router.push("/")
+		} catch (error) {
+			setAlert({ type: "danger", body: error?.message })
+		}
 	}
 
-	// useEffect(() => {
-	// 	checkFirebase.auth().onAuthStateChanged(setCurrentUser)
-	// 	currentUser && router.back()
-	// }, [currentUser])
+	useEffect(() => {
+		router.prefetch("/")
+	}, [])
 
-	console.log("currentUser", props)
-	// useEffect( () => {
-	// router.prefetch("/")
-	// if (user) {
-	// 	router.back()
-	// }
-	// }, [user, cookie])
+	console.log("currentUser", currentUser)
 	return (
 		<StandartLayout footer={false}>
 			<StandartLayout.Content>
@@ -166,19 +146,5 @@ const Login = (props) => {
 // 	}
 // }
 
-export async function getServerSideProps(ctx) {
-	let users = null
-	firebase.auth().onIdTokenChanged((param) => {
-		users = param
-	});
-	console.log("user on firebase auth", users)
-	// ctx.res.writeHead(302, { Location: '/' });
-	// ctx.res.end();
-	return {
-		props: {
-			...users
-		}
-	}
-}
 
 export default Login
