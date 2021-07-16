@@ -8,15 +8,15 @@ import { googleLogin, loginPost } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
 import { useAppContext } from 'pages/_app';
 
-const Login = () => {
+const Login = (props) => {
 	const router = useRouter()
 	const inputRef = useRef();
 
-	const { currentUser } = useAppContext()
+	const { authUser, loading } = useAppContext()
 
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
-	const [loading, setLoading] = useState(false)
+	const [loginLoading, setLoginLoading] = useState(false)
 
 
 	const handleChange = (e) => {
@@ -29,14 +29,14 @@ const Login = () => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true)
+		setLoginLoading(true)
 		try {
 			await loginPost(input)
 			router.push("/")
 		} catch (error) {
 			setAlert({ type: "danger", body: error?.message })
 		} finally {
-			setLoading(false)
+			setLoginLoading(false)
 		}
 	}
 
@@ -44,17 +44,24 @@ const Login = () => {
 		try {
 			const res = await googleLogin();
 			console.log("data google set cookie", res)
-			res && router.push("/")
+			if (res) {
+				router.push("/")
+			}
 		} catch (error) {
 			setAlert({ type: "danger", body: error?.message })
 		}
 	}
 
 	useEffect(() => {
+		if (authUser && !loading) {
+			router.back()
+		}
 		router.prefetch("/")
-	}, [])
+	}, [authUser, loading])
 
-	console.log("currentUser", currentUser)
+	console.log("currentUser", loading)
+	if (!authUser) return (<div>loding...</div>)
+
 	return (
 		<StandartLayout footer={false}>
 			<StandartLayout.Content>
@@ -114,7 +121,7 @@ const Login = () => {
 									label="Login"
 									loading="false"
 									disabled={loading}
-									icon={loading ? LoadingOutlined : SendOutlined}
+									icon={loginLoading ? LoadingOutlined : SendOutlined}
 									className="btn primary-btn sm-btn mr-5"
 								/>
 								<SubmitBtn
@@ -137,6 +144,7 @@ const Login = () => {
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
+
 }
 
 // export async function getStaticProps(ctx) {

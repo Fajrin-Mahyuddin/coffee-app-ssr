@@ -9,18 +9,18 @@ import firebaseConfig from 'config/firebaseConfig';
 export const checkFirebase = firebase;
 
 export const loginPost = async ({ email, password }) => {
-	try {
-		const req = await firebase.auth().signInWithEmailAndPassword(email, password)
-		return { data: req, error: false, };
-	} catch (error) {
-		throw new Error(error)
-	}
-}
+	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+		.then(async () => {
+			try {
+				const req = await firebase.auth().signInWithEmailAndPassword(email, password)
+				return { data: req, error: false, };
+			} catch (error) {
+				throw new Error(error)
+			}
+		}).catch(error => {
+			return Promise.reject(error)
+		})
 
-export async function getUser() {
-	let users = []
-	firebase.auth().onIdTokenChanged((param) => users.push(param));
-	return { users }
 }
 
 export const logout = () => {
@@ -29,13 +29,10 @@ export const logout = () => {
 
 // login with gmail
 export const googleLogin = async () => {
-	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 		.then(() => {
 			let provider = new firebase.auth.GoogleAuthProvider();
-
-			const req = firebase.auth().signInWithPopup(provider);
-			console.log("google sign", req)
-			return Promise.resolve(req)
+			return firebase.auth().signInWithPopup(provider);
 		}).catch(error => {
 			return Promise.reject(error)
 		})

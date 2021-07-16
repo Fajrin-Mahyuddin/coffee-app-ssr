@@ -1,26 +1,12 @@
 import React from 'react';
-import Link from 'next/link';
 import { ActiveLink } from 'components'
-import { DashboardOutlined, LoadingOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
-import { getCookieDes } from 'utils/cookie-helper';
-import { useEffect, useState } from 'react';
-import { checkFirebase } from 'utils/firebase-auth';
-import { useRouter } from 'next/router';
+import { DashboardOutlined, LoadingOutlined, UserOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined, ShoppingOutlined } from '@ant-design/icons';
+import { useAppContext } from 'pages/_app';
 
 
 const StandartMenu = () => {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  // const { user } = getCookieDes("user");
-  // const router = useRouter();
-
-  useEffect(() => {
-
-    checkFirebase.auth().onIdTokenChanged(setCurrentUser);
-    setLoading(false)
-    return () => setCurrentUser(null)
-  }, []);
-  console.log("current ", currentUser)
+  const { authUser } = useAppContext();
+  console.log("current user", authUser)
   return (
     <ul>
       <li className="mrl-20">
@@ -41,11 +27,11 @@ const StandartMenu = () => {
           Sale
         </ActiveLink>
       </li>
-      {currentUser?.displayName &&
+      {authUser &&
         <li className="mrl-20">
           <ActiveLink href="/profile" className="nav-menu-item">
             <UserOutlined />
-            {currentUser?.displayName ?? 'name not set'}
+            {authUser.displayName ?? 'name not set'}
           </ActiveLink>
         </li>
       }
@@ -55,7 +41,7 @@ const StandartMenu = () => {
           <ShoppingOutlined />
         </button>
       </li>
-      {!currentUser &&
+      {!authUser &&
         <li>
           <a className="nav-menu-item btn primary-btn sm-btn" href="/login">
             <LogoutOutlined />
