@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActiveLink } from 'components'
 import { DashboardOutlined, LoadingOutlined, UserOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined, ShoppingOutlined } from '@ant-design/icons';
-import { useAppContext } from 'pages/_app';
+import { useAppContext } from 'utils/auth';
 
 
 const StandartMenu = () => {

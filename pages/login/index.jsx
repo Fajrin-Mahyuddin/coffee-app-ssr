@@ -4,9 +4,9 @@ import { motor, windy } from 'images';
 import { StandartLayout } from 'layout';
 import { Form, InputAlert, InputText, SubmitBtn } from 'components';
 import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { googleLogin, loginPost } from 'utils/firebase-auth';
+import { checkFirebase, googleLogin, loginPost } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
-import { useAppContext } from 'pages/_app';
+import { useAppContext } from 'utils/auth';
 
 const Login = (props) => {
 	const router = useRouter()
@@ -29,7 +29,7 @@ const Login = (props) => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		setLoginLoading(true)
+		setLoginLoading(true);
 		try {
 			await loginPost(input)
 			router.push("/")
@@ -53,14 +53,14 @@ const Login = (props) => {
 	}
 
 	useEffect(() => {
-		if (authUser && !loading) {
-			router.back()
+		if (!authUser && !loading) {
+			router.push('/')
 		}
 		router.prefetch("/")
 	}, [authUser, loading])
 
-	console.log("currentUser", loading)
-	if (!authUser) return (<div>loding...</div>)
+	console.log("currentUser", authUser)
+	if (loading || !authUser) return <div>loading...</div>
 
 	return (
 		<StandartLayout footer={false}>
@@ -147,10 +147,10 @@ const Login = (props) => {
 
 }
 
-// export async function getStaticProps(ctx) {
-// 	console.log("ctx on getStaticProps", ctx)
+// export async function getServerSideProps() {
+// 	const user = checkFirebase.auth().currentUser
 // 	return {
-// 		props: { name: "fajrin" }
+// 		props: {}
 // 	}
 // }
 

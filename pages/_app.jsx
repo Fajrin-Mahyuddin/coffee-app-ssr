@@ -1,25 +1,18 @@
 import '../styles/index.scss';
 import Head from 'next/head';
 import App from 'next/app';
-import { useEffect, useState, createContext, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { checkFirebase } from 'utils/firebase-auth';
-import { getFirebaseAuth } from 'utils/auth';
+import { AppProvider, getFirebaseAuth } from 'utils/auth';
 
 const queryClient = new QueryClient()
 
-export const AppContext = createContext();
-
-export const useAppContext = () => useContext(AppContext);
-
 const MyApp = ({ Component, pageProps }) => {
 	const [loading, setLoading] = useState(false)
-	// const [currentUser, setUser] = useState(null)
 	const router = useRouter();
 
-	const authUser = getFirebaseAuth();
-	console.log("auth user ", authUser)
 	useEffect(() => {
 		router.events.on("routeChangeStart", () => setLoading(true))
 		router.events.on("routeChangeComplete", () => setLoading(false))
@@ -35,11 +28,11 @@ const MyApp = ({ Component, pageProps }) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<link rel="icon" href="/favicon.svg" />
 			</Head>
-			<AppContext.Provider value={{ ...authUser }}>
+			<AppProvider>
 				<QueryClientProvider client={queryClient}>
 					<Component {...pageProps} loading={loading} />
 				</QueryClientProvider>
-			</AppContext.Provider>
+			</AppProvider>
 		</>
 	)
 }
