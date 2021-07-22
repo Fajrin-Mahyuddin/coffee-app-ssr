@@ -15,7 +15,6 @@ export const loginPost = async ({ email, password }) => {
 			try {
 				const req = await firebase.auth().signInWithEmailAndPassword(email, password)
 				const token = await req.user.getIdToken()
-				console.log("after login", token)
 				nookies.set(null, 'token', token, { path: '/' })
 				return { data: req, error: false, };
 			} catch (error) {
@@ -24,7 +23,6 @@ export const loginPost = async ({ email, password }) => {
 		}).catch(error => {
 			return Promise.reject(error)
 		})
-
 }
 
 export const logout = () => {

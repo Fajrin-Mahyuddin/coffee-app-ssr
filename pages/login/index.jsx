@@ -55,7 +55,6 @@ const Login = (props) => {
 	const handleGoogleSign = async () => {
 		try {
 			const res = await googleLogin();
-			console.log("data google set cookie", res)
 			if (res) {
 				router.push("/")
 			}
@@ -160,13 +159,14 @@ const Login = (props) => {
 
 export const getServerSideProps = async (ctx) => {
 	const { res } = ctx
-	try {
-		const { token } = nookies.get(ctx);
-		const user = await admin.auth().verifyIdToken(token)
-		const { email, diplayName } = user
-		res.writeHead(302, { Location: '/' })
-		res.end()
-	} catch (error) {
+	const token = nookies.get(ctx);
+	if (token.token) {
+		const user = await admin.auth().verifyIdToken(token.token)
+		console.log("login page", user)
+		if (user) {
+			res.writeHead(302, { Location: '/' })
+			res.end()
+		}
 	}
 	return {
 		props: {}

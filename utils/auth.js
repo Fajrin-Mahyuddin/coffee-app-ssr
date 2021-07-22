@@ -1,4 +1,4 @@
-import router, { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react"
 import { checkFirebase } from "./firebase-auth"
 
@@ -26,37 +26,46 @@ export const AppProvider = ({ children }) => {
 	)
 }
 
-export const AuthenticatedRoute = (Component) =>
-	() => {
-		const { authUser, loading } = getFirebaseAuth();
-		console.log("authenticated route", authUser)
-		useEffect(() => {
-			if (isOnBrowser() && window.location.pathname === '/login') {
-				if (!authUser) {
-					router.push('/login')
-				}
-			}
-		}, [authUser, loading])
-		if (loading) return <div>loading...</div>
-		return (
-			<Component />
-		)
+export const redirectTo = (dest, res) => {
+	if (res) {
+		res.writeHead(302, { Location: dest });
+		res.end()
+	} else {
+		Router.push(dest)
 	}
-export const UnauthenticatedRoute = (Component) =>
-	() => {
-		const { authUser, loading } = getFirebaseAuth();
-		useEffect(() => {
-			// if (isOnBrowser()) {
-			if (authUser && !loading) {
-				router.push('/')
-			}
-			// }
-		}, [authUser, loading])
-		if (loading || !authUser) return <div>loading...</div>
-		return (
-			<Component />
-		)
-	}
+}
+
+// export const AuthenticatedRoute = (Component) =>
+// 	() => {
+// 		const { authUser, loading } = getFirebaseAuth();
+// 		console.log("authenticated route", authUser)
+// 		useEffect(() => {
+// 			if (isOnBrowser() && window.location.pathname === '/login') {
+// 				if (!authUser) {
+// 					router.push('/login')
+// 				}
+// 			}
+// 		}, [authUser, loading])
+// 		if (loading) return <div>loading...</div>
+// 		return (
+// 			<Component />
+// 		)
+// 	}
+// export const UnauthenticatedRoute = (Component) =>
+// 	() => {
+// 		const { authUser, loading } = getFirebaseAuth();
+// 		useEffect(() => {
+// 			// if (isOnBrowser()) {
+// 			if (authUser && !loading) {
+// 				router.push('/')
+// 			}
+// 			// }
+// 		}, [authUser, loading])
+// 		if (loading || !authUser) return <div>loading...</div>
+// 		return (
+// 			<Component />
+// 		)
+// 	}
 
 
 export const getFirebaseAuth = () => {
