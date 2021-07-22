@@ -1,12 +1,24 @@
-import { useRef, useState, useEffect } from 'react';
+import nookies from 'nookies';
 import Image from 'next/image';
 import { motor, windy } from 'images';
-import { StandartLayout } from 'layout';
-import { Form, InputAlert, InputText, SubmitBtn } from 'components';
-import { KeyOutlined, LoadingOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
-import { checkFirebase, googleLogin, loginPost } from 'utils/firebase-auth';
 import { useRouter } from 'next/router';
+import { StandartLayout } from 'layout';
 import { useAppContext } from 'utils/auth';
+import { useRef, useState, useEffect } from 'react';
+import { googleLogin, loginPost } from 'utils/firebase-auth';
+import {
+	Form,
+	InputAlert,
+	InputText,
+	SubmitBtn
+} from 'components';
+import {
+	KeyOutlined,
+	LoadingOutlined,
+	SendOutlined,
+	UserOutlined
+} from '@ant-design/icons';
+import admin from 'utils/firebase-admin';
 
 const Login = (props) => {
 	const router = useRouter()
@@ -52,15 +64,14 @@ const Login = (props) => {
 		}
 	}
 
-	useEffect(() => {
-		if (!authUser && !loading) {
-			router.push('/')
-		}
-		router.prefetch("/")
-	}, [authUser, loading])
+	// useEffect(() => {
+	// 	if (authUser && !loading) {
+	// 		router.push('/')
+	// 	}
+	// }, [authUser, loading])
 
-	console.log("currentUser", authUser)
-	if (loading || !authUser) return <div>loading...</div>
+	console.log("currentUser login", props)
+	// if (loading) return <div>loading...</div>
 
 	return (
 		<StandartLayout footer={false}>
@@ -147,12 +158,20 @@ const Login = (props) => {
 
 }
 
-// export async function getServerSideProps() {
-// 	const user = checkFirebase.auth().currentUser
-// 	return {
-// 		props: {}
-// 	}
-// }
+export const getServerSideProps = async (ctx) => {
+	const { res } = ctx
+	try {
+		const { token } = nookies.get(ctx);
+		const user = await admin.auth().verifyIdToken(token)
+		const { email, diplayName } = user
+		res.writeHead(302, { Location: '/' })
+		res.end()
+	} catch (error) {
+	}
+	return {
+		props: {}
+	}
+}
 
 
 export default Login

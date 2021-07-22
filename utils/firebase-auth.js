@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import firebaseConfig from 'config/firebaseConfig';
+import nookies from 'nookies';
 
 !firebase.apps.length ?
 	firebase.initializeApp(firebaseConfig) : firebase.app()
@@ -13,9 +14,12 @@ export const loginPost = async ({ email, password }) => {
 		.then(async () => {
 			try {
 				const req = await firebase.auth().signInWithEmailAndPassword(email, password)
+				const token = await req.user.getIdToken()
+				console.log("after login", token)
+				nookies.set(null, 'token', token, { path: '/' })
 				return { data: req, error: false, };
 			} catch (error) {
-				throw new Error(error)
+				throw Error(error)
 			}
 		}).catch(error => {
 			return Promise.reject(error)
@@ -24,6 +28,7 @@ export const loginPost = async ({ email, password }) => {
 }
 
 export const logout = () => {
+	nookies.destroy(null, 'token');
 	return firebase.auth().signOut()
 }
 

@@ -7,8 +7,9 @@ import { ClockCircleOutlined, HeartFilled, StarFilled, EyeOutlined, BookFilled, 
 import { cupboard, Saly11 } from 'images';
 import coffee_one from '../public/assets/images/coffee_one.jpeg';
 
-const Dashboard = ({ loading }) => {
-	if (loading) return <div>Loading...</div>
+const Dashboard = (props) => {
+	// if (loading) return <div>Loading...</div>
+	console.log("currentUser login", props)
 	return (
 		<StandartLayout>
 			<div className="container">
