@@ -34,17 +34,21 @@ export const getServerSideProps = async (ctx) => {
 
 	const token = nookies.get(ctx);
 	// const { email, diplayName } = user
+	console.log("token----", token)
 	if (token.token) {
-		const user = await admin.auth().verifyIdToken(token.token)
-		console.log("profile page", user)
-		if (!user) {
-			redirectTo('/login', res)
-		}
-		return {
-			props: {}
-		}
+		await admin.auth().verifyIdToken(token.token)
+			.then(response => {
+				console.log("profile page", response)
+				if (!response) {
+					redirectTo('/login', res)
+				}
+			}).catch(error => {
+				console.log("profile page error---=== token ", error)
+			})
 	}
-	redirectTo('/login', res)
+	if (!token.token) {
+		redirectTo('/login', res)
+	}
 	return {
 		props: {}
 	}

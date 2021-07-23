@@ -10,18 +10,12 @@ import nookies from 'nookies';
 export const checkFirebase = firebase;
 
 export const loginPost = async ({ email, password }) => {
-	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+	return await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 		.then(async () => {
-			try {
-				const req = await firebase.auth().signInWithEmailAndPassword(email, password)
-				const token = await req.user.getIdToken()
-				nookies.set(null, 'token', token, { path: '/' })
-				return { data: req, error: false, };
-			} catch (error) {
-				throw Error(error)
-			}
+			return firebase.auth().signInWithEmailAndPassword(email, password)
 		}).catch(error => {
-			return Promise.reject(error)
+			console.log("error firebase", error)
+			return error
 		})
 }
 

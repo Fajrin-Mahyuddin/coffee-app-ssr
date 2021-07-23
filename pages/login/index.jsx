@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { motor, windy } from 'images';
 import { useRouter } from 'next/router';
 import { StandartLayout } from 'layout';
-import { useAppContext } from 'utils/auth';
+import { redirectTo, useAppContext } from 'utils/auth';
 import { useRef, useState, useEffect } from 'react';
 import { googleLogin, loginPost } from 'utils/firebase-auth';
 import {
@@ -21,6 +21,7 @@ import {
 import admin from 'utils/firebase-admin';
 
 const Login = (props) => {
+	const { errorInfo } = props
 	const router = useRouter()
 	const inputRef = useRef();
 
@@ -29,7 +30,6 @@ const Login = (props) => {
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
 	const [loginLoading, setLoginLoading] = useState(false)
-
 
 	const handleChange = (e) => {
 		e.preventDefault();
@@ -42,14 +42,12 @@ const Login = (props) => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		setLoginLoading(true);
-		try {
-			await loginPost(input)
-			router.push("/")
-		} catch (error) {
-			setAlert({ type: "danger", body: error?.message })
-		} finally {
-			setLoginLoading(false)
+		const respon = await loginPost(input)
+		console.log("respon login post", respon)
+		if (respon.message) {
+			setAlert({ type: "danger", body: respon?.message })
 		}
+		setLoginLoading(false)
 	}
 
 	const handleGoogleSign = async () => {
@@ -63,14 +61,15 @@ const Login = (props) => {
 		}
 	}
 
-	// useEffect(() => {
-	// 	if (authUser && !loading) {
-	// 		router.push('/')
-	// 	}
-	// }, [authUser, loading])
-
-	console.log("currentUser login", props)
-	// if (loading) return <div>loading...</div>
+	useEffect(() => {
+		if (errorInfo) {
+			setAlert({ type: "warning", body: errorInfo.code })
+			if (errorInfo.code === 'auth/id-token-expired') {
+				nookies.destroy(null, 'token');
+			}
+		}
+		return () => setAlert(null)
+	}, [props])
 
 	return (
 		<StandartLayout footer={false}>
@@ -159,17 +158,23 @@ const Login = (props) => {
 
 export const getServerSideProps = async (ctx) => {
 	const { res } = ctx
+	let props = {};
 	const token = nookies.get(ctx);
+	console.log('login token', token)
 	if (token.token) {
-		const user = await admin.auth().verifyIdToken(token.token)
-		console.log("login page", user)
-		if (user) {
-			res.writeHead(302, { Location: '/' })
-			res.end()
-		}
+		await admin.auth().verifyIdToken(token.token)
+			.then(response => {
+				console.log("login page------", response)
+				if (response) {
+					redirectTo('/', res);
+				}
+			}).catch(error => {
+				console.log('auth/id-token-expired', error.errorInfo.code);
+				props = { ...error }
+			})
 	}
 	return {
-		props: {}
+		props: { ...props }
 	}
 }
 
