@@ -30,7 +30,7 @@ const MyApp = ({ Component, pageProps }) => {
 			</Head>
 			<AppProvider>
 				<QueryClientProvider client={queryClient}>
-					<Component {...pageProps} loading={loading} />
+					<Component {...pageProps} pageLoading={loading} />
 				</QueryClientProvider>
 			</AppProvider>
 		</>

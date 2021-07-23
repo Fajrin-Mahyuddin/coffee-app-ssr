@@ -1,9 +1,10 @@
+import nookies from "nookies";
+import { useEffect } from "react";
 import { StandartLayout } from "layout";
 import { useRouter } from "next/router";
-import nookies from "nookies";
-import { AuthenticatedRoute, redirectTo, useAppContext } from "utils/auth";
 import admin from "utils/firebase-admin";
 import { logout } from "utils/firebase-auth";
+import { redirectTo, useAppContext } from "utils/auth";
 
 const ProfilePage = () => {
 	const router = useRouter()
@@ -17,7 +18,6 @@ const ProfilePage = () => {
 		}
 	}
 
-
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -30,27 +30,23 @@ const ProfilePage = () => {
 }
 
 export const getServerSideProps = async (ctx) => {
-	const { res } = ctx
 
 	const token = nookies.get(ctx);
-	// const { email, diplayName } = user
-	console.log("token----", token)
-	if (token.token) {
+	let props;
+	if (!token.token) {
+		redirectTo('/login', ctx.res)
+	} else {
 		await admin.auth().verifyIdToken(token.token)
 			.then(response => {
-				console.log("profile page", response)
 				if (!response) {
-					redirectTo('/login', res)
+					redirectTo('/login', ctx.res)
 				}
 			}).catch(error => {
-				console.log("profile page error---=== token ", error)
+				props = { ...error }
 			})
 	}
-	if (!token.token) {
-		redirectTo('/login', res)
-	}
 	return {
-		props: {}
+		props: { ...props }
 	}
 
 }

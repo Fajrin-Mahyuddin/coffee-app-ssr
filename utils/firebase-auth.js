@@ -26,12 +26,12 @@ export const logout = () => {
 
 // login with gmail
 export const googleLogin = async () => {
-	firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-		.then(() => {
+	return await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+		.then(async () => {
 			let provider = new firebase.auth.GoogleAuthProvider();
-			return firebase.auth().signInWithPopup(provider);
+			return await firebase.auth().signInWithPopup(provider);
 		}).catch(error => {
-			return Promise.reject(error)
+			return error
 		})
 }
 

@@ -6,19 +6,12 @@ export const AppContext = createContext();
 
 export const useAppContext = () => useContext(AppContext);
 
-const isOnBrowser = () => typeof window !== "undefined";
+export const isOnBrowser = () => typeof window !== "undefined";
 
 export const AppProvider = ({ children }) => {
 	const { authUser, loading } = getFirebaseAuth();
 	const valueContext = { authUser, loading, foo: "bar" }
-	const router = useRouter()
-	useEffect(() => {
-		if (isOnBrowser() && window.location.pathname === '/login') {
-			if (authUser) {
-				router.push('/')
-			}
-		}
-	}, [authUser, loading])
+
 	return (
 		<AppContext.Provider value={valueContext}>
 			{children}
@@ -34,38 +27,6 @@ export const redirectTo = (dest, res) => {
 		Router.push(dest)
 	}
 }
-
-// export const AuthenticatedRoute = (Component) =>
-// 	() => {
-// 		const { authUser, loading } = getFirebaseAuth();
-// 		console.log("authenticated route", authUser)
-// 		useEffect(() => {
-// 			if (isOnBrowser() && window.location.pathname === '/login') {
-// 				if (!authUser) {
-// 					router.push('/login')
-// 				}
-// 			}
-// 		}, [authUser, loading])
-// 		if (loading) return <div>loading...</div>
-// 		return (
-// 			<Component />
-// 		)
-// 	}
-// export const UnauthenticatedRoute = (Component) =>
-// 	() => {
-// 		const { authUser, loading } = getFirebaseAuth();
-// 		useEffect(() => {
-// 			// if (isOnBrowser()) {
-// 			if (authUser && !loading) {
-// 				router.push('/')
-// 			}
-// 			// }
-// 		}, [authUser, loading])
-// 		if (loading || !authUser) return <div>loading...</div>
-// 		return (
-// 			<Component />
-// 		)
-// 	}
 
 
 export const getFirebaseAuth = () => {

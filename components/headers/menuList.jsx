@@ -6,7 +6,6 @@ import { useAppContext } from 'utils/auth';
 
 const StandartMenu = () => {
   const { authUser } = useAppContext();
-  console.log("current user", authUser)
   return (
     <ul>
       <li className="mrl-20">

@@ -13,23 +13,23 @@ import {
 	SubmitBtn
 } from 'components';
 import {
+	GoogleOutlined,
 	KeyOutlined,
 	LoadingOutlined,
-	SendOutlined,
+	LoginOutlined,
 	UserOutlined
 } from '@ant-design/icons';
 import admin from 'utils/firebase-admin';
 
 const Login = (props) => {
-	const { errorInfo } = props
-	const router = useRouter()
+	const { errorInfo, pageLoading } = props
 	const inputRef = useRef();
+	const router = useRouter();
 
-	const { authUser, loading } = useAppContext()
-
+	const [redirectStatus, setRedirectStatus] = useState(null);
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
-	const [loginLoading, setLoginLoading] = useState(false)
+	const [loading, setLoading] = useState({ type: null, status: false })
 
 	const handleChange = (e) => {
 		e.preventDefault();
@@ -39,26 +39,33 @@ const Login = (props) => {
 		})
 	}
 
-	const onSubmit = async (e) => {
-		e.preventDefault();
-		setLoginLoading(true);
-		const respon = await loginPost(input)
-		console.log("respon login post", respon)
-		if (respon.message) {
-			setAlert({ type: "danger", body: respon?.message })
+	const submitType = async (type) => {
+		switch (type) {
+			case 'submit-email':
+				return await loginPost(input);
+			case 'submit-gmail':
+				return await googleLogin();
+			default:
+				return await loginPost();
 		}
-		setLoginLoading(false)
 	}
 
-	const handleGoogleSign = async () => {
-		try {
-			const res = await googleLogin();
-			if (res) {
-				router.push("/")
-			}
-		} catch (error) {
-			setAlert({ type: "danger", body: error?.message })
+	const onSubmit = async (e, type) => {
+		e.preventDefault();
+		setLoading({ type, status: true });
+		const respon = await submitType(type)
+		setRedirectStatus("Redirect...")
+		if (respon.message) {
+			setAlert({ type: "danger", body: respon?.message })
+			setRedirectStatus(null)
+		} else {
+			const token = await respon.user.getIdToken();
+			nookies.set(null, 'token', token, { path: '/' });
+			setTimeout(() => {
+				redirectTo('/', null);
+			}, 3000)
 		}
+		setLoading({ type: null, status: false });
 	}
 
 	useEffect(() => {
@@ -68,9 +75,19 @@ const Login = (props) => {
 				nookies.destroy(null, 'token');
 			}
 		}
-		return () => setAlert(null)
+		return () => {
+			setAlert(null)
+			setRedirectStatus(null)
+		}
 	}, [props])
 
+	useEffect(() => {
+		return () => {
+			setRedirectStatus(null);
+		}
+	}, [router])
+
+	if (redirectStatus) return <div>Redirect..</div>
 	return (
 		<StandartLayout footer={false}>
 			<StandartLayout.Content>
@@ -81,7 +98,7 @@ const Login = (props) => {
 						</h2>
 						<p>Feel bad stay at home ? Don't worry, a cup of coffee can help.</p>
 						<Form
-							onSubmit={onSubmit}
+							onSubmit={(e) => onSubmit(e, 'submit-email')}
 							className="form-vertical mtb-20"
 						>
 							<Form.Row>
@@ -129,18 +146,19 @@ const Login = (props) => {
 									type="submit"
 									label="Login"
 									loading="false"
-									disabled={loading}
-									icon={loginLoading ? LoadingOutlined : SendOutlined}
-									className="btn primary-btn sm-btn mr-5"
+									disabled={loading.status}
+									icon={loading.type === 'submit-email' ? LoadingOutlined : LoginOutlined}
+									className="btn info-btn sm-btn mr-5"
 								/>
+
 								<SubmitBtn
 									type="button"
 									label="Login with gmail"
 									loading="false"
-									// disabled={loading}
-									// icon={loading ? LoadingOutlined : SendOutlined}
+									disabled={loading.status}
+									icon={loading.type === 'submit-gmail' ? LoadingOutlined : GoogleOutlined}
 									className="btn primary-btn sm-btn mr-5"
-									onClick={handleGoogleSign}
+									onClick={(e) => onSubmit(e, 'submit-gmail')}
 								/>
 							</div>
 						</Form>
@@ -153,23 +171,19 @@ const Login = (props) => {
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
-
 }
 
 export const getServerSideProps = async (ctx) => {
 	const { res } = ctx
 	let props = {};
 	const token = nookies.get(ctx);
-	console.log('login token', token)
 	if (token.token) {
 		await admin.auth().verifyIdToken(token.token)
 			.then(response => {
-				console.log("login page------", response)
 				if (response) {
 					redirectTo('/', res);
 				}
 			}).catch(error => {
-				console.log('auth/id-token-expired', error.errorInfo.code);
 				props = { ...error }
 			})
 	}
