@@ -1,0 +1,6 @@
+.primary-link__less-border {
+	color: $primary-color;
+	&:hover {
+		text-decoration: underline;
+	}
+}

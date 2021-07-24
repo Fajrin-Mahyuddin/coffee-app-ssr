@@ -2,12 +2,20 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
-import { SubmitBtn } from 'components';
-import { ClockCircleOutlined, HeartFilled, StarFilled, EyeOutlined, BookFilled, ShopFilled } from '@ant-design/icons';
 import { cupboard, Saly11 } from 'images';
+import { SubmitBtn } from 'components';
 import coffee_one from '../public/assets/images/coffee_one.jpeg';
+import {
+	ShopFilled,
+	StarFilled,
+	BookFilled,
+	EyeOutlined,
+	HeartFilled,
+	ClockCircleOutlined,
+} from '@ant-design/icons';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
+	console.log("props dashboard", props)
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -156,7 +164,9 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-
+				</div>
+				<div className="view-more">
+					<a href="/article">See more</a>
 				</div>
 				<div className="sale-wrapper">
 					<h4 className="text-grey text-light"><ShopFilled /> List Sale</h4>
@@ -256,10 +266,20 @@ const Dashboard = () => {
 
 					</div>
 				</div>
+				<div className="view-more">
+					<a href="/sale">Load more</a>
+				</div>
 
 			</div>
 		</StandartLayout>
 	)
+}
+
+export const getStaticProps = async () => {
+	const req = ['satu', 'dua']
+	return {
+		props: { req }
+	}
 }
 
 export default Dashboard;

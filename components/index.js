@@ -12,6 +12,8 @@ import InputAlert from './alerts/inputAlert';
 import InputDate from './inputs/inputDate';
 import InputRadio from './inputs/inputRadio';
 
+import LinkBorderLess from './link/link-borderLess';
+
 export {
 	SubmitBtn,
 	Navbar,
@@ -25,5 +27,6 @@ export {
 	InputRadio,
 	Footer,
 	ItemSale,
-	Loading
+	Loading,
+	LinkBorderLess
 }

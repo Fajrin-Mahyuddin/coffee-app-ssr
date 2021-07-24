@@ -113,6 +113,17 @@
 		color: $black;
 		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 	}
+	a {
+		background-color: $white;
+		border-radius: 10px;
+		border: none;
+		text-decoration: none;
+		padding: 10px 15px;
+		cursor: pointer;
+		font-size: 14px;
+		color: $black;
+		box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	}
 }
 
 @media screen and (min-width: 500px) {

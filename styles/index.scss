@@ -10,7 +10,7 @@ body {
 
 a {
   text-decoration: none;
-  color: inherit;
+  // color: inherit;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -140,6 +140,10 @@ ul {
 .container {
   padding: 0 8%;
 }
+.center {
+  width: fit-content;
+  margin: auto;
+}
 .center-text {
   text-align: center;
 }
@@ -230,6 +234,10 @@ ul {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.underline-text:hover {
+ text-decoration: underline;
 }
 
 .w-100 {
