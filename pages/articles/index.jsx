@@ -157,7 +157,7 @@ const ArticlePage = ({ pageLoading }) => {
 					</div>
 
 				</div>
-				<div className="article-more">
+				<div className="view-more">
 					<Link href="# ">Load more</Link>
 				</div>
 

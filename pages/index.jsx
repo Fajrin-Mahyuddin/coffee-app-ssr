@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
@@ -13,9 +13,21 @@ import {
 	HeartFilled,
 	ClockCircleOutlined,
 } from '@ant-design/icons';
+import { request } from 'config/axiosConfig';
+import { getArticles } from 'utils/article-helper';
+import { getProducts } from 'utils/product-helper';
 
-const Dashboard = (props) => {
-	console.log("props dashboard", props)
+const Dashboard = ({ articles, products }) => {
+	// useEffect(async () => {
+	// 	let articles;
+	// 	try {
+	// 		const req = await instance.get("/TrendingNewsAPI?pageNumber=1&pageSize=10&withThumbnails=false&location=us")
+	// 		console.log("articles-----", JSON.stringify(req))
+	// 		articles = JSON.stringify({ ...req });
+	// 	} catch (error) {
+	// 		articles = error
+	// 	}
+	// }, [])
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -33,140 +45,38 @@ const Dashboard = (props) => {
 				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
 				<hr />
 				<div className="article-wrapper mb-20">
-
-					<div className="article-item">
-						<div className="article-img">
-							<Image src={coffee_one} alt="article-one" />
-						</div>
-						<div className="article-content">
-							<div className="article-category">
-								<span>Productivity</span>
-								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-							</div>
-							<div className="article-head">
-								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
-							</div>
-							<div className="article-body">
-								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
-
-								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
-							</div>
-							<div className="article-footer">
-								<div className="author">
-									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-									<span>Roroa Zoro</span>
+					{articles.value.map((item, i) => {
+						return (
+							<div className="article-item">
+								<div className="article-img">
+									<img src={item.image.url} alt={item.title} />
 								</div>
-								<Link href="/detail/123">Read more</Link>
-							</div>
-						</div>
-					</div>
-					<div className="article-item">
-						<div className="article-img">
-							<Image src="https://images.unsplash.com/photo-1555118367-93f01e18660f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="article-one" height="100%" width="100%" />
-						</div>
-						<div className="article-content">
-							<div className="article-category">
-								<span>Productivity</span>
-								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-							</div>
-							<div className="article-head">
-								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
-							</div>
-							<div className="article-body">
-								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
-
-								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
-							</div>
-							<div className="article-footer">
-								<div className="author">
-									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-									<span>Roroa Zoro</span>
+								<div className="article-content">
+									<div className="article-category">
+										<span>Productivity</span>
+										<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
+									</div>
+									<div className="article-head">
+										{item.title}
+									</div>
+									<div className="article-body">
+										{item.body}
+									</div>
+									<div className="article-footer">
+										<div className="author">
+											<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
+											<span>{item.provider.name}</span>
+										</div>
+										<Link href="/detail/123">Read more</Link>
+									</div>
 								</div>
-								<Link href="/articles/detail/123">Read more</Link>
 							</div>
-						</div>
-					</div>
-					<div className="article-item">
-						<div className="article-img">
-							<Image src={coffee_one} alt="article-one" />
-						</div>
-						<div className="article-content">
-							<div className="article-category">
-								<span>Productivity</span>
-								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-							</div>
-							<div className="article-head">
-								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
-							</div>
-							<div className="article-body">
-								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
+						)
+					})}
 
-								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
-							</div>
-							<div className="article-footer">
-								<div className="author">
-									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-									<span>Roroa Zoro</span>
-								</div>
-								<Link href="/articles/detail/123">Read more</Link>
-							</div>
-						</div>
-					</div>
-					<div className="article-item">
-						<div className="article-img">
-							<Image src={coffee_one} alt="article-one" />
-						</div>
-						<div className="article-content">
-							<div className="article-category">
-								<span>Productivity</span>
-								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-							</div>
-							<div className="article-head">
-								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
-							</div>
-							<div className="article-body">
-								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
-
-								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
-							</div>
-							<div className="article-footer">
-								<div className="author">
-									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-									<span>Roroa Zoro</span>
-								</div>
-								<Link href="/articles/detail/123">Read more</Link>
-							</div>
-						</div>
-					</div>
-					<div className="article-item">
-						<div className="article-img">
-							<Image src={coffee_one} alt="article-one" />
-						</div>
-						<div className="article-content">
-							<div className="article-category">
-								<span>Productivity</span>
-								<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-							</div>
-							<div className="article-head">
-								Perjalanan Kopi Sebelum Sampai ke Cangkirmu
-							</div>
-							<div className="article-body">
-								Kopi memiliki perjalanan panjang sebelum kita nikmati. Awalnya kopi ditanam oleh petani. Saat panen petani memetik cherry kopi (buah kopi) dan memisahkan bijinya dari buahnya. Ada beberapa proses yang dilakukan dalam tahap ini ada wet process, honey process dan lain-lain. Setelah biji kopi dan buahnya terpisah maka biji kopi yang mentah harus dijemur beberapa waktu sampai kadar airnya berada di tingkat yang telah ditentukan. Setelah itu green bean atau biji kopi hijau ini dijual ke roaster (penyangrai kopi) atau perusahaan yang mengolah sendiri biji hijau mereka.
-
-								Green bean siap disangrai (roasting) sesuai keinginan atau karakteristik bijinya oleh roaster. Tidak semua biji mampu disangrai medium atau dark karena setiap biji memiliki karakteristik masing-masing. Setelah disangrai maka biji kopi tersebut siap diolah barista menjadi minuman. Tetapi sebelumnya harus digiling dahulu sesuai permintaan. Setelah digiling bubuk kopi siap dinikmati menjadi aneka minuman nikmat.
-							</div>
-							<div className="article-footer">
-								<div className="author">
-									<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-									<span>Roroa Zoro</span>
-								</div>
-								<Link href="/articles/detail/123">Read more</Link>
-							</div>
-						</div>
-					</div>
 				</div>
 				<div className="view-more">
-					<a href="/article">See more</a>
+					<a href="/articles">See more</a>
 				</div>
 				<div className="sale-wrapper">
 					<h4 className="text-grey text-light"><ShopFilled /> List Sale</h4>
@@ -267,7 +177,7 @@ const Dashboard = (props) => {
 					</div>
 				</div>
 				<div className="view-more">
-					<a href="/sale">Load more</a>
+					<a href="/sale">See more</a>
 				</div>
 
 			</div>
@@ -276,9 +186,21 @@ const Dashboard = (props) => {
 }
 
 export const getStaticProps = async () => {
-	const req = ['satu', 'dua']
+	let articles, products = {};
+	try {
+		let requestAll = await Promise.all([getArticles(), getProducts()]);
+
+		articles = { ...requestAll[0].data };
+		products = { ...requestAll[1].data };
+	} catch (error) {
+		articles = error
+		products = error
+	}
 	return {
-		props: { req }
+		props: {
+			articles,
+			products
+		}
 	}
 }
 
