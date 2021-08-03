@@ -12,7 +12,7 @@ const getProducts = async (id = 10) => {
 	return json;
 }
 
-const SalePage = ({ products = [], loading }) => {
+const SalePage = ({ products = [], loading, pageLoading }) => {
 	// const [loading, setLoading] = useState(loading);
 	const router = useRouter()
 
@@ -32,7 +32,7 @@ const SalePage = ({ products = [], loading }) => {
 	// 		router.events.off("routeChangeComplete", () => setLoading(false))
 	// 	}
 	// }, [])
-
+	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -83,7 +83,6 @@ const SalePage = ({ products = [], loading }) => {
 						{products?.map((item, i) => {
 							return <ItemSale key={i} item={item} />
 						})}
-
 
 						{loading &&
 							<>

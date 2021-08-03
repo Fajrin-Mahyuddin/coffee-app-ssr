@@ -17,7 +17,8 @@ import { request } from 'config/axiosConfig';
 import { getArticles } from 'utils/article-helper';
 import { getProducts } from 'utils/product-helper';
 
-const Dashboard = ({ articles, products }) => {
+const Dashboard = ({ articles, products, pageLoading }) => {
+	console.log("object", articles)
 	// useEffect(async () => {
 	// 	let articles;
 	// 	try {
@@ -28,6 +29,7 @@ const Dashboard = ({ articles, products }) => {
 	// 		articles = error
 	// 	}
 	// }, [])
+	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -47,7 +49,7 @@ const Dashboard = ({ articles, products }) => {
 				<div className="article-wrapper mb-20">
 					{articles.value.map((item, i) => {
 						return (
-							<div className="article-item">
+							<div className="article-item" key={i}>
 								<div className="article-img">
 									<img src={item.image.url} alt={item.title} />
 								</div>
@@ -67,7 +69,7 @@ const Dashboard = ({ articles, products }) => {
 											<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
 											<span>{item.provider.name}</span>
 										</div>
-										<Link href="/detail/123">Read more</Link>
+										<Link href={`/articles/detail/${item.id}`}>Read more</Link>
 									</div>
 								</div>
 							</div>
@@ -82,97 +84,40 @@ const Dashboard = ({ articles, products }) => {
 					<h4 className="text-grey text-light"><ShopFilled /> List Sale</h4>
 					<hr />
 					<div className="sale-list">
-
-						<div className="sale-item">
-							<div className="sale-item__img">
-								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
-								<HeartFilled />
-							</div>
-							<div className="sale-item__body">
-								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
-									Moka Pod Coffee
-								</a>
-								<div className="sale-item__body-review display-horizontal">
-									<div className="start">
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "grey" }} />
-										<StarFilled style={{ color: "grey" }} />
+						{products.map((item, i) => {
+							return (
+								<div className="sale-item" key={i}>
+									<div className="sale-item__img">
+										<img src={item.image} alt="img-item" width="50%" height="50%" />
+										<HeartFilled />
 									</div>
-									<span className="label label-sm label-primary">Best</span>
-								</div>
-								<div className="sale-item__body-desc text-overflow-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
-								</div>
-								<div className="sale-item__body-footer display-horizontal">
-									<div className="content-price">
-										<span className="label label-sm label-warning label-transparent">0%</span>
-										<span>Rp 120.0000</span>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="sale-item">
-							<div className="sale-item__img">
-								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
-								<HeartFilled />
-							</div>
-							<div className="sale-item__body">
-								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
-									Moka Pod Coffee
-								</a>
-								<div className="sale-item__body-review display-horizontal">
-									<div className="start">
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "grey" }} />
-										<StarFilled style={{ color: "grey" }} />
-									</div>
-									<span className="label label-sm label-primary">Best</span>
-								</div>
-								<div className="sale-item__body-desc text-overflow-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
-								</div>
-								<div className="sale-item__body-footer display-horizontal">
-									<div className="content-price">
-										<span className="label label-sm label-warning label-transparent">0%</span>
-										<span>Rp 120.0000</span>
+									<div className="sale-item__body">
+										<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+											{item.title}
+										</a>
+										<div className="sale-item__body-review display-horizontal">
+											<div className="start">
+												<StarFilled style={{ color: "orange" }} />
+												<StarFilled style={{ color: "orange" }} />
+												<StarFilled style={{ color: "orange" }} />
+												<StarFilled style={{ color: "grey" }} />
+												<StarFilled style={{ color: "grey" }} />
+											</div>
+											<span className="label label-sm label-primary">Best</span>
+										</div>
+										<div className="sale-item__body-desc text-overflow-3">
+											{item.description}
+										</div>
+										<div className="sale-item__body-footer display-horizontal">
+											<div className="content-price">
+												<span className="label label-sm label-warning label-transparent">0%</span>
+												<span>$ {item.price}</span>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div className="sale-item">
-							<div className="sale-item__img">
-								<img src="https://images.unsplash.com/photo-1565452344518-47faca79dc69?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="img-item" width="50%" height="50%" />
-								<HeartFilled />
-							</div>
-							<div className="sale-item__body">
-								<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
-									Moka Pod Coffee
-								</a>
-								<div className="sale-item__body-review display-horizontal">
-									<div className="start">
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "orange" }} />
-										<StarFilled style={{ color: "grey" }} />
-										<StarFilled style={{ color: "grey" }} />
-									</div>
-									<span className="label label-sm label-primary">Best</span>
-								</div>
-								<div className="sale-item__body-desc text-overflow-3">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor ipsum asperiores.
-								</div>
-								<div className="sale-item__body-footer display-horizontal">
-									<div className="content-price">
-										<span className="label label-sm label-warning label-transparent">0%</span>
-										<span>Rp 120.0000</span>
-									</div>
-								</div>
-							</div>
-						</div>
+							)
+						})}
 
 					</div>
 				</div>
@@ -191,7 +136,7 @@ export const getStaticProps = async () => {
 		let requestAll = await Promise.all([getArticles(), getProducts()]);
 
 		articles = { ...requestAll[0].data };
-		products = { ...requestAll[1].data };
+		products = requestAll[1].data;
 	} catch (error) {
 		articles = error
 		products = error

@@ -4,8 +4,7 @@ import App from 'next/app';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { checkFirebase } from 'utils/firebase-auth';
-import { AppProvider, getFirebaseAuth } from 'utils/auth';
+import { AppProvider } from 'utils/auth';
 
 const queryClient = new QueryClient()
 
