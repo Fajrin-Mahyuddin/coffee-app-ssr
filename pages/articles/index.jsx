@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { SubmitBtn } from 'components';
-import { StandartLayout } from "layout";
 import { saly12 } from 'images';
-import { EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import { getArticles } from 'utils/article-helper';
+import { useState } from 'react';
+import { SubmitBtn } from 'components';
 import { useRouter } from 'next/router';
+import { StandartLayout } from "layout";
+import { getArticles } from 'utils/article-helper';
+import { EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { useLoading } from 'utils/general-helper';
 
 const ArticlePage = ({ pageLoading, articles }) => {
 	const router = useRouter();
@@ -17,7 +19,8 @@ const ArticlePage = ({ pageLoading, articles }) => {
 		}, undefined, { scroll: false })
 	}
 
-	if (pageLoading) return <div>Loading...</div>
+	const { loading } = useLoading()
+
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -66,7 +69,9 @@ const ArticlePage = ({ pageLoading, articles }) => {
 				</div>
 				{articles.value.length < 20 &&
 					<div className="view-more">
-						<button onClick={viewMore}>Load more</button>
+						{loading ? "loading..." :
+							<button onClick={viewMore}>Load more</button>
+						}
 					</div>
 				}
 

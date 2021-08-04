@@ -19,7 +19,8 @@
     "nookies": "^2.5.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-query": "^3.18.1"
+    "react-query": "^3.18.1",
+    "recoil": "^0.4.0"
   },
   "devDependencies": {
     "browser-sync": "^2.27.4",

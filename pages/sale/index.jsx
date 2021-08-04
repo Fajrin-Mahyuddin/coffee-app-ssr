@@ -5,6 +5,7 @@ import { CoverSale, iphone2, Saly19 } from 'images'
 import { StandartLayout } from 'layout';
 import { SubmitBtn, ItemSale, Loading } from 'components';
 import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons';
+import { useLoading } from 'utils/general-helper';
 
 const getProducts = async (id = 10) => {
 	const res = await fetch(`https://fakestoreapi.com/products?limit=${id}`);
@@ -12,8 +13,7 @@ const getProducts = async (id = 10) => {
 	return json;
 }
 
-const SalePage = ({ products = [], loading, pageLoading }) => {
-	// const [loading, setLoading] = useState(loading);
+const SalePage = ({ products = [], pageLoading }) => {
 	const router = useRouter()
 
 	const viewMore = () => {
@@ -24,15 +24,8 @@ const SalePage = ({ products = [], loading, pageLoading }) => {
 		}, undefined, { scroll: false })
 	}
 
-	// useEffect(() => {
-	// 	router.events.on("routeChangeStart", () => setLoading(true))
-	// 	router.events.on("routeChangeComplete", () => setLoading(false))
-	// 	return () => {
-	// 		router.events.off("routeChangeStart", () => setLoading(true))
-	// 		router.events.off("routeChangeComplete", () => setLoading(false))
-	// 	}
-	// }, [])
-	if (pageLoading) return <div>Loading...</div>
+	const { loading } = useLoading()
+	// if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
