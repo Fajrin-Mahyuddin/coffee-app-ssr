@@ -6,12 +6,13 @@ import { StandartLayout } from 'layout';
 import { SubmitBtn, ItemSale, Loading } from 'components';
 import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import { useLoading } from 'utils/general-helper';
+import { getProducts } from 'utils/product-helper';
 
-const getProducts = async (id = 10) => {
-	const res = await fetch(`https://fakestoreapi.com/products?limit=${id}`);
-	const json = await res.json()
-	return json;
-}
+// const getProducts = async (id = 10) => {
+// 	const res = await fetch(`https://fakestoreapi.com/products?limit=${id}`);
+// 	const json = await res.json()
+// 	return json;
+// }
 
 const SalePage = ({ products = [], pageLoading }) => {
 	const router = useRouter()

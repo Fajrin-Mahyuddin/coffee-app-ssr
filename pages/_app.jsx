@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AppProvider } from 'utils/auth';
+import { RecoilRoot } from 'recoil';
 
 const queryClient = new QueryClient()
 
@@ -27,11 +28,13 @@ const MyApp = ({ Component, pageProps }) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<link rel="icon" href="/favicon.svg" />
 			</Head>
-			<AppProvider>
-				<QueryClientProvider client={queryClient}>
-					<Component {...pageProps} pageLoading={loading} />
-				</QueryClientProvider>
-			</AppProvider>
+			<RecoilRoot>
+				<AppProvider>
+					<QueryClientProvider client={queryClient}>
+						<Component {...pageProps} pageLoading={loading} />
+					</QueryClientProvider>
+				</AppProvider>
+			</RecoilRoot>
 		</>
 	)
 }

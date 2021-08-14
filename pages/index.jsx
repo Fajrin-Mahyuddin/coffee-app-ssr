@@ -17,8 +17,8 @@ import { request } from 'config/axiosConfig';
 import { getArticles } from 'utils/article-helper';
 import { getProducts } from 'utils/product-helper';
 
-const Dashboard = ({ articles, products, pageLoading }) => {
-	console.log("object", articles)
+const Dashboard = ({ articles, products, status, pageLoading }) => {
+	console.log("object----", status)
 	// useEffect(async () => {
 	// 	let articles;
 	// 	try {
@@ -47,7 +47,7 @@ const Dashboard = ({ articles, products, pageLoading }) => {
 				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
 				<hr />
 				<div className="article-wrapper mb-20">
-					{articles.value.map((item, i) => {
+					{articles?.value.map((item, i) => {
 						return (
 							<div className="article-item" key={i}>
 								<div className="article-img">
@@ -78,13 +78,16 @@ const Dashboard = ({ articles, products, pageLoading }) => {
 
 				</div>
 				<div className="view-more">
-					<a href="/articles">See more</a>
+					{status?.error ?
+						status.msg :
+						<a href="/articles">See more</a>
+					}
 				</div>
 				<div className="sale-wrapper">
 					<h4 className="text-grey text-light"><ShopFilled /> List Sale</h4>
 					<hr />
 					<div className="sale-list">
-						{products.map((item, i) => {
+						{products?.map((item, i) => {
 							return (
 								<div className="sale-item" key={i}>
 									<div className="sale-item__img">
@@ -122,7 +125,10 @@ const Dashboard = ({ articles, products, pageLoading }) => {
 					</div>
 				</div>
 				<div className="view-more">
-					<a href="/sale">See more</a>
+					{status?.error ?
+						<div>{status.msg}</div> :
+						<a href="/sale">See more</a>
+					}
 				</div>
 
 			</div>
@@ -131,20 +137,23 @@ const Dashboard = ({ articles, products, pageLoading }) => {
 }
 
 export const getStaticProps = async () => {
-	let articles, products = {};
+	let articles = null;
+	let products = null;
+	let status = { error: true, msg: null };
+
 	try {
 		let requestAll = await Promise.all([getArticles(), getProducts()]);
-
-		articles = { ...requestAll[0].data };
+		articles = requestAll[0].data;
 		products = requestAll[1].data;
 	} catch (error) {
-		articles = error
-		products = error
+		status = { error: true, msg: error.response.statusText }
 	}
+
 	return {
 		props: {
 			articles,
-			products
+			products,
+			status
 		}
 	}
 }
