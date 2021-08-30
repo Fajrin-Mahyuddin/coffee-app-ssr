@@ -99,22 +99,11 @@ const SalePage = ({ products = [], pageLoading }) => {
 	)
 }
 
-// export async function getStaticProps(context) {
-// 	const products = await getProducts();
-// 	console.log("context", context)
-// 	return {
-// 		props: {
-// 			products,
-// 		}
-// 	}
-// }
-
-
 export async function getServerSideProps({ query }) {
 	const products = await getProducts(query.limit);
 	return {
 		props: {
-			products,
+			products: products.data,
 		}
 	}
 }

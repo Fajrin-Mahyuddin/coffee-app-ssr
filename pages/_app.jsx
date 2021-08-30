@@ -1,13 +1,14 @@
 import '../styles/index.scss';
 import Head from 'next/head';
 import App from 'next/app';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AppProvider } from 'utils/auth';
-import { RecoilRoot } from 'recoil';
+import { atom, RecoilRoot } from 'recoil';
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
+
 
 const MyApp = ({ Component, pageProps }) => {
 	const [loading, setLoading] = useState(false)
@@ -29,11 +30,14 @@ const MyApp = ({ Component, pageProps }) => {
 				<link rel="icon" href="/favicon.svg" />
 			</Head>
 			<RecoilRoot>
-				<AppProvider>
-					<QueryClientProvider client={queryClient}>
-						<Component {...pageProps} pageLoading={loading} />
-					</QueryClientProvider>
-				</AppProvider>
+				<ErrorBoundary>
+
+					<AppProvider>
+						<QueryClientProvider client={queryClient}>
+							<Component {...pageProps} pageLoading={loading} />
+						</QueryClientProvider>
+					</AppProvider>
+				</ErrorBoundary>
 			</RecoilRoot>
 		</>
 	)
@@ -68,3 +72,30 @@ const MyApp = ({ Component, pageProps }) => {
 
 
 export default MyApp;
+
+
+class ErrorBoundary extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { hasError: false };
+	}
+
+	static getDerivedStateFromError(error) {
+		// Update state so the next render will show the fallback UI.
+		return { hasError: true };
+	}
+
+	componentDidCatch(error, errorInfo) {
+		// You can also log the error to an error reporting service
+		console.log(error, errorInfo);
+	}
+
+	render() {
+		if (this.state.hasError) {
+			// You can render any custom fallback UI
+			return <h1>Something went wrong.</h1>;
+		}
+
+		return this.props.children;
+	}
+}

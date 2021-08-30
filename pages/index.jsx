@@ -16,9 +16,14 @@ import {
 import { request } from 'config/axiosConfig';
 import { getArticles } from 'utils/article-helper';
 import { getProducts } from 'utils/product-helper';
+import { useRecoilState } from 'recoil';
+import { dataState } from 'utils/recoil-state';
 
 const Dashboard = ({ articles, products, status, pageLoading }) => {
-	console.log("object----", status)
+
+	const [test, setTest] = useRecoilState(dataState);
+	console.log("object----", test);
+
 	// useEffect(async () => {
 	// 	let articles;
 	// 	try {
@@ -36,7 +41,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 				<div className="dashboard-cover">
 					<div className="dashboard-cover__paragraph">
 						<h1>Hi, need a cup of <strong> coffee</strong> ?</h1>
-						<p>More expresso, Less Depresso</p>
+						<p onClick={() => setTest('oke')}>{test}</p>
 						<SubmitBtn label="Get Started" className="btn md-btn primary-btn mr-5" />
 					</div>
 					<div className="dashboard-cover__img">
@@ -139,7 +144,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 export const getStaticProps = async () => {
 	let articles = null;
 	let products = null;
-	let status = { error: true, msg: null };
+	let status = { error: false, msg: null };
 
 	try {
 		let requestAll = await Promise.all([getArticles(), getProducts()]);
