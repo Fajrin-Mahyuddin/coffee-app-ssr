@@ -14,14 +14,18 @@ const ProfilePage = () => {
 	const query = useRecoilValueLoadable(queryState);
 	const [filter, setFilter] = useRecoilState(filterState)
 	const router = useRouter();
+	const [isLoading, setLoading] = useState(false);
 	const [isMounted, setMounted] = useState(false);
 	const { authUser, loading } = useAppContext();
 
 	const handleLogout = async () => {
+		setLoading(true)
 		try {
-			await logout();
-			router.push('/')
+			const singout = await logout();
+			router.push('/');
+			singout && setLoading(false)
 		} catch (error) {
+			setLoading(false)
 			throw Error("error logout")
 		}
 	}
@@ -33,6 +37,7 @@ const ProfilePage = () => {
 
 	console.log("state global", query);
 	if (query.state === 'loading') return <h1> loading ...</h1>
+	if (isLoading) return <h1> proses...</h1>
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>

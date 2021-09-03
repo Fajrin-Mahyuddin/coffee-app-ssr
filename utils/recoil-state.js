@@ -72,3 +72,15 @@ export const queryState = selector({
 		return jsonQuery;
 	}
 })
+
+export const queryStateTwo = selector({
+	key: 'queryState',
+	get: async () => {
+		const query = await fetch(`https://fakestoreapi.com/products?limit=5`);
+		const jsonQuery = await query.json();
+		if (query.error) {
+			throw query.error;
+		}
+		return jsonQuery;
+	}
+})
