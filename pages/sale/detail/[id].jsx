@@ -1,23 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { SubmitBtn } from 'components';
-import { ifFooterPriceScrolled } from 'utils/scrolled'
+import { ifDetailSaleScrolled, ifFooterPriceScrolled } from 'utils/scrolled'
 import { StandartLayout } from 'layout';
 import { DoubleRightOutlined, RightOutlined, StarFilled, TagsFilled, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined } from '@ant-design/icons';
+import { getDetailProduct, getProducts } from 'utils/product-helper';
 
-const SaleDetail = () => {
-	const refFooterPrice = useRef();
-	const refFooterChild = useRef();
-
-	useEffect(() => {
-		const scrollEvent = () => {
-			ifFooterPriceScrolled(refFooterPrice, refFooterChild);
-		}
-		window.addEventListener("scroll", scrollEvent)
-		return () => {
-			window.removeEventListener("scroll", scrollEvent)
-		}
-	}, [])
-
+const SaleDetail = ({ product }) => {
+	const { refFooterPrice, refFooterChild } = ifDetailSaleScrolled()
+	const { image, title, description, price } = product;
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -30,17 +20,17 @@ const SaleDetail = () => {
 						<RightOutlined />
 						<a href="# ">Sales</a>
 					</div>
-					<div className="sale-item">
+					<div className="sale-item mt-20">
 						<div className="sale-item__img">
-							<img src="https://images.unsplash.com/photo-1616662707932-350e6e599ea8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=966&q=80" alt="sale-item-img" width="50%" height="50%" />
+							<img src={image} alt="sale-item-img" width="40%" height="40%" />
 						</div>
 						<div className="sale-item__desc">
 							<div className="sale-item__desc-head">
-								Moka Pos Coffee
+								{title}
 							</div>
 							<div className="sale-item__desc-price">
-								<span>Rp 120.000</span>
-								<span className="label label-danger-transparent label-sm">Rp. 1.000.000</span>
+								<span>$ {price}</span>
+								<span className="label label-danger-transparent label-sm">$ 10</span>
 								<span className="label label-warning label-sm">10%</span>
 							</div>
 							<div className="sale-item__desc-review">
@@ -59,7 +49,7 @@ const SaleDetail = () => {
 							<div className="sale-item__desc-paragraph">
 								<div>Kondisi : Baru</div>
 								<div>Berat : 1000 Gram</div>
-								<p>The moka pot is a stove-top or electric coffee maker that brews coffee by passing boiling water pressurised by steam through ground coffee. Named after the Yemeni city of Mocha, it was invented by Italian engineer Alfonso Bialetti in 1933 and quickly became one of the staples of Italian culture.[1] Bialetti Industries continues to produce the same model under the trade name "Moka Express".</p>
+								<p>{description}</p>
 							</div>
 							<div className="sale-item__desc-tags">
 								<span><TagsFilled /> Tags : </span>
@@ -86,6 +76,22 @@ const SaleDetail = () => {
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
+}
+
+export async function getStaticPaths() {
+	const products = await getProducts();
+	const paths = products.data.map(item => {
+		return { params: { id: item.id.toString() } }
+	})
+	return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+	const product = await getDetailProduct(params.id);
+	console.log(product)
+	return {
+		props: { product: product.data }
+	}
 }
 
 export default SaleDetail;

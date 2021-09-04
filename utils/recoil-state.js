@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 
 export const dataState = atom({
-	key: 'bar',
+	key: 'bars',
 	default: 'testing state global using recoil'
 });
 export const filterState = atom({
@@ -30,7 +30,7 @@ const stateGlo = atom({
 })
 
 
-export const funFilter = selector({
+export const funFilters = selector({
 	key: 'funFilter',
 	get: ({ get }) => {
 		const filter = get(filterState);
@@ -62,7 +62,7 @@ export const stateStatistics = selector({
 })
 
 export const queryState = selector({
-	key: 'queryState',
+	key: 'queryStates',
 	get: async () => {
 		const query = await fetch(`https://fakestoreapi.com/products?limit=5`);
 		const jsonQuery = await query.json();
@@ -74,7 +74,7 @@ export const queryState = selector({
 })
 
 export const queryStateTwo = selector({
-	key: 'queryState',
+	key: 'queryStateTwo',
 	get: async () => {
 		const query = await fetch(`https://fakestoreapi.com/products?limit=5`);
 		const jsonQuery = await query.json();

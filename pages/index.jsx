@@ -22,7 +22,7 @@ import { dataState } from 'utils/recoil-state';
 const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const [test, setTest] = useRecoilState(dataState);
-	console.log("object----", test);
+	// console.log("object----", products);
 
 	// useEffect(async () => {
 	// 	let articles;
@@ -100,7 +100,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 										<HeartFilled />
 									</div>
 									<div className="sale-item__body">
-										<a href={'/sale/detail/123'} className="sale-item__body-title text-overflow-2">
+										<a href={`/sale/detail/${item.id}`} className="sale-item__body-title text-overflow-2">
 											{item.title}
 										</a>
 										<div className="sale-item__body-review display-horizontal">

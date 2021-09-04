@@ -6,10 +6,10 @@ import admin from "utils/firebase-admin";
 import { logout } from "utils/firebase-auth";
 import { redirectTo, useAppContext } from "utils/auth";
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
-import { filterState, funFilter, queryState, stateStatistics } from "utils/recoil-state";
+import { filterState, funFilters, queryState, stateStatistics } from "utils/recoil-state";
 
 const ProfilePage = () => {
-	const state_global = useRecoilValue(funFilter);
+	const state_global = useRecoilValue(funFilters);
 	const statistics = useRecoilValue(stateStatistics);
 	const query = useRecoilValueLoadable(queryState);
 	const [filter, setFilter] = useRecoilState(filterState)
@@ -35,7 +35,7 @@ const ProfilePage = () => {
 	// 	return () => setMounted(false)
 	// }, [])
 
-	console.log("state global", query);
+	// console.log("state global", query);
 	if (query.state === 'loading') return <h1> loading ...</h1>
 	if (isLoading) return <h1> proses...</h1>
 	return (
