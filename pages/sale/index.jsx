@@ -101,6 +101,7 @@ const SalePage = ({ products = [], pageLoading }) => {
 
 export async function getServerSideProps({ query }) {
 	const products = await getProducts(query.limit);
+	console.log("okeee", products.data)
 	return {
 		props: {
 			products: products.data,

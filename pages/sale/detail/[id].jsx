@@ -8,6 +8,8 @@ import { getDetailProduct, getProducts } from 'utils/product-helper';
 const SaleDetail = ({ product }) => {
 	const { refFooterPrice, refFooterChild } = ifDetailSaleScrolled()
 	const { image, title, description, price } = product;
+	console.log("objec-t")
+	console.log("----pero", product)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
