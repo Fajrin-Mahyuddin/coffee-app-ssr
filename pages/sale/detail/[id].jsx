@@ -8,8 +8,6 @@ import { getDetailProduct, getProducts } from 'utils/product-helper';
 const SaleDetail = ({ product }) => {
 	const { refFooterPrice, refFooterChild } = ifDetailSaleScrolled()
 	const { image, title, description, price } = product;
-	console.log("objec-t")
-	console.log("----pero", product)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -85,14 +83,14 @@ export async function getStaticPaths() {
 	const paths = products.data.map(item => {
 		return { params: { id: item.id.toString() } }
 	})
-	return { paths, fallback: false }
+	return { paths, fallback: 'blocking' }
 }
 
 export async function getStaticProps({ params }) {
 	const product = await getDetailProduct(params.id);
-	console.log(product)
 	return {
-		props: { product: product.data }
+		props: { product: product.data },
+		revalidate: 1
 	}
 }
 
