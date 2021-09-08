@@ -4,6 +4,7 @@ import ToggleBtn from './buttons/toggleBtn';
 import ActiveLink from './buttons/activeLink';
 import ContentWrapper from './templates/contentWrapper';
 import Loading from './templates/loading';
+import LoadingFetch from './templates/loading-fetch';
 import ItemSale from './templates/sale/item';
 import Form from './inputs/form';
 import Footer from './footer';
@@ -28,5 +29,6 @@ export {
 	Footer,
 	ItemSale,
 	Loading,
+	LoadingFetch,
 	LinkBorderLess
 }

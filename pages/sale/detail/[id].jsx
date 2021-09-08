@@ -1,12 +1,21 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { SubmitBtn } from 'components';
-import { ifDetailSaleScrolled } from 'utils/scrolled'
+import React, { useState } from 'react';
 import { StandartLayout } from 'layout';
-import { DoubleRightOutlined, RightOutlined, StarFilled, TagsFilled, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined } from '@ant-design/icons';
-import { getDetailProduct, getProducts } from 'utils/product-helper';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { basketList } from 'state/basket';
+import { addToCart, basketList } from 'state/cart';
+import { useRateView } from 'utils/general-helper';
+import { SubmitBtn, LoadingFetch } from 'components';
+import { ifDetailSaleScrolled } from 'utils/scrolled';
+import { getDetailProduct, getProducts } from 'utils/product-helper';
+import {
+	DoubleRightOutlined,
+	RightOutlined,
+	TagsFilled,
+	MinusCircleFilled,
+	PlusCircleFilled,
+	ShoppingCartOutlined,
+	TagsOutlined
+} from '@ant-design/icons';
 
 const SaleDetail = ({ product }) => {
 	return (
@@ -22,8 +31,9 @@ const SaleDetail = ({ product }) => {
 						<a href="# ">Sales</a>
 					</div>
 					<DetailItem item={product} />
-					<div className="obstacle">
+					<div className="related-item-wrapper mt-20">
 						{/* list another item  */}
+						<h5 className="text-grey"><TagsOutlined /> Related Product:</h5>
 					</div>
 				</div>
 			</StandartLayout.Content>
@@ -34,29 +44,24 @@ const SaleDetail = ({ product }) => {
 export const DetailItem = ({ item }) => {
 	const route = useRouter();
 	const [quantity, setQuantity] = useState(1)
-	const [basket, setBasket] = useRecoilState(basketList);
-
+	// const [basket, setBasket] = useRecoilState(basketList);
 	const { refFooterPrice, refFooterChild } = ifDetailSaleScrolled();
 
-	const rateView = (value) => {
-		const point = []
-		for (let i = 0; i < value; i++) {
-			point.push(<StarFilled key={`orange-${i}`} style={{ color: 'orange' }} />)
-		}
-		for (let i = 0; i < (5 - value); i++) {
-			point.push(<StarFilled key={`grey-${i}`} style={{ color: 'grey' }} />)
-		}
-		return point.map((item) => item)
-	}
-
-	const toBasket = (val) => {
+	const toBasket = async (val) => {
 		const value = { product: val, quantity: quantity }
-		setBasket([...basket, value])
+		// setBasket([...basket, value]);
+		try {
+			const send = await addToCart(value);
+			console.log("value add to cart", send)
+		} catch (error) {
+			console.log("value error add to cart", error)
+		}
 	}
 
 	if (route.isFallback) {
-		return <div><p>loading...</p></div>
+		return <LoadingFetch />
 	}
+
 	return (
 		<div className="sale-item mt-20">
 			<div className="sale-item__img">
@@ -73,7 +78,7 @@ export const DetailItem = ({ item }) => {
 				</div>
 				<div className="sale-item__desc-review">
 					<div>
-						{rateView(item.rate)}
+						{useRateView(item.rate)}
 					</div>
 					<span>
 						<span className="label label-sm label-primary">Best Seller</span>
@@ -121,7 +126,7 @@ export async function getStaticProps({ params }) {
 	const product = await getDetailProduct(params.id);
 	return {
 		props: { product: product.data },
-		revalidate: 2
+		revalidate: 1
 	}
 }
 

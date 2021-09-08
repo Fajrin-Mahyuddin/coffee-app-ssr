@@ -1,3 +1,4 @@
+import { StarFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react"
 
@@ -18,4 +19,15 @@ export const useLoading = () => {
 		loading
 	}
 
+}
+
+export const useRateView = (value) => {
+	const star = []
+	for (let i = 0; i < value; i++) {
+		star.push(<StarFilled key={`orange-${i}`} style={{ color: 'orange' }} />)
+	}
+	for (let i = 0; i < (5 - value); i++) {
+		star.push(<StarFilled key={`grey-${i}`} style={{ color: 'grey' }} />)
+	}
+	return star.map((item) => item)
 }

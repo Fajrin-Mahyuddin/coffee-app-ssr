@@ -65,10 +65,23 @@
 	
 }
 
+.loading-fetch {
+	background-color: $smooth-white;
+	min-height: 30vw;
+	width: inherit;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	display: flex;
+	flex: 1;
+	span {
+		color: $black;
+	}
+}
+
 .color-animate {
 	background: linear-gradient(270deg, $dark-grey, $white);
 	background-size: 400% 400%;
-
 	-webkit-animation: AnimationName 7s ease infinite;
 	-moz-animation: AnimationName 7s ease infinite;
 	animation: AnimationName 7s ease infinite;
