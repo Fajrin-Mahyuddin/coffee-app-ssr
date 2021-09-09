@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StandartLayout } from 'layout';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { addToCart, basketList } from 'state/cart';
+import { addToCart, basketList, getDataCart } from 'state/atoms/cart';
 import { useRateView } from 'utils/general-helper';
 import { SubmitBtn, LoadingFetch } from 'components';
 import { ifDetailSaleScrolled } from 'utils/scrolled';
@@ -16,6 +16,7 @@ import {
 	ShoppingCartOutlined,
 	TagsOutlined
 } from '@ant-design/icons';
+import { reqCart } from 'utils/cart-helper';
 
 const SaleDetail = ({ product }) => {
 	return (
@@ -42,24 +43,39 @@ const SaleDetail = ({ product }) => {
 }
 
 export const DetailItem = ({ item }) => {
+	const [, setCartCount] = useRecoilState(basketList);
 	const route = useRouter();
 	const [quantity, setQuantity] = useState(1)
-	// const [basket, setBasket] = useRecoilState(basketList);
+	const [isSuccess, setSuccess] = useState(false)
+	// const [basket, setBasket] = useRecoilState(getDataCart);
 	const { refFooterPrice, refFooterChild } = ifDetailSaleScrolled();
 
 	const toBasket = async (val) => {
 		const value = { product: val, quantity: quantity }
 		// setBasket([...basket, value]);
 		try {
-			const send = await addToCart(value);
-			console.log("value add to cart", send)
+			const req = await addToCart();
+			setSuccess(true)
+			console.log("value add to cart", req);
+			setTimeout(() => setSuccess(false), 2000)
 		} catch (error) {
 			console.log("value error add to cart", error)
 		}
 	}
 
+	useEffect(async () => {
+		if (isSuccess) {
+			const data = await reqCart()
+			setCartCount(data.length)
+		}
+	}, [isSuccess])
+
 	if (route.isFallback) {
 		return <LoadingFetch />
+	}
+
+	if (isSuccess) {
+		return <div><p>Product success added to cart !</p></div>
 	}
 
 	return (

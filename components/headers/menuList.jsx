@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActiveLink } from 'components'
 import { DashboardOutlined, UserOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { useAppContext } from 'utils/auth';
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { basketList, getDataCart, getDataCartCount } from 'state/cart';
+import { basketList, getDataCart, getDataCartCount } from 'state/atoms/cart';
+import { reqCart } from 'utils/cart-helper';
 
 
 const StandartMenu = () => {
   const { authUser } = useAppContext();
-  const [cartCount,] = useRecoilState(basketList);
+  const [cartCount, setCartCount] = useRecoilState(basketList);
   const cart = useRecoilValueLoadable(getDataCart);
-  console.log("cart ", cartCount)
+
+  useEffect(async () => {
+    const data = await reqCart();
+    setCartCount(data.length)
+  }, []);
+  console.log("cartcount", cartCount);
 
   return (
     <ul>
@@ -44,7 +50,7 @@ const StandartMenu = () => {
       <li className="mrl-20">
         <button className="nav-menu-item btn default-less-btn sm-less-btn less-btn">
           <ShoppingCartOutlined />
-          {cart.state === 'hasValue' && !!cart.contents.length && <i className="badge-nav badge badge-danger">{cart.contents.length}</i>}
+          {!!cartCount && <i className="badge-nav badge badge-danger">{cartCount}</i>}
         </button>
       </li>
       {!authUser &&
