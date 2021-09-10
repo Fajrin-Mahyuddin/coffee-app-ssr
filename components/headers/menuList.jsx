@@ -1,22 +1,31 @@
-import React, { useEffect } from 'react';
 import { ActiveLink } from 'components'
-import { DashboardOutlined, UserOutlined, LogoutOutlined, ReadOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { useAppContext } from 'utils/auth';
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { basketList, getDataCart, getDataCartCount } from 'state/atoms/cart';
+import React, { useEffect, useState } from 'react';
+import { getFirebaseAuth, useAppContext } from 'utils/auth';
 import { reqCart } from 'utils/cart-helper';
+import { basketList, getDataCart } from 'state/atoms/cart';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import {
+  ReadOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  DashboardOutlined,
+  ShoppingCartOutlined
+} from '@ant-design/icons';
+import { checkFirebase } from 'utils/firebase-auth';
 
 
 const StandartMenu = () => {
-  const { authUser } = useAppContext();
+  const { authUser, loading } = getFirebaseAuth();
   const [cartCount, setCartCount] = useRecoilState(basketList);
-  const cart = useRecoilValueLoadable(getDataCart);
 
   useEffect(async () => {
     const data = await reqCart();
     setCartCount(data.length)
   }, []);
-  console.log("cartcount", cartCount);
+
+  if (loading) {
+    return <></>
+  }
 
   return (
     <ul>
@@ -50,7 +59,7 @@ const StandartMenu = () => {
       <li className="mrl-20">
         <button className="nav-menu-item btn default-less-btn sm-less-btn less-btn">
           <ShoppingCartOutlined />
-          {!!cartCount && <i className="badge-nav badge badge-danger">{cartCount}</i>}
+          {authUser && !!cartCount && <i className="badge-nav badge badge-danger">{cartCount}</i>}
         </button>
       </li>
       {!authUser &&

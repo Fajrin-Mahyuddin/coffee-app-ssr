@@ -31,10 +31,11 @@ export const redirectTo = (dest, res) => {
 
 export const getFirebaseAuth = () => {
 	const [authUser, setAuthUser] = useState(null)
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(true)
+	// const [pending, isPending] = useState('pending')
 
 	const setUser = async (user) => {
-		setLoading(true)
+		// setLoading(true)
 		if (!user) {
 			setAuthUser(null)
 			setLoading(false)
@@ -44,6 +45,7 @@ export const getFirebaseAuth = () => {
 		setLoading(false)
 	}
 	useEffect(() => {
+		// setLoading(true)
 		const sub = checkFirebase.auth().onIdTokenChanged(setUser);
 		return () => sub()
 	}, []);

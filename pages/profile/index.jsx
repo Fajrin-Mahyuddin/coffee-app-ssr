@@ -52,9 +52,9 @@ const ProfilePage = () => {
 				</select>
 			*/}
 				<ul>
-					{query?.contents?.map((item, i) => {
+					{/* {query.contents && query.contents.map((item, i) => {
 						return <li key={i}>{item.title}</li>
-					})}
+					})} */}
 				</ul>
 			</StandartLayout.Content>
 		</StandartLayout>

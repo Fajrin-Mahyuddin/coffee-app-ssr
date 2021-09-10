@@ -102,8 +102,8 @@ export const DetailItem = ({ item }) => {
 					</span>
 				</div>
 				<div className="sale-item__desc-paragraph">
-					<div>Kondisi : Baru</div>
-					<div>Berat : {item.weight} Gram</div>
+					<strong><i>{item.condition}</i></strong>
+					<div>Weight : {item.weight} Gram</div>
 					<p>{item.description}</p>
 				</div>
 				<div className="sale-item__desc-tags">

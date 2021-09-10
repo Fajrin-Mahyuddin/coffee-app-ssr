@@ -20,7 +20,7 @@ const ArticlePage = ({ pageLoading, articles }) => {
 	}
 
 	const { loading } = useLoading()
-
+	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<div className="container">

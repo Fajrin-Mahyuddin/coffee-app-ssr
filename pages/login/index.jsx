@@ -88,6 +88,7 @@ const Login = (props) => {
 	}, [router])
 
 	if (redirectStatus) return <div>Redirect..</div>
+	if (pageLoading) return <div>Loading..</div>
 	return (
 		<StandartLayout footer={false}>
 			<StandartLayout.Content>

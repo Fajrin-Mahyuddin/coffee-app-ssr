@@ -22,18 +22,7 @@ import { dataState } from 'utils/recoil-state';
 const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const [test, setTest] = useRecoilState(dataState);
-	// console.log("object----", products);
 
-	// useEffect(async () => {
-	// 	let articles;
-	// 	try {
-	// 		const req = await instance.get("/TrendingNewsAPI?pageNumber=1&pageSize=10&withThumbnails=false&location=us")
-	// 		console.log("articles-----", JSON.stringify(req))
-	// 		articles = JSON.stringify({ ...req });
-	// 	} catch (error) {
-	// 		articles = error
-	// 	}
-	// }, [])
 	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
@@ -151,7 +140,7 @@ export const getStaticProps = async () => {
 		articles = requestAll[0].data;
 		products = requestAll[1].data;
 	} catch (error) {
-		status = { error: true, msg: error.response.statusText }
+		status = { error: true, msg: "Failed to fetch data" }
 	}
 
 	return {
