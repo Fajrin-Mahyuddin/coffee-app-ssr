@@ -9,6 +9,9 @@ footer {
 		align-items: flex-start;
 		justify-content: flex-start;
 		width: 100%;
+		a {
+			color: $white;
+		}
 		.column-25 {
 			line-height: 1.5;
 			text-align: center;

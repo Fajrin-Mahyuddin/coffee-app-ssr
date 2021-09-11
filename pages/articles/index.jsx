@@ -37,7 +37,7 @@ const ArticlePage = ({ pageLoading, articles }) => {
 				</div>
 				<hr />
 				<div className="article-wrapper">
-					{articles?.value.map((item, i) => {
+					{articles.value.map((item, i) => {
 						return (
 							<div className="article-item" key={i}>
 								<div className="article-img">
@@ -83,7 +83,7 @@ const ArticlePage = ({ pageLoading, articles }) => {
 export const getServerSideProps = async ({ query }) => {
 	const articles = await getArticles(query.limit);
 	return {
-		props: { articles: articles?.data }
+		props: { articles: articles.data }
 	}
 }
 

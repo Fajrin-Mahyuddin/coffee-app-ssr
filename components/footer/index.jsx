@@ -11,7 +11,7 @@ const Footer = () => {
 						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum officiis doloribus eaque!
 					</div>
 					<div className="column-25">
-						<h4>Profile</h4>
+						<h4>Articles</h4>
 						<ul>
 							<li><a href="#">Profile</a></li>
 							<li><a href="#">Profile</a></li>
@@ -19,7 +19,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="column-25">
-						<h4>Profile</h4>
+						<h4>Sale</h4>
 						<ul>
 							<li><a href="#">Profile</a></li>
 							<li><a href="#">Profile</a></li>

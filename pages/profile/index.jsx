@@ -8,7 +8,7 @@ import { redirectTo, useAppContext } from "utils/auth";
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { filterState, funFilters, queryState, stateStatistics } from "utils/recoil-state";
 
-const ProfilePage = () => {
+const ProfilePage = ({ pageLoading }) => {
 	const state_global = useRecoilValue(funFilters);
 	const statistics = useRecoilValue(stateStatistics);
 	const query = useRecoilValueLoadable(queryState);
@@ -36,14 +36,17 @@ const ProfilePage = () => {
 	// }, [])
 
 	// console.log("state global", query);
-	if (query.state === 'loading') return <h1> loading ...</h1>
-	if (isLoading) return <h1> proses...</h1>
+	if (query.state === 'loading') return <h1> fetching data...</h1>
+	if (isLoading) return <h1> signout...</h1>
+	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
-				<button onClick={handleLogout}>
-					logout
-				</button>
+				<div>
+					<button onClick={handleLogout}>
+						logout
+					</button>
+				</div>
 				{/* total : {state_global.leng}
 				<select value={filter} name="bla" id="bla" onChange={(e) => setFilter(e.target.value)}>
 					<option value="">pilih</option>

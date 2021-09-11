@@ -26,7 +26,7 @@ const SalePage = ({ products = [], pageLoading }) => {
 	}
 
 	const { loading } = useLoading()
-	// if (pageLoading) return <div>Loading...</div>
+	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -99,13 +99,22 @@ const SalePage = ({ products = [], pageLoading }) => {
 	)
 }
 
-export async function getServerSideProps({ query }) {
-	const products = await getProducts(query.limit);
+export async function getStaticProps() {
+	const products = await getProducts();
 	return {
 		props: {
 			products: products.data,
-		}
+		},
+		revalidate: 5
 	}
 }
+// export async function getServerSideProps({ query }) {
+// 	const products = await getProducts(query.limit);
+// 	return {
+// 		props: {
+// 			products: products.data,
+// 		}
+// 	}
+// }
 
 export default SalePage

@@ -4,8 +4,9 @@ import { motor, windy } from 'images';
 import { useRouter } from 'next/router';
 import { StandartLayout } from 'layout';
 import { redirectTo, useAppContext } from 'utils/auth';
+import { reauthenticateWithCredential } from "firebase/auth";
 import { useRef, useState, useEffect } from 'react';
-import { googleLogin, loginPost } from 'utils/firebase-auth';
+import { checkFirebase, googleLogin, loginPost } from 'utils/firebase-auth';
 import {
 	Form,
 	InputAlert,
@@ -22,7 +23,7 @@ import {
 import admin from 'utils/firebase-admin';
 
 const Login = (props) => {
-	const { errorInfo, pageLoading } = props
+	const { errorInfo, pageLoading, fire } = props
 	const inputRef = useRef();
 	const router = useRouter();
 
@@ -71,9 +72,9 @@ const Login = (props) => {
 	useEffect(() => {
 		if (errorInfo) {
 			setAlert({ type: "warning", body: errorInfo.code })
-			if (errorInfo.code === 'auth/id-token-expired') {
-				nookies.destroy(null, 'token');
-			}
+			// if (errorInfo.code === 'auth/id-token-expired') {
+			// 	nookies.destroy(null, 'token');
+			// }
 		}
 		return () => {
 			setAlert(null)
@@ -86,6 +87,8 @@ const Login = (props) => {
 			setRedirectStatus(null);
 		}
 	}, [router])
+
+	console.log("fire", fire)
 
 	if (redirectStatus) return <div>Redirect..</div>
 	if (pageLoading) return <div>Loading..</div>
@@ -178,6 +181,9 @@ export const getServerSideProps = async (ctx) => {
 	const { res } = ctx
 	let props = {};
 	const token = nookies.get(ctx);
+	const user = checkFirebase.auth().currentUser;
+	let fire;
+
 	if (token.token) {
 		await admin.auth().verifyIdToken(token.token)
 			.then(response => {
@@ -188,8 +194,18 @@ export const getServerSideProps = async (ctx) => {
 				props = { ...error }
 			})
 	}
+
+	checkFirebase.auth().onAuthStateChanged((res) => {
+		fire = res;
+		console.log("re ATUH---", res);
+	})
+	// user.reauthenticateWithCredential(token).then(res => {
+	// }).catch(err => console.log("error re auth", err));
+
+	console.log("respon in login props", ctx);
+
 	return {
-		props: { ...props }
+		props: { fire: res, ...props }
 	}
 }
 
