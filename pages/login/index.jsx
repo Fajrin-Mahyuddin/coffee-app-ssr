@@ -4,9 +4,8 @@ import { motor, windy } from 'images';
 import { useRouter } from 'next/router';
 import { StandartLayout } from 'layout';
 import { redirectTo, useAppContext } from 'utils/auth';
-import { reauthenticateWithCredential } from "firebase/auth";
 import { useRef, useState, useEffect } from 'react';
-import { checkFirebase, googleLogin, loginPost } from 'utils/firebase-auth';
+import { googleLogin, loginPost } from 'utils/firebase-auth';
 import {
 	Form,
 	InputAlert,
@@ -23,7 +22,7 @@ import {
 import admin from 'utils/firebase-admin';
 
 const Login = (props) => {
-	const { errorInfo, pageLoading, fire } = props
+	const { errorInfo, pageLoading } = props
 	const inputRef = useRef();
 	const router = useRouter();
 
@@ -62,9 +61,9 @@ const Login = (props) => {
 		} else {
 			const token = await respon.user.getIdToken();
 			nookies.set(null, 'token', token, { path: '/' });
-			setTimeout(() => {
-				redirectTo('/', null);
-			}, 3000)
+			redirectTo('/', null);
+			// setTimeout(() => {
+			// }, 3000)
 		}
 		setLoading({ type: null, status: false });
 	}
@@ -88,7 +87,6 @@ const Login = (props) => {
 		}
 	}, [router])
 
-	console.log("fire", fire)
 
 	if (redirectStatus) return <div>Redirect..</div>
 	if (pageLoading) return <div>Loading..</div>
@@ -181,8 +179,6 @@ export const getServerSideProps = async (ctx) => {
 	const { res } = ctx
 	let props = {};
 	const token = nookies.get(ctx);
-	const user = checkFirebase.auth().currentUser;
-	let fire;
 
 	if (token.token) {
 		await admin.auth().verifyIdToken(token.token)
@@ -195,17 +191,10 @@ export const getServerSideProps = async (ctx) => {
 			})
 	}
 
-	checkFirebase.auth().onAuthStateChanged((res) => {
-		fire = res;
-		console.log("re ATUH---", res);
-	})
-	// user.reauthenticateWithCredential(token).then(res => {
-	// }).catch(err => console.log("error re auth", err));
-
-	console.log("respon in login props", ctx);
+	// console.log("error info____", token)
 
 	return {
-		props: { fire: res, ...props }
+		props: { ...props }
 	}
 }
 

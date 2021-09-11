@@ -18,10 +18,18 @@ import { getArticles } from 'utils/article-helper';
 import { getProducts } from 'utils/product-helper';
 import { useRecoilState } from 'recoil';
 import { dataState } from 'utils/recoil-state';
+import { checkFirebase } from 'utils/firebase-auth';
 
 const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const [test, setTest] = useRecoilState(dataState);
+
+	const getID = () => {
+		checkFirebase.auth().currentUser.getIdToken(true).then((res) => {
+			nookies.set(null, 'token', token, { path: '/' });
+			console.log("get token and token has been set on cookies", res)
+		}).catch(err => console.log("error when retrieve token in dashboard", error))
+	}
 
 	if (pageLoading) return <div>Loading...</div>
 	return (
@@ -31,7 +39,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 					<div className="dashboard-cover__paragraph">
 						<h1>Hi, need a cup of <strong> coffee</strong> ?</h1>
 						<p onClick={() => setTest('oke')}>{test}</p>
-						<SubmitBtn label="Get Started" className="btn md-btn primary-btn mr-5" />
+						<SubmitBtn onClick={getID} label="Get Started" className="btn md-btn primary-btn mr-5" />
 					</div>
 					<div className="dashboard-cover__img">
 						<Image className="dashboard-cover__second-img" src={cupboard} alt="dashboard-cover" bottom="10px" />

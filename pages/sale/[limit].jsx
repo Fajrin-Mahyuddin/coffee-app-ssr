@@ -99,8 +99,17 @@ const SalePage = ({ products = [], pageLoading }) => {
 	)
 }
 
-export async function getStaticProps() {
+export async function getStaticPaths() {
 	const products = await getProducts();
+	const paths = [{ params: { limit: '5' } }]
+	return {
+		paths,
+		fallback: 'blocking',
+	}
+}
+export async function getStaticProps(context) {
+	const products = await getProducts(5);
+	console.log("params", context)
 	return {
 		props: {
 			products: products.data,

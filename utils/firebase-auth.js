@@ -12,7 +12,7 @@ export const checkFirebase = firebase;
 export const loginPost = async ({ email, password }) => {
 	return await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 		.then(async () => {
-			return firebase.auth().signInWithEmailAndPassword(email, password)
+			return await firebase.auth().signInWithEmailAndPassword(email, password);
 		}).catch(error => {
 			console.log("error firebase", error)
 			return error

@@ -20,7 +20,7 @@ const StandartMenu = () => {
 
   useEffect(async () => {
     const data = await reqCart();
-    setCartCount(data.length)
+    setCartCount(data.length);
   }, []);
 
   if (loading) {
@@ -70,7 +70,6 @@ const StandartMenu = () => {
           </a>
         </li>
       }
-
     </ul>
   )
 }
