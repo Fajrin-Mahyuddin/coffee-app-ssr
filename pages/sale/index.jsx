@@ -15,18 +15,35 @@ import { getProducts } from 'utils/product-helper';
 // }
 
 const SalePage = ({ products = [], pageLoading }) => {
-	const router = useRouter()
+	const [productList, setProduct] = useState(products)
+	const [isLoading, setLoading] = useState(false)
+	const router = useRouter();
 
 	const viewMore = () => {
-		let limit = Number(router.query.limit || 10)
+		let limit = Number(router.query.limit || 5)
 		router.push({
 			path: router.pathname,
 			query: { limit: limit + 5 }
 		}, undefined, { scroll: false })
+		// loadMore()
 	}
 
-	const { loading } = useLoading()
+	const loadMore = async () => {
+		setLoading(true);
+		const data = await getProducts(router.query.limit);
+		setProduct(data.data);
+		setLoading(false);
+	}
+
+	useEffect(() => {
+		if (router.query.limit) {
+			loadMore()
+		}
+	}, [router.query.limit])
+
+	const { loading } = useLoading();
 	if (pageLoading) return <div>Loading...</div>
+	console.log("router", router.query)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -74,11 +91,11 @@ const SalePage = ({ products = [], pageLoading }) => {
 					<hr />
 
 					<div className="sale-list">
-						{products?.map((item, i) => {
+						{productList?.map((item, i) => {
 							return <ItemSale key={i} item={item} />
 						})}
 
-						{loading &&
+						{isLoading &&
 							<>
 								<Loading />
 								<Loading />
@@ -88,7 +105,7 @@ const SalePage = ({ products = [], pageLoading }) => {
 							</>
 						}
 					</div>
-					{products.length < 20 &&
+					{router.query.limit < 20 &&
 						<div className="view-more">
 							<button onClick={viewMore}>Load more</button>
 						</div>
@@ -99,17 +116,18 @@ const SalePage = ({ products = [], pageLoading }) => {
 	)
 }
 
-export async function getStaticPaths() {
-	const products = await getProducts();
-	const paths = [{ params: { limit: '5' } }]
-	return {
-		paths,
-		fallback: 'blocking',
-	}
-}
-export async function getStaticProps(context) {
+// export async function getStaticPaths() {
+// 	const products = await getProducts();
+// 	const paths = [{ params: { limit: '5' } }]
+// 	return {
+// 		paths,
+// 		fallback: 'blocking',
+// 	}
+// }
+
+export async function getStaticProps() {
 	const products = await getProducts(5);
-	console.log("params", context)
+	// console.log("params", query)
 	return {
 		props: {
 			products: products.data,
@@ -117,13 +135,5 @@ export async function getStaticProps(context) {
 		revalidate: 5
 	}
 }
-// export async function getServerSideProps({ query }) {
-// 	const products = await getProducts(query.limit);
-// 	return {
-// 		props: {
-// 			products: products.data,
-// 		}
-// 	}
-// }
 
 export default SalePage

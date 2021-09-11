@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { StandartLayout } from 'layout';
 import { cupboard, Saly11 } from 'images';
 import { SubmitBtn } from 'components';
+import nookies from 'nookies'
 import coffee_one from '../public/assets/images/coffee_one.jpeg';
 import {
 	ShopFilled,
@@ -25,10 +26,10 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 	const [test, setTest] = useRecoilState(dataState);
 
 	const getID = () => {
-		checkFirebase.auth().currentUser.getIdToken(true).then((res) => {
-			nookies.set(null, 'token', token, { path: '/' });
-			console.log("get token and token has been set on cookies", res)
-		}).catch(err => console.log("error when retrieve token in dashboard", error))
+		checkFirebase.auth().currentUser.getIdToken(true).then((token) => {
+			nookies.get(null, 'token', token, { path: '/' });
+			console.log("get token and token has been set on cookies", token)
+		}).catch(err => console.log("error when retrieve token in dashboard", err))
 	}
 
 	if (pageLoading) return <div>Loading...</div>

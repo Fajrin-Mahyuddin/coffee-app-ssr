@@ -191,7 +191,7 @@ export const getServerSideProps = async (ctx) => {
 			})
 	}
 
-	// console.log("error info____", token)
+	console.log("error info____", token)
 
 	return {
 		props: { ...props }
