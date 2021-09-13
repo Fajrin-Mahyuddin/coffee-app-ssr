@@ -19,12 +19,12 @@ const SalePage = ({ products = [], pageLoading }) => {
 	const [isLoading, setLoading] = useState(false)
 	const router = useRouter();
 
-	const viewMore = () => {
+	const viewMore = (e) => {
 		let limit = Number(router.query.limit || 5)
 		router.push({
 			path: router.pathname,
-			query: { limit: limit + 5 }
-		}, undefined, { scroll: false })
+			query: { limit: limit + 1 }
+		}, undefined, { scroll: false, shallow: true })
 		// loadMore()
 	}
 
@@ -105,9 +105,9 @@ const SalePage = ({ products = [], pageLoading }) => {
 							</>
 						}
 					</div>
-					{router.query.limit < 20 &&
+					{productList.length < 20 &&
 						<div className="view-more">
-							<button onClick={viewMore}>Load more</button>
+							<button onClick={(e) => viewMore(e)}>Load more</button>
 						</div>
 					}
 				</div>

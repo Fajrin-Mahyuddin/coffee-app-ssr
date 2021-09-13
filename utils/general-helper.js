@@ -1,6 +1,7 @@
 import { StarFilled } from "@ant-design/icons";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react"
+import { logout } from "./firebase-auth";
 
 export const useLoading = () => {
 	const [loading, setLoading] = useState(false);
@@ -30,4 +31,23 @@ export const useRateView = (value) => {
 		star.push(<StarFilled key={`grey-${i}`} style={{ color: 'grey' }} />)
 	}
 	return star.map((item) => item)
+}
+
+export const useCheckToken = (errorInfo) => {
+	const [alertToken, setAlert] = useState(null);
+	const [redirect, setRedirect] = useState(null);
+	useEffect(() => {
+		if (errorInfo) {
+			setAlert({ type: "warning", body: errorInfo.code })
+			// if (errorInfo.code === 'auth/id-token-expired') {
+			logout();
+			// }
+		}
+		return () => {
+			setAlert(null)
+			setRedirect(null)
+		}
+	}, [errorInfo])
+
+	return { alertToken, redirect }
 }

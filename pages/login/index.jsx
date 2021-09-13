@@ -5,31 +5,19 @@ import { useRouter } from 'next/router';
 import { StandartLayout } from 'layout';
 import { redirectTo, useAppContext } from 'utils/auth';
 import { useRef, useState, useEffect } from 'react';
-import { googleLogin, loginPost } from 'utils/firebase-auth';
-import {
-	Form,
-	InputAlert,
-	InputText,
-	SubmitBtn
-} from 'components';
-import {
-	GoogleOutlined,
-	KeyOutlined,
-	LoadingOutlined,
-	LoginOutlined,
-	UserOutlined
-} from '@ant-design/icons';
+import { checkFirebase, googleLogin, loginPost, logout } from 'utils/firebase-auth';
+
 import admin from 'utils/firebase-admin';
+import FormLogin from './card/form';
 
 const Login = (props) => {
 	const { errorInfo, pageLoading } = props
-	const inputRef = useRef();
 	const router = useRouter();
 
 	const [redirectStatus, setRedirectStatus] = useState(null);
 	const [input, setInput] = useState({});
 	const [alert, setAlert] = useState(null)
-	const [loading, setLoading] = useState({ type: null, status: false })
+	const [loading, setLoading] = useState({ type: null, status: false });
 
 	const handleChange = (e) => {
 		e.preventDefault();
@@ -73,6 +61,12 @@ const Login = (props) => {
 			setAlert({ type: "warning", body: errorInfo.code })
 			// if (errorInfo.code === 'auth/id-token-expired') {
 			// 	nookies.destroy(null, 'token');
+			// checkFirebase.auth().currentUser.getIdToken(true).then(token => {
+			// 	console.log("new token are", token);
+			// 	nookies.set(null, 'token', token, { path: '/' });
+			// 	redirectTo('/', null);	
+			// })
+			// logout()
 			// }
 		}
 		return () => {
@@ -87,7 +81,7 @@ const Login = (props) => {
 		}
 	}, [router])
 
-
+	console.log("input value of form", input)
 	if (redirectStatus) return <div>Redirect..</div>
 	if (pageLoading) return <div>Loading..</div>
 	return (
@@ -99,71 +93,12 @@ const Login = (props) => {
 							Coffee App Login
 						</h2>
 						<p>Feel bad stay at home ? Don't worry, a cup of coffee can help.</p>
-						<Form
-							onSubmit={(e) => onSubmit(e, 'submit-email')}
-							className="form-vertical mtb-20"
-						>
-							<Form.Row>
-								<Form.Column className="mb-10">
-									<InputAlert alert={alert} />
-								</Form.Column>
-							</Form.Row>
-							<Form.Row>
-								<Form.Column className="mb-10">
-									<InputText
-										type="email"
-										error={false}
-										ref={inputRef}
-										name="email"
-										label="Email"
-										id="email-input"
-										icon={UserOutlined}
-										placeholder="email"
-										onChange={handleChange}
-										classWrapper="display-column column-item"
-									/>
-								</Form.Column>
-							</Form.Row>
-							<Form.Row>
-								<Form.Column className="mb-10">
-									<InputText
-										type="password"
-										error={false}
-										ref={inputRef}
-										name="password"
-										label="Password"
-										id="password-input"
-										icon={KeyOutlined}
-										placeholder="password"
-										onChange={handleChange}
-										classWrapper="display-column column-item"
-									/>
-								</Form.Column>
-							</Form.Row>
-							<div className="display-horizontal">
-								<input type="checkbox" className="remember_me" id="remember_me" /><label htmlFor="remember_me">remember me</label>
-							</div>
-							<div className="display-horizontal mtb-20">
-								<SubmitBtn
-									type="submit"
-									label="Login"
-									loading="false"
-									disabled={loading.status}
-									icon={loading.type === 'submit-email' ? LoadingOutlined : LoginOutlined}
-									className="btn info-btn sm-btn mr-5"
-								/>
-
-								<SubmitBtn
-									type="button"
-									label="Login with gmail"
-									loading="false"
-									disabled={loading.status}
-									icon={loading.type === 'submit-gmail' ? LoadingOutlined : GoogleOutlined}
-									className="btn primary-btn sm-btn mr-5"
-									onClick={(e) => onSubmit(e, 'submit-gmail')}
-								/>
-							</div>
-						</Form>
+						<FormLogin
+							alert={alert}
+							setAlert={setAlert}
+							loading={loading}
+							onSubmit={onSubmit}
+							handleChange={handleChange} />
 					</div>
 					<div className="login-image">
 						<Image src={windy} alt="windy" />
@@ -191,7 +126,7 @@ export const getServerSideProps = async (ctx) => {
 			})
 	}
 
-	console.log("error info____", token)
+	console.log("error inffffo____", token)
 
 	return {
 		props: { ...props }

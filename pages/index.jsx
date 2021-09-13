@@ -27,7 +27,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const getID = () => {
 		checkFirebase.auth().currentUser.getIdToken(true).then((token) => {
-			nookies.get(null, 'token', token, { path: '/' });
+			nookies.set(null, 'token', token, { path: '/' });
 			console.log("get token and token has been set on cookies", token)
 		}).catch(err => console.log("error when retrieve token in dashboard", err))
 	}

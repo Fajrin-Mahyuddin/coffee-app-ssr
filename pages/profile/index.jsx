@@ -7,8 +7,10 @@ import { logout } from "utils/firebase-auth";
 import { redirectTo, useAppContext } from "utils/auth";
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { filterState, funFilters, queryState, stateStatistics } from "utils/recoil-state";
+import { useCheckToken } from "utils/general-helper";
+import { InputAlert } from "components";
 
-const ProfilePage = ({ pageLoading }) => {
+const ProfilePage = ({ errorInfo, pageLoading }) => {
 	const state_global = useRecoilValue(funFilters);
 	const statistics = useRecoilValue(stateStatistics);
 	const query = useRecoilValueLoadable(queryState);
@@ -17,6 +19,9 @@ const ProfilePage = ({ pageLoading }) => {
 	const [isLoading, setLoading] = useState(false);
 	const [isMounted, setMounted] = useState(false);
 	const { authUser, loading } = useAppContext();
+
+	const { alertToken, redirect } = useCheckToken(errorInfo)
+
 
 	const handleLogout = async () => {
 		setLoading(true)
@@ -36,16 +41,18 @@ const ProfilePage = ({ pageLoading }) => {
 	// }, [])
 
 	// console.log("state global", query);
-	if (query.state === 'loading') return <h1> fetching data...</h1>
+
 	if (isLoading) return <h1> signout...</h1>
 	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
+				{query.state === 'loading' && <h1> fetching data...</h1>}
 				<div>
 					<button onClick={handleLogout}>
 						logout
 					</button>
+					<InputAlert alert={alertToken} />
 				</div>
 				{/* total : {state_global.leng}
 				<select value={filter} name="bla" id="bla" onChange={(e) => setFilter(e.target.value)}>
@@ -77,7 +84,11 @@ export const getServerSideProps = async (ctx) => {
 					redirectTo('/login', ctx.res)
 				}
 			}).catch(error => {
-				props = { ...error }
+				if (error.errorInfo === 'auth/id-token-expired') {
+					redirectTo('/login', ctx.res)
+				} else {
+					props = { ...error }
+				}
 			})
 	}
 	return {
