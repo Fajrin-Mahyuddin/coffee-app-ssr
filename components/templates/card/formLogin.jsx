@@ -15,6 +15,7 @@ import { useRef } from 'react';
 
 const FormLogin = ({
 	alert,
+	value,
 	setAlert,
 	loading,
 	handleChange,
@@ -38,6 +39,7 @@ const FormLogin = ({
 						type="email"
 						error={false}
 						ref={inputRef}
+						defaultValue={value?.email}
 						name="email"
 						label="Email"
 						id="email-input"

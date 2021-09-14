@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StandartLayout } from 'layout';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { addToCart, basketList, getDataCart } from 'state/atoms/cart';
+import { addToCart, basketList } from 'state/atoms/cart';
 import { useRateView } from 'utils/general-helper';
 import { SubmitBtn, LoadingFetch } from 'components';
 import { ifDetailSaleScrolled } from 'utils/scrolled';
@@ -17,8 +17,11 @@ import {
 	TagsOutlined
 } from '@ant-design/icons';
 import { reqCart } from 'utils/cart-helper';
+import DefaultErrorPage from 'next/error'
 
-const SaleDetail = ({ product }) => {
+const SaleDetail = (props) => {
+	const { product } = props;
+	console.log("error on sale page", props)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -36,6 +39,7 @@ const SaleDetail = ({ product }) => {
 						{/* list another item  */}
 						<h5 className="text-grey"><TagsOutlined /> Related Product:</h5>
 					</div>
+					<DefaultErrorPage statusCode={404} />
 				</div>
 			</StandartLayout.Content>
 		</StandartLayout>
@@ -139,10 +143,16 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-	const product = await getDetailProduct(params.id);
+	const product = await getDetailProduct(params.id)
+	if (!product.data.id) {
+		return {
+			notFound: true
+		}
+	}
+
 	return {
 		props: { product: product.data },
-		revalidate: 1
+		revalidate: 1,
 	}
 }
 

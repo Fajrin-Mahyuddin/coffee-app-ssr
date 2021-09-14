@@ -57,10 +57,10 @@ const StandartMenu = () => {
       }
 
       <li className="mrl-20">
-        <button className="nav-menu-item btn default-less-btn sm-less-btn less-btn">
+        <a href="/cart" className="nav-menu-item btn default-less-btn sm-less-btn less-btn">
           <ShoppingCartOutlined />
           {authUser && !!cartCount && <i className="badge-nav badge badge-danger">{cartCount}</i>}
-        </button>
+        </a>
       </li>
       {!authUser &&
         <li>

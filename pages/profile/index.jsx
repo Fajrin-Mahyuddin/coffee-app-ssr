@@ -2,7 +2,7 @@ import nookies from "nookies";
 import { useEffect, useState } from "react";
 import { StandartLayout } from "layout";
 import { useRouter } from "next/router";
-import admin from "utils/firebase-admin";
+import adminFirebase from "utils/firebase-admin-helper";
 import { logout } from "utils/firebase-auth";
 import { redirectTo, useAppContext } from "utils/auth";
 import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from "recoil";
@@ -11,14 +11,14 @@ import { useCheckToken } from "utils/general-helper";
 import { InputAlert } from "components";
 
 const ProfilePage = ({ errorInfo, pageLoading }) => {
-	const state_global = useRecoilValue(funFilters);
-	const statistics = useRecoilValue(stateStatistics);
+	// const state_global = useRecoilValue(funFilters);
+	// const statistics = useRecoilValue(stateStatistics);
 	const query = useRecoilValueLoadable(queryState);
-	const [filter, setFilter] = useRecoilState(filterState)
+	// const [filter, setFilter] = useRecoilState(filterState)
 	const router = useRouter();
 	const [isLoading, setLoading] = useState(false);
-	const [isMounted, setMounted] = useState(false);
-	const { authUser, loading } = useAppContext();
+	// const [isMounted, setMounted] = useState(false);
+	// const { authUser, loading } = useAppContext();
 
 	const { alertToken, redirect } = useCheckToken(errorInfo)
 
@@ -72,23 +72,22 @@ const ProfilePage = ({ errorInfo, pageLoading }) => {
 }
 
 export const getServerSideProps = async (ctx) => {
-
+	const nextUrlEncode = encodeURIComponent(ctx.req.url)
 	const token = nookies.get(ctx);
 	let props;
 	if (!token.token) {
-		redirectTo('/login', ctx.res)
+		redirectTo(`/login?next=${nextUrlEncode}`, ctx)
 	} else {
-		await admin.auth().verifyIdToken(token.token)
+		await adminFirebase.auth().verifyIdToken(token.token)
 			.then(response => {
 				if (!response) {
-					redirectTo('/login', ctx.res)
+					redirectTo(`/login?next=${nextUrlEncode}`, ctx)
 				}
 			}).catch(error => {
-				if (error.errorInfo === 'auth/id-token-expired') {
-					redirectTo('/login', ctx.res)
-				} else {
-					props = { ...error }
+				if (error.errorInfo.code === 'auth/id-token-expired') {
+					redirectTo(`/login?next=${nextUrlEncode}`, ctx)
 				}
+				props = { ...error }
 			})
 	}
 	return {

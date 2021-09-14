@@ -19,10 +19,14 @@ export const AppProvider = ({ children }) => {
 	)
 }
 
-export const redirectTo = (dest, res) => {
-	if (res) {
-		res.writeHead(302, { Location: dest });
-		res.end()
+export const redirectTo = (dest, ctx) => {
+	if (ctx) {
+		if (ctx.req) {
+			ctx.res.setHeader('Location', dest);
+			ctx.res.statusCode = 302;
+			ctx.res.finish = true;
+			return { props: {} };
+		}
 	} else {
 		Router.push(dest)
 	}

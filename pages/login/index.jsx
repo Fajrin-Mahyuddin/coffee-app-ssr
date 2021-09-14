@@ -3,20 +3,35 @@ import Image from 'next/image';
 import { motor, windy } from 'images';
 import { useRouter } from 'next/router';
 import { StandartLayout } from 'layout';
-import { redirectTo, useAppContext } from 'utils/auth';
-import { useRef, useState, useEffect } from 'react';
-import { checkFirebase, googleLogin, loginPost, logout } from 'utils/firebase-auth';
-
-import admin from 'utils/firebase-admin';
-import FormLogin from './card/form';
+import adminFirebase from 'utils/firebase-admin-helper';
+import { useState, useEffect } from 'react';
+import {
+	LoadingOutlined,
+	LogoutOutlined,
+	UserOutlined
+} from '@ant-design/icons';
+import { getFirebaseAuth, redirectTo } from 'utils/auth';
+import {
+	Form,
+	InputText,
+	DefaultBtn,
+	FormLogin
+} from 'components';
+import {
+	checkFirebase,
+	googleLogin,
+	loginPost,
+	logout
+} from 'utils/firebase-auth';
 
 const Login = (props) => {
-	const { errorInfo, pageLoading } = props
 	const router = useRouter();
-
-	const [redirectStatus, setRedirectStatus] = useState(null);
 	const [input, setInput] = useState({});
-	const [alert, setAlert] = useState(null)
+	const { authUser } = getFirebaseAuth();
+	const { errorInfo, pageLoading } = props;
+	const { query: { next = '/' } } = router;
+	const [alert, setAlert] = useState(null);
+	const [redirectStatus, setRedirectStatus] = useState(null);
 	const [loading, setLoading] = useState({ type: null, status: false });
 
 	const handleChange = (e) => {
@@ -42,6 +57,7 @@ const Login = (props) => {
 		e.preventDefault();
 		setLoading({ type, status: true });
 		const respon = await submitType(type)
+
 		setRedirectStatus("Redirect...")
 		if (respon.message) {
 			setAlert({ type: "danger", body: respon?.message })
@@ -49,25 +65,35 @@ const Login = (props) => {
 		} else {
 			const token = await respon.user.getIdToken();
 			nookies.set(null, 'token', token, { path: '/' });
-			redirectTo('/', null);
-			// setTimeout(() => {
-			// }, 3000)
+			redirectTo(next, null);
 		}
+
 		setLoading({ type: null, status: false });
+	}
+
+	const onLogout = () => {
+		setLoading({ type: 'logout', status: true })
+		logout();
+		redirectTo('/login', null);
+		setLoading({ type: null, status: false });
+	}
+
+	const reAuthenticate = () => {
+		setLoading({ type: 're-auth', status: true });
+		checkFirebase.auth().currentUser.getIdToken(true)
+			.then((token) => {
+				nookies.set(null, 'token', token, { path: '/' });
+				redirectTo(next, null);
+				setLoading({ type: null, status: false });
+			}).catch(err => {
+				setLoading({ type: null, status: false });
+				setAlert({ type: "danger", body: err.message })
+			})
 	}
 
 	useEffect(() => {
 		if (errorInfo) {
 			setAlert({ type: "warning", body: errorInfo.code })
-			// if (errorInfo.code === 'auth/id-token-expired') {
-			// 	nookies.destroy(null, 'token');
-			// checkFirebase.auth().currentUser.getIdToken(true).then(token => {
-			// 	console.log("new token are", token);
-			// 	nookies.set(null, 'token', token, { path: '/' });
-			// 	redirectTo('/', null);	
-			// })
-			// logout()
-			// }
 		}
 		return () => {
 			setAlert(null)
@@ -80,8 +106,8 @@ const Login = (props) => {
 			setRedirectStatus(null);
 		}
 	}, [router])
+	console.log("auth user", router.query)
 
-	console.log("input value of form", input)
 	if (redirectStatus) return <div>Redirect..</div>
 	if (pageLoading) return <div>Loading..</div>
 	return (
@@ -90,15 +116,53 @@ const Login = (props) => {
 				<div className="content-login">
 					<div className="text-wrapper">
 						<h2>
-							Coffee App Login
+							{errorInfo?.code === 'auth/id-token-expired' ? "Your Session Login Expired" : "Coffee App Login"}
 						</h2>
 						<p>Feel bad stay at home ? Don't worry, a cup of coffee can help.</p>
-						<FormLogin
-							alert={alert}
-							setAlert={setAlert}
-							loading={loading}
-							onSubmit={onSubmit}
-							handleChange={handleChange} />
+						{errorInfo?.code === 'auth/id-token-expired' ?
+							<Form className="form-vertical mtb-20">
+								<Form.Row>
+									<Form.Column className="mb-10">
+										<InputText
+											type="email"
+											error={false}
+											disabled={true}
+											value={authUser?.email}
+											id="email-input"
+											icon={UserOutlined}
+											classWrapper="display-column column-item"
+										/>
+									</Form.Column>
+								</Form.Row>
+								<div className="display-horizontal mtb-20">
+									<DefaultBtn
+										size="md"
+										btn="primary"
+										type="button"
+										className="mr-5"
+										icon={loading.type === 're-auth' ? LoadingOutlined : UserOutlined}
+										label="Re-Authentication"
+										onClick={reAuthenticate}
+									/>
+									<DefaultBtn
+										size="md"
+										btn="danger"
+										type="button"
+										label="Logout"
+										onClick={onLogout}
+										icon={loading.type === 'logout' ? LoadingOutlined : LogoutOutlined}
+									/>
+								</div>
+							</Form>
+							:
+							<FormLogin
+								alert={alert}
+								value={input}
+								setAlert={setAlert}
+								loading={loading}
+								onSubmit={onSubmit}
+								handleChange={handleChange} />
+						}
 					</div>
 					<div className="login-image">
 						<Image src={windy} alt="windy" />
@@ -111,22 +175,28 @@ const Login = (props) => {
 }
 
 export const getServerSideProps = async (ctx) => {
-	const { res } = ctx
 	let props = {};
+	// const { query: { next } } = ctx;
+	// let nextUrlDecode;
+
+	// if (next) {
+	// 	nextUrlDecode = decodeURIComponent(next);
+	// } else {
+	// 	nextUrlDecode = '/'
+	// }
+
 	const token = nookies.get(ctx);
 
 	if (token.token) {
-		await admin.auth().verifyIdToken(token.token)
+		await adminFirebase.auth().verifyIdToken(token.token)
 			.then(response => {
 				if (response) {
-					redirectTo('/', res);
+					redirectTo('/', ctx);
 				}
 			}).catch(error => {
 				props = { ...error }
 			})
 	}
-
-	console.log("error inffffo____", token)
 
 	return {
 		props: { ...props }

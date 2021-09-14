@@ -23,9 +23,7 @@
     "swr": "^1.0.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.27.4",
-    "browser-sync-webpack-plugin": "^2.3.0",
     "file-loader": "^6.2.0",
-    "sass": "^1.35.1"
+    "sass": "^1.40.1"
   }
 }

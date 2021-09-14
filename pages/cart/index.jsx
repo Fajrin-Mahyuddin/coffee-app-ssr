@@ -1,6 +1,9 @@
 import { DeleteFilled, MinusCircleFilled, PlusCircleFilled, ShoppingCartOutlined } from "@ant-design/icons";
 import { SubmitBtn } from "components";
+import nookies from 'nookies';
 import { StandartLayout } from "layout";
+import adminFirebase from "utils/firebase-admin-helper";
+import { redirectTo } from "utils/auth";
 
 const CartPage = () => {
 	return (
@@ -119,6 +122,31 @@ const CartPage = () => {
 			</StandartLayout.Content>
 		</StandartLayout>
 	)
+}
+
+export const getServerSideProps = async (ctx) => {
+	const nextUrlEncode = encodeURIComponent(ctx.req.url)
+	const token = nookies.get(ctx);
+	let props;
+	if (!token.token) {
+		redirectTo(`/login?next=${nextUrlEncode}`, ctx)
+	}
+	await adminFirebase.auth().verifyIdToken(token.token)
+		.then(response => {
+			if (!response) {
+				redirectTo(`/login?next=${nextUrlEncode}`, ctx)
+			}
+		}).catch(error => {
+			if (error.errorInfo.code === 'auth/id-token-expired') {
+				redirectTo(`/login?next=${nextUrlEncode}`, ctx)
+			}
+			props = { ...error }
+		})
+
+	return {
+		props: { ...props }
+	}
+
 }
 
 export default CartPage;

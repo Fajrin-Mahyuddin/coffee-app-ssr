@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
 import { cupboard, Saly11 } from 'images';
 import { SubmitBtn } from 'components';
-import nookies from 'nookies'
-import coffee_one from '../public/assets/images/coffee_one.jpeg';
+// import coffee_one from '../public/assets/images/coffee_one.jpeg';
 import {
 	ShopFilled,
 	StarFilled,
@@ -14,23 +13,14 @@ import {
 	HeartFilled,
 	ClockCircleOutlined,
 } from '@ant-design/icons';
-import { request } from 'config/axiosConfig';
 import { getArticles } from 'utils/article-helper';
 import { getProducts } from 'utils/product-helper';
 import { useRecoilState } from 'recoil';
 import { dataState } from 'utils/recoil-state';
-import { checkFirebase } from 'utils/firebase-auth';
 
 const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const [test, setTest] = useRecoilState(dataState);
-
-	const getID = () => {
-		checkFirebase.auth().currentUser.getIdToken(true).then((token) => {
-			nookies.set(null, 'token', token, { path: '/' });
-			console.log("get token and token has been set on cookies", token)
-		}).catch(err => console.log("error when retrieve token in dashboard", err))
-	}
 
 	if (pageLoading) return <div>Loading...</div>
 	return (
@@ -40,7 +30,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 					<div className="dashboard-cover__paragraph">
 						<h1>Hi, need a cup of <strong> coffee</strong> ?</h1>
 						<p onClick={() => setTest('oke')}>{test}</p>
-						<SubmitBtn onClick={getID} label="Get Started" className="btn md-btn primary-btn mr-5" />
+						<SubmitBtn label="Get Started" className="btn md-btn primary-btn mr-5" />
 					</div>
 					<div className="dashboard-cover__img">
 						<Image className="dashboard-cover__second-img" src={cupboard} alt="dashboard-cover" bottom="10px" />
@@ -158,7 +148,7 @@ export const getStaticProps = async () => {
 			products,
 			status
 		},
-		revalidate: 5
+		revalidate: 30
 	}
 }
 

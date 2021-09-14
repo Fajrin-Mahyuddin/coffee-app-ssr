@@ -1,6 +1,7 @@
 import SubmitBtn from './buttons/submit-btn';
 import Navbar from './headers/navbar';
 import ToggleBtn from './buttons/toggleBtn';
+import DefaultBtn from './buttons/defaultBtn';
 import ActiveLink from './buttons/activeLink';
 import ContentWrapper from './templates/contentWrapper';
 import Loading from './templates/loading';
@@ -12,6 +13,7 @@ import InputText from './inputs/InputText';
 import InputAlert from './alerts/inputAlert';
 import InputDate from './inputs/inputDate';
 import InputRadio from './inputs/inputRadio';
+import FormLogin from './templates/card/formLogin';
 
 import LinkBorderLess from './link/link-borderLess';
 
@@ -30,5 +32,7 @@ export {
 	ItemSale,
 	Loading,
 	LoadingFetch,
-	LinkBorderLess
+	LinkBorderLess,
+	DefaultBtn,
+	FormLogin
 }

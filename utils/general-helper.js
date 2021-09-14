@@ -40,7 +40,7 @@ export const useCheckToken = (errorInfo) => {
 		if (errorInfo) {
 			setAlert({ type: "warning", body: errorInfo.code })
 			// if (errorInfo.code === 'auth/id-token-expired') {
-			logout();
+			// logout();
 			// }
 		}
 		return () => {
