@@ -1,6 +1,6 @@
 import { ActiveLink } from 'components'
 import React, { useEffect, useState } from 'react';
-import { getFirebaseAuth, useAppContext } from 'utils/auth';
+import { getFirebaseAuth } from 'utils/auth';
 import { reqCart } from 'utils/cart-helper';
 import { basketList, getDataCart } from 'state/atoms/cart';
 import { useRecoilState, useRecoilValueLoadable } from 'recoil';
@@ -11,22 +11,22 @@ import {
   DashboardOutlined,
   ShoppingCartOutlined
 } from '@ant-design/icons';
-import { checkFirebase } from 'utils/firebase-auth';
+import { getUserLogin } from 'utils/recoil-state';
 
 
 const StandartMenu = () => {
-  const { authUser, loading } = getFirebaseAuth();
   const [cartCount, setCartCount] = useRecoilState(basketList);
+  const { authUser, loading } = getFirebaseAuth();
 
   useEffect(async () => {
     const data = await reqCart();
     setCartCount(data.length);
+    // }
   }, []);
 
   if (loading) {
     return <></>
   }
-
   return (
     <ul>
       <li className="mrl-20">

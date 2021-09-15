@@ -1,9 +1,9 @@
 import axios from "axios";
 const { useState, useEffect } = require("react");
 
-export const reqCart = async () => {
+export const reqCart = async (uid) => {
 	try {
-		const req = await axios.get(`http://localhost:8181/user/cart`);
+		const req = await axios.get(`http://localhost:8181/user/cart/${uid}`);
 		return req.data;
 	} catch (error) {
 		throw error;

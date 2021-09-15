@@ -20,6 +20,8 @@ const ArticlePage = ({ pageLoading, articles }) => {
 	}
 
 	const { loading } = useLoading()
+	console.log("articles", articles)
+
 	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
@@ -37,11 +39,11 @@ const ArticlePage = ({ pageLoading, articles }) => {
 				</div>
 				<hr />
 				<div className="article-wrapper">
-					{articles.value.map((item, i) => {
+					{articles.map((item, i) => {
 						return (
 							<div className="article-item" key={i}>
 								<div className="article-img">
-									<img src={`${item.image.url}`} width="100%" height="100%" alt="article-one" />
+									<img src={`https://images.unsplash.com/photo-1459755486867-b55449bb39ff?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2549&q=80`} width="100%" height="100%" alt="article-one" />
 								</div>
 								<div className="article-content">
 									<div className="article-category">
@@ -49,10 +51,10 @@ const ArticlePage = ({ pageLoading, articles }) => {
 										<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
 									</div>
 									<div className="article-head">
-										{item.title}
+										{item.title.rendered}
 									</div>
 									<div className="article-body">
-										{item.body}
+										{item.excerpt.rendered}
 									</div>
 									<div className="article-footer">
 										<div className="author">
@@ -67,7 +69,7 @@ const ArticlePage = ({ pageLoading, articles }) => {
 					})}
 
 				</div>
-				{articles.value.length < 20 &&
+				{articles.length < 20 &&
 					<div className="view-more">
 						{loading ? "loading..." :
 							<button onClick={viewMore}>Load more</button>
@@ -83,7 +85,7 @@ const ArticlePage = ({ pageLoading, articles }) => {
 export const getServerSideProps = async ({ query }) => {
 	const articles = await getArticles(query.limit);
 	return {
-		props: { articles: articles.data }
+		props: { articles: articles }
 	}
 }
 

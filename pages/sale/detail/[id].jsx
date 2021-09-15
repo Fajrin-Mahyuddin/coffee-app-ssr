@@ -17,11 +17,11 @@ import {
 	TagsOutlined
 } from '@ant-design/icons';
 import { reqCart } from 'utils/cart-helper';
-import DefaultErrorPage from 'next/error'
+// import DefaultErrorPage from 'next/error'
+import { getFirebaseAuth } from 'utils/auth';
 
 const SaleDetail = (props) => {
 	const { product } = props;
-	console.log("error on sale page", props)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>
@@ -39,7 +39,7 @@ const SaleDetail = (props) => {
 						{/* list another item  */}
 						<h5 className="text-grey"><TagsOutlined /> Related Product:</h5>
 					</div>
-					<DefaultErrorPage statusCode={404} />
+					{/* <DefaultErrorPage statusCode={404} /> */}
 				</div>
 			</StandartLayout.Content>
 		</StandartLayout>
@@ -48,6 +48,7 @@ const SaleDetail = (props) => {
 
 export const DetailItem = ({ item }) => {
 	const [, setCartCount] = useRecoilState(basketList);
+	const { authUser } = getFirebaseAuth()
 	const route = useRouter();
 	const [quantity, setQuantity] = useState(1)
 	const [isSuccess, setSuccess] = useState(false)
@@ -55,15 +56,27 @@ export const DetailItem = ({ item }) => {
 	const { refFooterPrice, refFooterChild } = ifDetailSaleScrolled();
 
 	const toBasket = async (val) => {
-		const value = { product: val, quantity: quantity }
+		const value = { item: { ...val, quantity: quantity }, uid: authUser.uid }
 		// setBasket([...basket, value]);
 		try {
-			const req = await addToCart();
+			const req = await addToCart(value);
 			setSuccess(true)
 			console.log("value add to cart", req);
 			setTimeout(() => setSuccess(false), 2000)
 		} catch (error) {
 			console.log("value error add to cart", error)
+		}
+	}
+
+	const increaseQ = () => {
+		setQuantity(quantity + 1)
+	}
+
+	const decreaseQ = () => {
+		if (quantity <= 1) {
+			setQuantity(1)
+		} else {
+			setQuantity(quantity - 1)
 		}
 	}
 
@@ -120,9 +133,9 @@ export const DetailItem = ({ item }) => {
 				<div ref={refFooterPrice} className="sale-item__desc-footer">
 					<div ref={refFooterChild} className="footer-child">
 						<div className="sale-item__total-order">
-							<SubmitBtn className="btn sm-btn success-btn" icon={MinusCircleFilled}></SubmitBtn>
-							<span>1</span>
-							<SubmitBtn className="btn sm-btn success-btn" icon={PlusCircleFilled}></SubmitBtn>
+							<SubmitBtn onClick={decreaseQ} className="btn sm-btn success-btn" icon={MinusCircleFilled}></SubmitBtn>
+							<span>{quantity}</span>
+							<SubmitBtn onClick={increaseQ} className="btn sm-btn success-btn" icon={PlusCircleFilled}></SubmitBtn>
 						</div>
 						<SubmitBtn label="Add" icon={ShoppingCartOutlined} onClick={() => toBasket(item)} className="btn sm-btn success-btn" />
 					</div>

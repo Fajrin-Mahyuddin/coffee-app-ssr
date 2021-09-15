@@ -8,12 +8,6 @@ import { DoubleRightOutlined, LoadingOutlined, RightOutlined } from '@ant-design
 import { useLoading } from 'utils/general-helper';
 import { getProducts } from 'utils/product-helper';
 
-// const getProducts = async (id = 10) => {
-// 	const res = await fetch(`https://fakestoreapi.com/products?limit=${id}`);
-// 	const json = await res.json()
-// 	return json;
-// }
-
 const SalePage = ({ products = [], pageLoading }) => {
 	const [productList, setProduct] = useState(products)
 	const [isLoading, setLoading] = useState(false)
@@ -43,7 +37,6 @@ const SalePage = ({ products = [], pageLoading }) => {
 
 	const { loading } = useLoading();
 	if (pageLoading) return <div>Loading...</div>
-	console.log("router", router.query)
 	return (
 		<StandartLayout>
 			<StandartLayout.Content>

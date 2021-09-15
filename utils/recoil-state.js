@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { checkFirebase } from "./firebase-auth";
 
 export const dataState = atom({
 	key: 'bars',

@@ -40,11 +40,11 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 				<h4 className="text-grey text-light"><BookFilled /> Some Articles</h4>
 				<hr />
 				<div className="article-wrapper mb-20">
-					{articles?.value.map((item, i) => {
+					{articles?.map((item, i) => {
 						return (
 							<div className="article-item" key={i}>
 								<div className="article-img">
-									<img src={item.image.url} alt={item.title} />
+									<img src="# " alt={item.title.rendered} />
 								</div>
 								<div className="article-content">
 									<div className="article-category">
@@ -52,15 +52,15 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 										<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
 									</div>
 									<div className="article-head">
-										{item.title}
+										{item.title.rendered}
 									</div>
 									<div className="article-body">
-										{item.body}
+										{item.excerpt.rendered}
 									</div>
 									<div className="article-footer">
 										<div className="author">
 											<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-											<span>{item.provider.name}</span>
+											{/* <span>{item.provider.name}</span> */}
 										</div>
 										<Link href={`/articles/detail/${item.id}`}>Read more</Link>
 									</div>
@@ -136,7 +136,7 @@ export const getStaticProps = async () => {
 
 	try {
 		let requestAll = await Promise.all([getArticles(), getProducts()]);
-		articles = requestAll[0].data;
+		articles = requestAll[0];
 		products = requestAll[1].data;
 	} catch (error) {
 		status = { error: true, msg: "Failed to fetch data" }

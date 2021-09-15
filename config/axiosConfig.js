@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-	baseURL: "https://rapidapi.p.rapidapi.com/api/search/",
+	baseURL: "https://telegraph.id/api/wp-json/wp/v2/",
 	timeout: 9000,
 	headers: {
 		"x-rapidapi-key": "a8dc93f25emshf71e5c6d9da2cdfp1769a6jsnd592d22f793a",

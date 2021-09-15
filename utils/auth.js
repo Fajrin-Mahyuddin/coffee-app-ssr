@@ -39,7 +39,7 @@ export const getFirebaseAuth = () => {
 	// const [pending, isPending] = useState('pending')
 
 	const setUser = async (user) => {
-		// setLoading(true)
+		setLoading(true)
 		if (!user) {
 			setAuthUser(null)
 			setLoading(false)
@@ -49,8 +49,8 @@ export const getFirebaseAuth = () => {
 		setLoading(false)
 	}
 	useEffect(() => {
-		// setLoading(true)
 		const sub = checkFirebase.auth().onIdTokenChanged(setUser);
+		// setLoading(true)
 		return () => sub()
 	}, []);
 
