@@ -11,7 +11,6 @@ import {
   DashboardOutlined,
   ShoppingCartOutlined
 } from '@ant-design/icons';
-import { getUserLogin } from 'utils/recoil-state';
 
 
 const StandartMenu = () => {

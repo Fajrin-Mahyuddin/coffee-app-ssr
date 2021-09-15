@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
 import { cupboard, Saly11 } from 'images';
-import { SubmitBtn } from 'components';
+import { SubmitBtn, ArticleItem } from 'components';
 // import coffee_one from '../public/assets/images/coffee_one.jpeg';
 import {
 	ShopFilled,
@@ -13,7 +13,7 @@ import {
 	HeartFilled,
 	ClockCircleOutlined,
 } from '@ant-design/icons';
-import { getArticles } from 'utils/article-helper';
+import { ALL_POSTS, fetcherWithPromise, getArticles } from 'utils/article-helper';
 import { getProducts } from 'utils/product-helper';
 import { useRecoilState } from 'recoil';
 import { dataState } from 'utils/recoil-state';
@@ -42,30 +42,7 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 				<div className="article-wrapper mb-20">
 					{articles?.map((item, i) => {
 						return (
-							<div className="article-item" key={i}>
-								<div className="article-img">
-									<img src="# " alt={item.title.rendered} />
-								</div>
-								<div className="article-content">
-									<div className="article-category">
-										<span>Productivity</span>
-										<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-									</div>
-									<div className="article-head">
-										{item.title.rendered}
-									</div>
-									<div className="article-body">
-										{item.excerpt.rendered}
-									</div>
-									<div className="article-footer">
-										<div className="author">
-											<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-											{/* <span>{item.provider.name}</span> */}
-										</div>
-										<Link href={`/articles/detail/${item.id}`}>Read more</Link>
-									</div>
-								</div>
-							</div>
+							<ArticleItem item={item} key={i} />
 						)
 					})}
 
@@ -135,13 +112,12 @@ export const getStaticProps = async () => {
 	let status = { error: false, msg: null };
 
 	try {
-		let requestAll = await Promise.all([getArticles(), getProducts()]);
-		articles = requestAll[0];
+		let requestAll = await Promise.all([fetcherWithPromise(ALL_POSTS), getProducts()]);
+		articles = requestAll[0].data.posts.nodes;
 		products = requestAll[1].data;
 	} catch (error) {
 		status = { error: true, msg: "Failed to fetch data" }
 	}
-
 	return {
 		props: {
 			articles,

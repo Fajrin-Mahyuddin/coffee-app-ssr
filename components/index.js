@@ -7,6 +7,8 @@ import ContentWrapper from './templates/contentWrapper';
 import Loading from './templates/loading';
 import LoadingFetch from './templates/loading-fetch';
 import ItemSale from './templates/sale/item';
+import PopularArticle from './templates/article/popular';
+import ArticleItem from './templates/article/item';
 import Form from './inputs/form';
 import Footer from './footer';
 import InputText from './inputs/InputText';
@@ -34,5 +36,7 @@ export {
 	LoadingFetch,
 	LinkBorderLess,
 	DefaultBtn,
-	FormLogin
+	FormLogin,
+	PopularArticle,
+	ArticleItem
 }

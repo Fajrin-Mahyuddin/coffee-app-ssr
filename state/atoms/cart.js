@@ -8,7 +8,7 @@ export const basketList = atom({
 })
 
 export const addToCart = (data) => {
-	return axios.post('http://localhost:8181/product/cart/add', { data }, {
+	return axios.post('https://dummy-coffee-app.herokuapp.com/product/cart/add', { data }, {
 		headers: {
 			'content-type': 'application/json'
 		}
@@ -31,7 +31,7 @@ export const getDataCart = selector({
 		let req;
 		try {
 			if (authUser) {
-				req = await axios.get('http://localhost:8181/user/cart');
+				req = await axios.get('https://dummy-coffee-app.herokuapp.com/user/cart');
 			} else {
 				req = { data: [] };
 			}
@@ -48,7 +48,7 @@ export const getDataCartCount = selector({
 	key: "GetCartCount",
 	get: async () => {
 		try {
-			const req = await axios.get('http://localhost:8181/user/cart');
+			const req = await axios.get('https://dummy-coffee-app.herokuapp.com/user/cart');
 			return req.data.length.toString();
 		} catch (error) {
 			throw error

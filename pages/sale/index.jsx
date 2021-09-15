@@ -120,7 +120,6 @@ const SalePage = ({ products = [], pageLoading }) => {
 
 export async function getStaticProps() {
 	const products = await getProducts(5);
-	// console.log("params", query)
 	return {
 		props: {
 			products: products.data,

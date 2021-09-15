@@ -2,10 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { saly12 } from 'images';
 import { useState } from 'react';
-import { SubmitBtn } from 'components';
+import { SubmitBtn, ArticleItem } from 'components';
 import { useRouter } from 'next/router';
 import { StandartLayout } from "layout";
-import { getArticles } from 'utils/article-helper';
+import { ALL_POSTS, fetcher, getArticles } from 'utils/article-helper';
 import { EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useLoading } from 'utils/general-helper';
 
@@ -41,30 +41,7 @@ const ArticlePage = ({ pageLoading, articles }) => {
 				<div className="article-wrapper">
 					{articles.map((item, i) => {
 						return (
-							<div className="article-item" key={i}>
-								<div className="article-img">
-									<img src={`https://images.unsplash.com/photo-1459755486867-b55449bb39ff?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2549&q=80`} width="100%" height="100%" alt="article-one" />
-								</div>
-								<div className="article-content">
-									<div className="article-category">
-										<span>Productivity</span>
-										<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> 3 days ago  </span>
-									</div>
-									<div className="article-head">
-										{item.title.rendered}
-									</div>
-									<div className="article-body">
-										{item.excerpt.rendered}
-									</div>
-									<div className="article-footer">
-										<div className="author">
-											<img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" width="100%" height="100%" alt="author" />
-											<span>Roroa Zoro</span>
-										</div>
-										<Link href={`/detail/${item.id}`}>Read more</Link>
-									</div>
-								</div>
-							</div>
+							<ArticleItem item={item} key={i} />
 						)
 					})}
 
@@ -82,10 +59,14 @@ const ArticlePage = ({ pageLoading, articles }) => {
 	)
 }
 
-export const getServerSideProps = async ({ query }) => {
-	const articles = await getArticles(query.limit);
+export async function getStaticProps() {
+	const response = await fetcher(ALL_POSTS);
+	const allPost = response.data.posts.nodes
 	return {
-		props: { articles: articles }
+		props: {
+			articles: allPost
+		},
+		revalidate: 1
 	}
 }
 
