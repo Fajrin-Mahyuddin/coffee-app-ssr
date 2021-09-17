@@ -88,6 +88,7 @@ export async function getStaticProps() {
 	const variables = {
 		limit: 5
 	}
+
 	const response = await fetcher(ALL_POSTS, { variables });
 	const allPost = response.data.posts.nodes
 	return {

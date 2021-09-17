@@ -1,28 +1,24 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { StandartLayout } from 'layout';
+import { useRecoilState } from 'recoil';
 import { cupboard, Saly11 } from 'images';
+import { dataState } from 'utils/recoil-state';
+import { getProducts } from 'utils/product-helper';
 import { SubmitBtn, ArticleItem } from 'components';
-// import coffee_one from '../public/assets/images/coffee_one.jpeg';
+import { ALL_POSTS, fetcher } from 'utils/article-helper';
 import {
 	ShopFilled,
 	StarFilled,
 	BookFilled,
-	EyeOutlined,
 	HeartFilled,
-	ClockCircleOutlined,
 } from '@ant-design/icons';
-import { ALL_POSTS, fetcherWithPromise, getArticles } from 'utils/article-helper';
-import { getProducts } from 'utils/product-helper';
-import { useRecoilState } from 'recoil';
-import { dataState } from 'utils/recoil-state';
 
 const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const [test, setTest] = useRecoilState(dataState);
-
 	if (pageLoading) return <div>Loading...</div>
+
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -111,8 +107,12 @@ export const getStaticProps = async () => {
 	let products = null;
 	let status = { error: false, msg: null };
 
+	const variables = {
+		limit: 5
+	}
+
 	try {
-		let requestAll = await Promise.all([fetcherWithPromise(ALL_POSTS), getProducts()]);
+		let requestAll = await Promise.all([fetcher(ALL_POSTS, { variables }), getProducts()]);
 		articles = requestAll[0].data.posts.nodes;
 		products = requestAll[1].data;
 	} catch (error) {

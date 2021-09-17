@@ -15,15 +15,15 @@ export const fetcher = async (query, { variables } = {}) => {
   const json = await res.json()
   return json
 }
-export const fetcherWithPromise = async (query, { variables } = {}) => {
-  const res = await fetch(`https://telegraph.id/api/graphql`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables }),
-  });
+// export const fetcherWithPromise = async (query, { variables } = {}) => {
+//   const res = await fetch(`https://telegraph.id/api/graphql`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ query, variables }),
+//   });
 
-  return await res.json()
-}
+//   return await res.json()
+// }
 
 export const ALL_POSTS = `query AllPosts ($limit: Int) {
 	posts(first: $limit) {
