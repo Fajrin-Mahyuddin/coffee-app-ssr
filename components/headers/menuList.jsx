@@ -26,6 +26,7 @@ const StandartMenu = () => {
   if (loading) {
     return <></>
   }
+  console.log("navbar render")
   return (
     <ul>
       <li className="mrl-20">

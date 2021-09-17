@@ -1,25 +1,50 @@
-import Link from 'next/link';
 import Image from 'next/image';
 import { saly12 } from 'images';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SubmitBtn, ArticleItem } from 'components';
 import { useRouter } from 'next/router';
 import { StandartLayout } from "layout";
-import { ALL_POSTS, fetcher, getArticles } from 'utils/article-helper';
-import { EyeOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { ALL_POSTS, fetcher } from 'utils/article-helper';
 import { useLoading } from 'utils/general-helper';
 
 const ArticlePage = ({ pageLoading, articles }) => {
+	// const { loading } = useLoading()
+	const [articlesList, setArticles] = useState(articles);
+	const [loadMoreLoading, setLoadMoreLoading] = useState(false)
 	const router = useRouter();
+
 	const viewMore = () => {
-		let limit = Number(router.query.limit || 9)
+		let limit = Number(router.query.limit || 5)
 		router.push({
 			path: router.pathname,
 			query: { limit: limit + 5 }
-		}, undefined, { scroll: false })
+		}, undefined, { scroll: false, shallow: true })
 	}
 
-	const { loading } = useLoading()
+	const loadMore = async () => {
+		setLoadMoreLoading(true);
+		const variables = {
+			limit: Number(router.query.limit),
+		};
+		try {
+			const response = await fetcher(ALL_POSTS, { variables });
+			console.log("get in client of posts", variables, response)
+			const nextArticles = response.data.posts.nodes;
+			setArticles(nextArticles);
+			setLoadMoreLoading(false);
+		} catch (error) {
+			console.error(error)
+			setLoadMoreLoading(false);
+		}
+
+	}
+
+	useEffect(() => {
+		if (router.query.limit) {
+			loadMore()
+		}
+	}, [router.query.limit])
+
 	console.log("articles", articles)
 
 	if (pageLoading) return <div>Loading...</div>
@@ -39,16 +64,16 @@ const ArticlePage = ({ pageLoading, articles }) => {
 				</div>
 				<hr />
 				<div className="article-wrapper">
-					{articles.map((item, i) => {
+					{articlesList.map((item, i) => {
 						return (
 							<ArticleItem item={item} key={i} />
 						)
 					})}
 
 				</div>
-				{articles.length < 20 &&
+				{articlesList.length < 20 &&
 					<div className="view-more">
-						{loading ? "loading..." :
+						{loadMoreLoading ? "loading..." :
 							<button onClick={viewMore}>Load more</button>
 						}
 					</div>
@@ -60,7 +85,10 @@ const ArticlePage = ({ pageLoading, articles }) => {
 }
 
 export async function getStaticProps() {
-	const response = await fetcher(ALL_POSTS);
+	const variables = {
+		limit: 5
+	}
+	const response = await fetcher(ALL_POSTS, { variables });
 	const allPost = response.data.posts.nodes
 	return {
 		props: {

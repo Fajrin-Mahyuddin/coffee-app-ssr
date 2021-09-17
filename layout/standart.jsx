@@ -12,7 +12,6 @@ const Content = ({ className, children, ...props }) => {
 }
 
 const StandartLayout = ({ footer = true, children }) => {
-
   const navRef = useRef();
   const contentRef = useRef();
 

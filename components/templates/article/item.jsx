@@ -18,8 +18,8 @@ const ArticleItem = ({ item }) => {
 				<div className="article-body" dangerouslySetInnerHTML={{ __html: item.excerpt }} />
 				<div className="article-footer">
 					<div className="author">
-						<img src={item.author.node.avatar.url} width="100%" height="100%" alt="author" />
-						<span>{item.author.node.name}</span>
+						<img src={item.author?.node.avatar.url} width="100%" height="100%" alt="author" />
+						<span>{item.author?.node.name}</span>
 					</div>
 					<Link href={`/articles/detail/${item.slug}`}>Read more</Link>
 				</div>
