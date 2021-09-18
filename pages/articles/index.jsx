@@ -28,15 +28,12 @@ const ArticlePage = ({ pageLoading, articles }) => {
 		};
 		try {
 			const response = await fetcher(ALL_POSTS, { variables });
-			console.log("get in client of posts", variables, response)
 			const nextArticles = response.data.posts.nodes;
 			setArticles(nextArticles);
 			setLoadMoreLoading(false);
 		} catch (error) {
-			console.error(error)
 			setLoadMoreLoading(false);
 		}
-
 	}
 
 	useEffect(() => {
@@ -44,8 +41,6 @@ const ArticlePage = ({ pageLoading, articles }) => {
 			loadMore()
 		}
 	}, [router.query.limit])
-
-	console.log("articles", articles)
 
 	if (pageLoading) return <div>Loading...</div>
 	return (

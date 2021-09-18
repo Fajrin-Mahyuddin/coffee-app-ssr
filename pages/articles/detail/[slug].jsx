@@ -2,6 +2,7 @@ import { StandartLayout } from "layout";
 import { EyeOutlined, FacebookOutlined, FieldTimeOutlined, ReadOutlined, RightOutlined, SignalFilled, TwitterOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { ALL_POSTS, fetcher, SINGLE_POST } from "utils/article-helper";
 import { PopularArticle } from "components";
+import { getTime } from "utils/time-helper";
 
 const DetailArticle = ({ article, popular }) => {
 	return (
@@ -19,7 +20,7 @@ const DetailArticle = ({ article, popular }) => {
 					<div className="article-detail__img">
 						{/* <hr /> */}
 						<img src={article.featuredImage.node.sourceUrl} />
-						<span className="tags tags-sm tags-info">general</span>
+						<span className="tags tags-sm tags-info">{article.categories.nodes[0].name}</span>
 					</div>
 					<div className="article-detail__content">
 						<div className="article-detail__content-head display-horizontal">
@@ -32,7 +33,7 @@ const DetailArticle = ({ article, popular }) => {
 						<hr />
 						<div className="article-detail__content-title">
 							{article.title}
-							<span><SignalFilled /> Majene - <FieldTimeOutlined /> Sabtu, 20 Juni 2020</span>
+							<span><SignalFilled /> Majene - <FieldTimeOutlined /> {getTime(article.date, "D MMMM yyyy")}</span>
 						</div>
 						<div className="article-detail__content-body">
 							<div dangerouslySetInnerHTML={{ __html: article.content }} />

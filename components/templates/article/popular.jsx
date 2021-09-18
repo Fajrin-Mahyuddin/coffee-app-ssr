@@ -1,4 +1,4 @@
-import { EyeOutlined } from "@ant-design/icons"
+import { CommentOutlined, EyeOutlined } from "@ant-design/icons"
 
 const PopularArticle = ({ article }) => {
 	return (
@@ -13,14 +13,14 @@ const PopularArticle = ({ article }) => {
 									<img src={item.featuredImage.node.sourceUrl} alt={item.slug} />
 								</div>
 								<div className="article-detail__side-item-content">
-									<div className="article-detail__side-head display-horizontal">
+									<h4><strong>{item.title}</strong></h4>
+									<div className="article-detail__side-head display-horizontal mt-10">
 										<div className="author">
 											<img src={item.author.node.avatar.url} alt="author" />
 											<span>{item.author.node.name}</span>
 										</div>
-										<span> <EyeOutlined /> 222</span>
+										<span> <CommentOutlined /> {item.commentCount || 0}</span>
 									</div>
-									<h4><strong>{item.title}</strong></h4>
 								</div>
 							</a>
 						</li>

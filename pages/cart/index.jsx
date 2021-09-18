@@ -130,18 +130,19 @@ export const getServerSideProps = async (ctx) => {
 	let props;
 	if (!token.token) {
 		redirectTo(`/login?next=${nextUrlEncode}`, ctx)
+	} else {
+		await adminFirebase.auth().verifyIdToken(token.token)
+			.then(response => {
+				if (!response) {
+					redirectTo(`/login?next=${nextUrlEncode}`, ctx)
+				}
+			}).catch(error => {
+				if (error.errorInfo.code === 'auth/id-token-expired') {
+					redirectTo(`/login?next=${nextUrlEncode}`, ctx)
+				}
+				props = { ...error }
+			})
 	}
-	await adminFirebase.auth().verifyIdToken(token.token)
-		.then(response => {
-			if (!response) {
-				redirectTo(`/login?next=${nextUrlEncode}`, ctx)
-			}
-		}).catch(error => {
-			if (error.errorInfo.code === 'auth/id-token-expired') {
-				redirectTo(`/login?next=${nextUrlEncode}`, ctx)
-			}
-			props = { ...error }
-		})
 
 	return {
 		props: { ...props }

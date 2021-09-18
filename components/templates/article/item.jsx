@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { ClockCircleOutlined, EyeOutlined } from "@ant-design/icons"
+import { CalendarOutlined, CommentOutlined } from "@ant-design/icons"
+import { getTime } from 'utils/time-helper'
 
 const ArticleItem = ({ item }) => {
 	return (
@@ -9,8 +10,10 @@ const ArticleItem = ({ item }) => {
 			</div>
 			<div className="article-content">
 				<div className="article-category">
-					<span>Productivity</span>
-					<span> <EyeOutlined /> 220 | <ClockCircleOutlined /> {item.date}  </span>
+					<span>{item.categories.nodes[0].name}</span>
+					<span>
+						<CommentOutlined /> {item.commentCount || 0} | {' '}
+						<CalendarOutlined /> {getTime(item.date)}  </span>
 				</div>
 				<div className="article-head">
 					<a href={`/articles/detail/${item.slug}`} style={{ color: '#404040' }}>{item.title}</a>

@@ -34,6 +34,7 @@ export const ALL_POSTS = `query AllPosts ($limit: Int) {
       slug
       title
       uri
+      commentCount
       featuredImage {
         node {
           uri
@@ -46,6 +47,11 @@ export const ALL_POSTS = `query AllPosts ($limit: Int) {
           avatar {
             url
           }
+          name
+        }
+      }
+      categories {
+        nodes {
           name
         }
       }
@@ -76,6 +82,11 @@ export const SINGLE_POST = `query singlePost ($id: ID!, $idType: PostIdType!) {
         }
       }
     }
+    categories {
+      nodes {
+        name
+      }
+    }
   }
   posts(first: 5) {
     nodes {
@@ -83,6 +94,7 @@ export const SINGLE_POST = `query singlePost ($id: ID!, $idType: PostIdType!) {
       slug
       title
       excerpt
+      commentCount
       featuredImage {
         node {
           sourceUrl
