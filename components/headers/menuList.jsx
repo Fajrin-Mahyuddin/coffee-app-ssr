@@ -1,5 +1,5 @@
 import { ActiveLink } from 'components'
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getFirebaseAuth } from 'utils/auth';
 import { reqCart } from 'utils/cart-helper';
 import { basketList, getDataCart } from 'state/atoms/cart';
@@ -13,19 +13,19 @@ import {
 } from '@ant-design/icons';
 
 
-const StandartMenu = () => {
-  const [cartCount, setCartCount] = useRecoilState(basketList);
-  const { authUser, loading } = getFirebaseAuth();
+const StandartMenu = React.memo(({ authUser, cartCount }) => {
+  // const [cartCount, setCartCount] = useRecoilState(basketList);
+  // const { authUser, loading } = getFirebaseAuth();
 
-  useEffect(async () => {
-    const data = await reqCart();
-    setCartCount(data.length);
-    // }
-  }, []);
+  // useEffect(async () => {
+  //   const data = await reqCart();
+  //   setCartCount(data.length);
+  //   // }
+  // }, []);
 
-  if (loading) {
-    return <></>
-  }
+  // if (loading) {
+  //   return <></>
+  // }
   console.log("navbar render")
   return (
     <ul>
@@ -72,7 +72,7 @@ const StandartMenu = () => {
       }
     </ul>
   )
-}
+})
 
 const MenuLogin = () => {
 

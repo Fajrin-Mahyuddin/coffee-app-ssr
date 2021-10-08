@@ -37,7 +37,7 @@ export const getFirebaseAuth = () => {
 	const [authUser, setAuthUser] = useState(null)
 	const [loading, setLoading] = useState(true)
 	// const [pending, isPending] = useState('pending')
-
+	console.log("call get firebase user")
 	const setUser = async (user) => {
 		setLoading(true)
 		if (!user) {

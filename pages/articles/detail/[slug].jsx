@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { StandartLayout } from "layout";
 import { EyeOutlined, FacebookOutlined, FieldTimeOutlined, ReadOutlined, RightOutlined, SignalFilled, TwitterOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { ALL_POSTS, fetcher, SINGLE_POST } from "utils/article-helper";
@@ -19,7 +20,11 @@ const DetailArticle = ({ article, popular }) => {
 					</div>
 					<div className="article-detail__img">
 						{/* <hr /> */}
-						<img src={article.featuredImage.node.sourceUrl} />
+						<Image
+							// loader={() => article.featuredImage.node.sourceUrl}
+							src={article.featuredImage.node.sourceUrl} width="100"
+							height="100"
+						/>
 						<span className="tags tags-sm tags-info">{article.categories.nodes[0].name}</span>
 					</div>
 					<div className="article-detail__content">

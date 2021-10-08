@@ -1,10 +1,11 @@
-import { StarFilled, HeartFilled } from '@ant-design/icons'
+import { StarFilled, HeartFilled } from '@ant-design/icons';
+import Image from 'next/image';
 
 const ItemSale = ({ item: { id, title, description, image, price, category } }) => {
 	return (
 		<div className="sale-item">
 			<div className="sale-item__img">
-				<img src={image} alt="img-item" width="50%" height="50%" />
+				<Image src={image} alt="img-item" width="500" height="500" />
 				<HeartFilled />
 			</div>
 			<div className="sale-item__body">

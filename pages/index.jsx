@@ -5,20 +5,18 @@ import { useRecoilState } from 'recoil';
 import { cupboard, Saly11 } from 'images';
 import { dataState } from 'utils/recoil-state';
 import { getProducts } from 'utils/product-helper';
-import { SubmitBtn, ArticleItem } from 'components';
+import { SubmitBtn, ArticleItem, ItemSale } from 'components';
 import { ALL_POSTS, fetcher } from 'utils/article-helper';
 import {
 	ShopFilled,
-	StarFilled,
 	BookFilled,
-	HeartFilled,
 } from '@ant-design/icons';
 
 const Dashboard = ({ articles, products, status, pageLoading }) => {
 
 	const [test, setTest] = useRecoilState(dataState);
-	if (pageLoading) return <div>Loading...</div>
 
+	if (pageLoading) return <div>Loading...</div>
 	return (
 		<StandartLayout>
 			<div className="container">
@@ -55,39 +53,9 @@ const Dashboard = ({ articles, products, status, pageLoading }) => {
 					<div className="sale-list">
 						{products?.map((item, i) => {
 							return (
-								<div className="sale-item" key={i}>
-									<div className="sale-item__img">
-										<img src={item.image} alt="img-item" width="50%" height="50%" />
-										<HeartFilled />
-									</div>
-									<div className="sale-item__body">
-										<a href={`/sale/detail/${item.id}`} className="sale-item__body-title text-overflow-2">
-											{item.title}
-										</a>
-										<div className="sale-item__body-review display-horizontal">
-											<div className="start">
-												<StarFilled style={{ color: "orange" }} />
-												<StarFilled style={{ color: "orange" }} />
-												<StarFilled style={{ color: "orange" }} />
-												<StarFilled style={{ color: "grey" }} />
-												<StarFilled style={{ color: "grey" }} />
-											</div>
-											<span className="label label-sm label-primary">Best</span>
-										</div>
-										<div className="sale-item__body-desc text-overflow-3">
-											{item.description}
-										</div>
-										<div className="sale-item__body-footer display-horizontal">
-											<div className="content-price">
-												<span className="label label-sm label-warning label-transparent">0%</span>
-												<span>$ {item.price}</span>
-											</div>
-										</div>
-									</div>
-								</div>
+								<ItemSale item={item} key={item.id} />
 							)
 						})}
-
 					</div>
 				</div>
 				<div className="view-more">
@@ -106,7 +74,6 @@ export const getStaticProps = async () => {
 	let articles = null;
 	let products = null;
 	let status = { error: false, msg: null };
-
 	const variables = {
 		limit: 5
 	}
@@ -118,6 +85,7 @@ export const getStaticProps = async () => {
 	} catch (error) {
 		status = { error: true, msg: "Failed to fetch data" }
 	}
+
 	return {
 		props: {
 			articles,

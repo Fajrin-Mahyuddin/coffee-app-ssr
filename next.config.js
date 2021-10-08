@@ -6,6 +6,6 @@ module.exports = {
 	},
 	devtool: "source-map",
 	images: {
-		domains: ['images.unsplash.com', '*.com'],
+		domains: ['images.unsplash.com', 'telegraph.id', '*.com'],
 	},
 }

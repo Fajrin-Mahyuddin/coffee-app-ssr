@@ -40,6 +40,7 @@ export const ALL_POSTS = `query AllPosts ($limit: Int) {
           uri
           link
           sourceUrl
+          srcSet
         }
       }
 			author {
